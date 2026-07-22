@@ -177,6 +177,13 @@ export const Login = () => {
           </form>
         )}
       </div>
+      
+      {/* Footer */}
+      <div className="absolute bottom-4 w-full text-center z-10">
+        <p className="font-medium text-[var(--text-str)] text-sm m-0">
+          Designed & Prepared By- Arghyadeep Roy Contact- 9830507435.
+        </p>
+      </div>
     </div>
   );
 };

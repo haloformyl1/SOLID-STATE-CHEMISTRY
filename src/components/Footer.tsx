@@ -10,13 +10,10 @@ export const Footer: React.FC = () => {
             <Hexagon className="w-24 h-24 text-[var(--acc-prim)]" />
           </div>
           
-          <div className="relative z-10">
-            <h3 className="font-bold text-[var(--text-str)] text-lg mb-2">
-              Designed & Prepared By- <span className="text-[var(--acc-prim)]">Arghyadeep Roy</span>
-            </h3>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--bg-sec)] border border-[var(--border-sub)] text-[var(--text-norm)] font-medium text-sm">
-              Contact- 9830507435.
-            </div>
+          <div className="relative z-10 text-center">
+            <p className="font-medium text-[var(--text-str)] text-sm m-0">
+              Designed & Prepared By- Arghyadeep Roy Contact- 9830507435.
+            </p>
           </div>
         </div>
       </div>

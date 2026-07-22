@@ -6,16 +6,19 @@ import { HeroCrystalAnimation } from '../components/3d/HeroCrystalAnimation';
 
 export const Home: React.FC = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between min-h-[calc(100vh-8rem)] p-4 sm:p-8 gap-8 max-w-7xl mx-auto">
+    <div className="flex flex-col items-center justify-between min-h-[calc(100vh-8rem)] w-full">
+      {/* Top Banner */}
+      <div className="w-full bg-[var(--bg-sec)] py-2 border-b border-[var(--border-sub)] text-center mb-4">
+        <p className="text-sm font-medium text-[var(--text-str)] m-0">
+          Designed & Prepared By- Arghyadeep Roy Contact- 9830507435.
+        </p>
+      </div>
       
+      <div className="flex flex-col md:flex-row items-center justify-between p-4 sm:p-8 gap-8 w-full max-w-7xl mx-auto">
       {/* Left Column: Text and Actions */}
       <div className="w-full md:w-1/2 space-y-8 animate-fade-in-up z-10">
         
-        {/* Creator Credit (Desktop & Mobile) */}
-        <div className="inline-block glass-panel px-4 py-2 rounded-lg border-l-4 border-l-[var(--acc-prim)] mb-4">
-          <h3 className="font-semibold text-[var(--text-str)] text-xs sm:text-sm mb-0.5">Designed & Prepared By- <span className="text-[var(--acc-prim)]">Arghyadeep Roy</span></h3>
-          <p className="text-[var(--text-mut)] text-xs font-medium m-0">Contact- 9830507435.</p>
-        </div>
+        {/* Creator Credit removed from here and moved to top */}
 
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[var(--text-str)] leading-tight">
           <BilingualText 
@@ -59,6 +62,7 @@ export const Home: React.FC = () => {
         </div>
       </div>
 
+    </div>
     </div>
   );
 };
