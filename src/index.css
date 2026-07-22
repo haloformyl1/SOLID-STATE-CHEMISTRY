@@ -38,69 +38,69 @@
 
 @layer base {
   :root {
-    /* Light Theme Tokens */
-    --bg-main: #F4F8FC;
-    --bg-sec: #EAF1F7;
+    /* Oceanic Light Theme Tokens */
+    --bg-main: #F0F9FF; /* Soft sky blue */
+    --bg-sec: #E0F2FE; /* Light sky blue */
     --surf-prim: #FFFFFF;
-    --surf-elev: #F8FBFE;
+    --surf-elev: #F8FAFC;
     
-    --text-str: #102A43;
-    --text-norm: #334E68;
-    --text-mut: #627D98;
+    --text-str: #082F49; /* Deep sky blue text */
+    --text-norm: #0C4A6E; /* Normal sky blue text */
+    --text-mut: #0369A1; /* Muted sky blue text */
     
-    --acc-prim: #2563EB;
-    --acc-sec: #0D9488;
-    --acc-viol: #7C3AED;
-    --acc-amb: #D97706;
+    --acc-prim: #0284C7; /* Ocean blue */
+    --acc-sec: #0D9488; /* Teal */
+    --acc-viol: #4338CA; /* Deep indigo */
+    --acc-amb: #F59E0B; /* Amber (contrast) */
     
-    --stat-succ: #15803D;
-    --stat-warn: #B45309;
-    --stat-err: #B91C1C;
+    --stat-succ: #10B981;
+    --stat-warn: #F59E0B;
+    --stat-err: #EF4444;
     
-    --border-sub: #D7E3EC;
+    --border-sub: #BAE6FD;
 
     /* 3D Lab Tokens */
-    --atom-a: #2563EB; /* Cobalt blue */
+    --atom-a: #0284C7; /* Ocean blue */
     --atom-b: #0D9488; /* Teal */
-    --atom-c: #7C3AED; /* Violet */
-    --atom-selected: #D97706; /* Amber */
-    --atom-neighbor: #06B6D4; /* Cyan */
-    --void-tetra: #7C3AED;
+    --atom-c: #4338CA; /* Deep indigo */
+    --atom-selected: #F59E0B; /* Amber */
+    --atom-neighbor: #22D3EE; /* Cyan */
+    --void-tetra: #4338CA;
     --void-octa: #0D9488;
     --lattice-boundary: #94A3B8;
   }
   
   .dark {
-    /* Dark Theme Tokens */
-    --bg-main: #07131F;
-    --bg-sec: #0B1B2A;
-    --surf-prim: #102536;
-    --surf-elev: #142D40;
+    /* Oceanic Dark Theme Tokens */
+    --bg-main: #041E2D; /* Very dark oceanic blue */
+    --bg-sec: #072F45; /* Dark oceanic blue */
+    --surf-prim: #0A3C59; /* Surface oceanic */
+    --surf-elev: #0D496D; /* Elevated oceanic */
     
-    --text-str: #EFF6FC;
-    --text-norm: #C8DAE8;
-    --text-mut: #8FAABD;
+    --text-str: #F0F9FF;
+    --text-norm: #BAE6FD;
+    --text-mut: #7DD3FC;
     
-    --acc-prim: #60A5FA;
-    --acc-sec: #2DD4BF;
-    --acc-viol: #A78BFA;
-    --acc-amb: #FBBF24;
+    --acc-prim: #38BDF8; /* Bright ocean cyan */
+    --acc-sec: #2DD4BF; /* Bright teal */
+    --acc-viol: #818CF8; /* Soft indigo */
+    --acc-amb: #FBBF24; /* Amber */
     
-    --stat-succ: #4ADE80;
+    --stat-succ: #34D399;
     --stat-warn: #FBBF24;
     --stat-err: #F87171;
     
-    --border-sub: #29465B;
+    --border-sub: #0C4A6E;
 
     /* 3D Lab Tokens (Adjusted for dark) */
-    --atom-a: #3B82F6; 
-    --atom-b: #14B8A6; 
-    --atom-c: #8B5CF6; 
+    --atom-a: #38BDF8; 
+    --atom-b: #2DD4BF; 
+    --atom-c: #818CF8; 
     --atom-selected: #FBBF24; 
-    --atom-neighbor: #22D3EE;
-    --void-tetra: #8B5CF6;
-    --void-octa: #14B8A6;
-    --lattice-boundary: #475569;
+    --atom-neighbor: #67E8F9;
+    --void-tetra: #818CF8;
+    --void-octa: #2DD4BF;
+    --lattice-boundary: #0EA5E9;
   }
 
   body {
@@ -120,9 +120,9 @@
   .dark body {
     /* Glowing points on lattice intersections in dark mode */
     background-image: 
-      radial-gradient(circle at center, rgba(96, 165, 250, 0.05) 0, transparent 4px),
-      linear-gradient(to right, rgba(41, 70, 91, 0.5) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(41, 70, 91, 0.5) 1px, transparent 1px);
+      radial-gradient(circle at center, rgba(56, 189, 248, 0.05) 0, transparent 4px),
+      linear-gradient(to right, rgba(12, 74, 110, 0.5) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(12, 74, 110, 0.5) 1px, transparent 1px);
     background-size: 60px 60px, 60px 60px, 60px 60px;
     background-position: -2px -2px, center center, center center;
     background-attachment: fixed;
@@ -139,7 +139,7 @@
 }
 
 .dark .glass-panel {
-  background: rgba(16, 37, 54, 0.75); /* surf-prim with opacity */
+  background: rgba(10, 60, 89, 0.75); /* surf-prim with opacity */
   border: 1px solid var(--border-sub);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
@@ -161,7 +161,7 @@
 }
 
 .dark .hover-glow:hover {
-  box-shadow: 0 0 20px rgba(96, 165, 250, 0.15);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
 }
 
 /* Layout animations */

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { Learn } from './pages/Learn';
@@ -8,7 +8,16 @@ import { Lab } from './pages/Lab';
 import { Practice } from './pages/Practice';
 import { Revision } from './pages/Revision';
 import { Progress } from './pages/Progress';
+import { Login } from './pages/Login';
 import { useStore } from './store/useStore';
+
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = useStore((state) => state.isAuthenticated);
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  return <>{children}</>;
+};
 
 function App() {
   const theme = useStore((state) => state.theme);
@@ -24,7 +33,9 @@ function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/login" element={<Login />} />
+        
+        <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route index element={<Home />} />
           <Route path="learn" element={<Learn />} />
           <Route path="learn/:id" element={<ModuleView />} />
