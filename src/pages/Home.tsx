@@ -13,8 +13,8 @@ export const Home: React.FC = () => {
         
         {/* Creator Credit (Desktop & Mobile) */}
         <div className="inline-block glass-panel px-4 py-2 rounded-lg border-l-4 border-l-[var(--acc-prim)] mb-4">
-          <h3 className="font-semibold text-[var(--text-str)] text-xs sm:text-sm mb-0.5">Designed & Prepared by <span className="text-[var(--acc-prim)]">Arghyadeep Roy</span></h3>
-          <p className="text-[var(--text-mut)] text-xs font-medium m-0">Contact: 9830507435</p>
+          <h3 className="font-semibold text-[var(--text-str)] text-xs sm:text-sm mb-0.5">Designed & Prepared By- <span className="text-[var(--acc-prim)]">Arghyadeep Roy</span></h3>
+          <p className="text-[var(--text-mut)] text-xs font-medium m-0">Contact- 9830507435.</p>
         </div>
 
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[var(--text-str)] leading-tight">

@@ -12,10 +12,10 @@ export const Footer: React.FC = () => {
           
           <div className="relative z-10">
             <h3 className="font-bold text-[var(--text-str)] text-lg mb-2">
-              Designed & Prepared by <span className="text-[var(--acc-prim)]">Arghyadeep Roy</span>
+              Designed & Prepared By- <span className="text-[var(--acc-prim)]">Arghyadeep Roy</span>
             </h3>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--bg-sec)] border border-[var(--border-sub)] text-[var(--text-norm)] font-medium text-sm">
-              Contact: 9830507435
+              Contact- 9830507435.
             </div>
           </div>
         </div>
