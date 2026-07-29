@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { LanguageSelector } from './LanguageSelector';
 import { useStore } from '../store/useStore';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, LogOut } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
-  const { theme, setTheme } = useStore();
+  const { theme, setTheme, logout } = useStore();
 
   return (
     <nav className="sticky top-0 z-50 glass-panel border-b-0 transition-colors">
@@ -40,6 +40,15 @@ export const Navbar: React.FC = () => {
             aria-label="Toggle theme"
           >
             {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-[var(--acc-amb)]" />}
+          </button>
+
+          <button
+            onClick={logout}
+            className="p-2 rounded-full hover:bg-[var(--stat-err)]/10 transition-colors text-[var(--text-mut)] hover:text-[var(--stat-err)] border border-transparent hover:border-[var(--stat-err)]/30"
+            aria-label="Sign out"
+            title="Sign Out"
+          >
+            <LogOut className="w-5 h-5" />
           </button>
         </div>
       </div>
