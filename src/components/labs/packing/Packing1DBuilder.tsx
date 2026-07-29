@@ -1,9 +1,34 @@
-import React, { useState } from 'react';
-import { Canvas } from '@react-three/fiber';
+import React, { useState, useRef } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
 import { BilingualText } from '../../BilingualText';
 import * as THREE from 'three';
 import { Plus, Minus, Info } from 'lucide-react';
+
+const AnimatedSphere: React.FC<any> = ({ targetPosition, color, onClick, onPointerOver, onPointerOut }) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.scale.lerp(new THREE.Vector3(1, 1, 1), 0.15);
+      meshRef.current.position.lerp(targetPosition, 0.15);
+    }
+  });
+
+  return (
+    <Sphere 
+      ref={meshRef}
+      position={[targetPosition.x, targetPosition.y, targetPosition.z - 5]}
+      args={[0.95, 32, 32]}
+      scale={[0, 0, 0]}
+      onClick={onClick}
+      onPointerOver={onPointerOver}
+      onPointerOut={onPointerOut}
+    >
+      <meshStandardMaterial color={color} roughness={0.2} metalness={0.1} />
+    </Sphere>
+  );
+};
 
 export const Packing1DBuilder: React.FC = () => {
   const [count, setCount] = useState(3);
@@ -73,15 +98,13 @@ export const Packing1DBuilder: React.FC = () => {
             
             return (
               <React.Fragment key={p.id}>
-                <Sphere 
-                  position={p.position} 
-                  args={[0.95, 32, 32]}
-                  onClick={(e) => { e.stopPropagation(); setSelected(i); }}
+                <AnimatedSphere 
+                  targetPosition={p.position} 
+                  color={color}
+                  onClick={(e: any) => { e.stopPropagation(); setSelected(i); }}
                   onPointerOver={() => document.body.style.cursor = 'pointer'}
                   onPointerOut={() => document.body.style.cursor = 'auto'}
-                >
-                  <meshStandardMaterial color={color} roughness={0.2} metalness={0.1} />
-                </Sphere>
+                />
                 {isSelected && isNeighbour && (
                   <Line points={[particles[selected].position.toArray(), p.position.toArray()]} color="white" lineWidth={3} />
                 )}

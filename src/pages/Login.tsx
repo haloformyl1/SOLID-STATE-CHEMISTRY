@@ -6,14 +6,17 @@ import emailjs from '@emailjs/browser';
 
 export const Login = () => {
   const [step, setStep] = useState<1 | 2>(1);
+  const [loginMode, setLoginMode] = useState<'student' | 'admin'>('student');
   const [email, setEmail] = useState('');
   const [otpInput, setOtpInput] = useState('');
   const [generatedOtp, setGeneratedOtp] = useState('');
+  const [adminCode, setAdminCode] = useState('');
   
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
   const login = useStore((state) => state.login);
+  const adminLogin = useStore((state) => state.adminLogin);
   const navigate = useNavigate();
 
   // Generate a random 6-digit OTP
@@ -68,6 +71,19 @@ export const Login = () => {
     navigate('/');
   };
 
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    if (adminCode !== 'CHEMISTRY2026') {
+      setError('Invalid admin access code.');
+      return;
+    }
+
+    adminLogin();
+    navigate('/');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-[var(--bg-main)] to-[var(--bg-sec)]">
       {/* Decorative background elements */}
@@ -86,17 +102,70 @@ export const Login = () => {
           </button>
         )}
 
+        <div className="flex bg-[var(--surf-elev)] p-1 rounded-xl mb-8 border border-[var(--border-sub)]">
+          <button
+            onClick={() => { setLoginMode('student'); setError(''); }}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${loginMode === 'student' ? 'bg-[var(--acc-prim)] text-white shadow-md' : 'text-[var(--text-mut)] hover:text-[var(--text-norm)]'}`}
+          >
+            Student Login
+          </button>
+          <button
+            onClick={() => { setLoginMode('admin'); setError(''); }}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${loginMode === 'admin' ? 'bg-[var(--acc-prim)] text-white shadow-md' : 'text-[var(--text-mut)] hover:text-[var(--text-norm)]'}`}
+          >
+            Admin Access
+          </button>
+        </div>
+
         <div className="text-center mb-8 mt-4">
           <div className="w-16 h-16 bg-[var(--bg-sec)] rounded-xl flex items-center justify-center mx-auto mb-4 border border-[var(--border-sub)] shadow-inner">
             <Lock className="w-8 h-8 text-[var(--acc-prim)]" />
           </div>
-          <h1 className="text-3xl font-bold text-[var(--text-str)] mb-2 font-['Outfit']">Student Login</h1>
+          <h1 className="text-3xl font-bold text-[var(--text-str)] mb-2 font-['Outfit']">
+            {loginMode === 'student' ? 'Student Login' : 'Admin Login'}
+          </h1>
           <p className="text-[var(--text-mut)]">
-            {step === 1 ? 'Verify your email to access the lab' : 'Enter the OTP sent to your email'}
+            {loginMode === 'student' 
+              ? (step === 1 ? 'Verify your email to access the lab' : 'Enter the OTP sent to your email')
+              : 'Enter the special access code to edit content'
+            }
           </p>
         </div>
 
-        {step === 1 ? (
+        {loginMode === 'admin' ? (
+          <form onSubmit={handleAdminLogin} className="space-y-6 animate-fade-in-up">
+            <div>
+              <label className="block text-sm font-medium text-[var(--text-norm)] mb-2">
+                Access Code
+              </label>
+              <div className="relative">
+                <KeyRound className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[var(--text-mut)]" />
+                <input
+                  type="password"
+                  required
+                  value={adminCode}
+                  onChange={(e) => setAdminCode(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-[var(--surf-elev)] border border-[var(--border-sub)] text-[var(--text-str)] focus:outline-none focus:ring-2 focus:ring-[var(--acc-prim)] focus:border-transparent transition-all"
+                  placeholder="Enter access code"
+                />
+              </div>
+            </div>
+
+            {error && (
+              <div className="flex items-center gap-2 text-[var(--stat-err)] bg-[var(--stat-err)]/10 p-3 rounded-lg animate-fade-in-down">
+                <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                <p className="text-sm">{error}</p>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-full py-3 px-4 bg-gradient-to-r from-[var(--acc-prim)] to-[var(--acc-sec)] hover:opacity-90 text-white rounded-xl font-medium transition-all hover:shadow-lg hover:shadow-[var(--acc-prim)]/20 active:scale-[0.98]"
+            >
+              Access Editor Mode
+            </button>
+          </form>
+        ) : step === 1 ? (
           <form onSubmit={handleSendOtp} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-[var(--text-norm)] mb-2">

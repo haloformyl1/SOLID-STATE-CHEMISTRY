@@ -10,11 +10,13 @@ interface AppState {
   reducedMotion: boolean;
   completedModules: string[];
   isAuthenticated: boolean;
+  isAdmin: boolean;
   setLanguage: (lang: LanguageMode) => void;
   setTheme: (theme: ThemeMode) => void;
   setReducedMotion: (reduced: boolean) => void;
   markModuleCompleted: (moduleId: string) => void;
   login: () => void;
+  adminLogin: () => void;
   logout: () => void;
 }
 
@@ -26,6 +28,7 @@ export const useStore = create<AppState>()(
       reducedMotion: false,
       completedModules: [],
       isAuthenticated: false,
+      isAdmin: false,
       setLanguage: (lang) => set({ language: lang }),
       setTheme: (theme) => {
         set({ theme });
@@ -42,8 +45,9 @@ export const useStore = create<AppState>()(
             ? state.completedModules
             : [...state.completedModules, moduleId],
         })),
-      login: () => set({ isAuthenticated: true }),
-      logout: () => set({ isAuthenticated: false }),
+      login: () => set({ isAuthenticated: true, isAdmin: false }),
+      adminLogin: () => set({ isAuthenticated: true, isAdmin: true }),
+      logout: () => set({ isAuthenticated: false, isAdmin: false }),
     }),
     {
       name: 'solid-state-chem-storage',

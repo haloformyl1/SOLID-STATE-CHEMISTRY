@@ -1,9 +1,60 @@
-import React, { useState, useMemo } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Sphere, Line } from '@react-three/drei';
+import React, { useState, useMemo, useRef } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, Sphere, Line, Box, Cone } from '@react-three/drei';
 import { BilingualText } from '../../BilingualText';
 import * as THREE from 'three';
 import { Plus, Minus } from 'lucide-react';
+
+const AnimatedSphere: React.FC<any> = ({ targetPosition, color, opacity, onClick, onPointerMissed, onPointerOver, onPointerOut }) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.scale.lerp(new THREE.Vector3(1, 1, 1), 0.15);
+      meshRef.current.position.lerp(targetPosition, 0.15);
+    }
+  });
+
+  return (
+    <Sphere 
+      ref={meshRef}
+      position={[targetPosition.x, targetPosition.y, targetPosition.z - 5]}
+      args={[0.95, 32, 32]}
+      scale={[0, 0, 0]}
+      onClick={onClick}
+      onPointerMissed={onPointerMissed}
+      onPointerOver={onPointerOver}
+      onPointerOut={onPointerOut}
+    >
+      <meshStandardMaterial color={color} transparent opacity={opacity} roughness={0.2} metalness={0.1} />
+    </Sphere>
+  );
+};
+
+const AnimatedVoid: React.FC<any> = ({ targetPosition, type }) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
+    }
+  });
+
+  if (type === 'square') {
+    return (
+      <Box ref={meshRef} position={targetPosition} args={[0.5, 0.5, 0.5]} scale={[0,0,0]}>
+        <meshStandardMaterial color="#ef4444" transparent opacity={0.6} />
+      </Box>
+    );
+  }
+  
+  const rotZ = type === 'tri-up' ? 0 : Math.PI;
+  return (
+    <Cone ref={meshRef} position={targetPosition} rotation={[Math.PI / 2, 0, rotZ]} args={[0.4, 0.6, 3]} scale={[0,0,0]}>
+      <meshStandardMaterial color={type === 'tri-up' ? '#f97316' : '#eab308'} transparent opacity={0.8} />
+    </Cone>
+  );
+};
 
 interface Packing2DBuilderProps {
   packingType: 'square' | 'hexagonal';
@@ -13,12 +64,18 @@ export const Packing2DBuilder: React.FC<Packing2DBuilderProps> = ({ packingType 
   const [rows, setRows] = useState(3);
   const [cols, setCols] = useState(4);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+  const [showVoids, setShowVoids] = useState(false);
 
-  const particles = useMemo(() => {
+  const { particles, voids } = useMemo(() => {
     const arr = [];
+    const vArr = [];
     let idx = 0;
+    let vIdx = 0;
     const r = 1;
     const d = 2 * r;
+
+    const xOffset = ((cols - 1) * d + (packingType === 'hexagonal' ? r : 0)) / 2;
+    const yOffset = ((rows - 1) * (packingType === 'hexagonal' ? Math.sqrt(3) * r : d)) / 2;
 
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
@@ -26,14 +83,9 @@ export const Packing2DBuilder: React.FC<Packing2DBuilderProps> = ({ packingType 
         let yPos = y * d;
         
         if (packingType === 'hexagonal') {
-          // In hexagonal, every second row shifts by r
           xPos = x * d + (y % 2 !== 0 ? r : 0);
           yPos = y * Math.sqrt(3) * r;
         }
-
-        // Center the whole block roughly
-        const xOffset = ((cols - 1) * d + (packingType === 'hexagonal' ? r : 0)) / 2;
-        const yOffset = ((rows - 1) * (packingType === 'hexagonal' ? Math.sqrt(3) * r : d)) / 2;
 
         arr.push({
           id: idx++,
@@ -43,7 +95,37 @@ export const Packing2DBuilder: React.FC<Packing2DBuilderProps> = ({ packingType 
         });
       }
     }
-    return arr;
+
+    // Generate voids
+    for (let y = 0; y < rows - 1; y++) {
+      for (let x = 0; x < cols - 1; x++) {
+        if (packingType === 'square') {
+          const xPos = x * d + r - xOffset;
+          const yPos = y * d + r - yOffset;
+          vArr.push({ id: vIdx++, position: new THREE.Vector3(xPos, yPos, 0.3), type: 'square' });
+        } else {
+          // In hexagonal packing, every rhombic unit has 2 triangular voids
+          const yPosBase = y * Math.sqrt(3) * r - yOffset;
+          const xPosBase = x * d + (y % 2 !== 0 ? r : 0) - xOffset;
+          
+          // Triangular void pointing up
+          vArr.push({ 
+            id: vIdx++, 
+            position: new THREE.Vector3(xPosBase + r, yPosBase + (Math.sqrt(3) * r / 3), 0.3), 
+            type: 'tri-up' 
+          });
+
+          // Triangular void pointing down
+          vArr.push({ 
+            id: vIdx++, 
+            position: new THREE.Vector3(xPosBase + d, yPosBase + (2 * Math.sqrt(3) * r / 3), 0.3), 
+            type: 'tri-down' 
+          });
+        }
+      }
+    }
+
+    return { particles: arr, voids: vArr };
   }, [rows, cols, packingType]);
 
   const getNeighbours = (idx: number) => {
@@ -52,7 +134,7 @@ export const Packing2DBuilder: React.FC<Packing2DBuilderProps> = ({ packingType 
     return particles.filter(p2 => {
       if (p1.id === p2.id) return false;
       const dist = p1.position.distanceTo(p2.position);
-      return dist < 2.1; // radius 1, diameter 2
+      return dist < 2.1;
     });
   };
 
@@ -80,6 +162,12 @@ export const Packing2DBuilder: React.FC<Packing2DBuilderProps> = ({ packingType 
             <span className="font-bold text-lg w-6 text-center">{cols}</span>
             <button onClick={() => setCols(Math.min(8, cols + 1))} className="p-1.5 bg-white dark:bg-slate-700 rounded shadow hover:bg-gray-50"><Plus className="w-4 h-4" /></button>
           </div>
+        </div>
+        <div className="flex flex-col items-center gap-2 ml-4 pl-6 border-l border-slate-300 dark:border-slate-600">
+          <label className="flex items-center gap-2 cursor-pointer bg-white dark:bg-slate-900 px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 shadow-sm text-sm font-medium text-slate-700 dark:text-slate-300">
+            <input type="checkbox" checked={showVoids} onChange={e => setShowVoids(e.target.checked)} className="rounded text-indigo-500" />
+            <BilingualText en="Show Voids" bn="শূন্যস্থান দেখান" />
+          </label>
         </div>
       </div>
 
@@ -132,23 +220,26 @@ export const Packing2DBuilder: React.FC<Packing2DBuilderProps> = ({ packingType 
             }
             
             return (
-              <React.Fragment key={p.id}>
-                <Sphere 
-                  position={p.position} 
-                  args={[0.95, 32, 32]}
-                  onClick={(e) => { e.stopPropagation(); setSelectedIdx(p.id); }}
+              <React.Fragment key={`p-${p.id}`}>
+                <AnimatedSphere 
+                  targetPosition={p.position}
+                  color={color}
+                  opacity={opacity}
+                  onClick={(e: any) => { e.stopPropagation(); setSelectedIdx(p.id); }}
                   onPointerMissed={() => setSelectedIdx(null)}
                   onPointerOver={() => document.body.style.cursor = 'pointer'}
                   onPointerOut={() => document.body.style.cursor = 'auto'}
-                >
-                  <meshStandardMaterial color={color} transparent opacity={opacity} roughness={0.2} metalness={0.1} />
-                </Sphere>
+                />
                 {isSelected && isNeighbour && (
                   <Line points={[particles[selectedIdx].position.toArray(), p.position.toArray()]} color="white" lineWidth={3} />
                 )}
               </React.Fragment>
             );
           })}
+
+          {showVoids && voids.map(v => (
+            <AnimatedVoid key={`v-${v.id}`} targetPosition={v.position} type={v.type} />
+          ))}
           
           <OrbitControls enableRotate={false} makeDefault />
         </Canvas>
