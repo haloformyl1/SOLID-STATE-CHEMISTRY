@@ -116,5 +116,45 @@ export const FLASHCARD_DECK: Flashcard[] = [
       en: "A unit cell containing exactly one lattice point (effective atom count = 1).",
       bn: "একটি একক কোষ যাতে ঠিক একটি জালক বিন্দু থাকে (কার্যকর পরমাণুর সংখ্যা = ১)।"
     }
+  },
+  {
+    id: "f15",
+    term: { en: "Solid", bn: "কঠিন পদার্থ" },
+    definition: {
+      en: "A state of matter characterized by definite shape, definite volume, and constituent particles with fixed average positions.",
+      bn: "পদার্থের একটি অবস্থা যার নির্দিষ্ট আকার, নির্দিষ্ট আয়তন এবং নির্দিষ্ট সাম্যাবস্থান সহ গঠনকারী কণা রয়েছে।"
+    }
+  },
+  {
+    id: "f16",
+    term: { en: "Crystalline Solid", bn: "স্ফটিকাকার কঠিন" },
+    definition: {
+      en: "A solid with a regular, repeating three-dimensional arrangement of particles possessing long-range order.",
+      bn: "একটি কঠিন পদার্থ যেখানে গঠনকারী কণাগুলি নিয়মিত ও পুনরাবৃত্ত ত্রিমাত্রিক বিন্যাসে সাজানো থাকে এবং দীর্ঘ-পাল্লার শৃঙ্খলা দেখা যায়।"
+    }
+  },
+  {
+    id: "f17",
+    term: { en: "Amorphous Solid", bn: "অস্ফটিকাকার কঠিন" },
+    definition: {
+      en: "A solid that lacks long-range periodic order, although short-range local order may exist.",
+      bn: "একটি কঠিন পদার্থ যেখানে দীর্ঘ-পাল্লার পর্যায়বৃত্ত শৃঙ্খলা থাকে না, তবে স্বল্প-পাল্লার স্থানীয় শৃঙ্খলা থাকতে পারে।"
+    }
+  },
+  {
+    id: "f18",
+    term: { en: "Anisotropy", bn: "অসমদিকতা" },
+    definition: {
+      en: "The directional dependence of a physical property in a material.",
+      bn: "কোনো পদার্থের একটি ভৌত ধর্ম বিভিন্ন দিকে পরিমাপ করলে ভিন্ন মান পাওয়ার ধর্ম।"
+    }
+  },
+  {
+    id: "f19",
+    term: { en: "Isotropy", bn: "সমদিকতা" },
+    definition: {
+      en: "A property where measured physical values are independent of direction and are the same in all measured directions.",
+      bn: "কোনো ভৌত ধর্ম বিভিন্ন দিকে পরিমাপ করলে একই মান পাওয়ার ধর্ম।"
+    }
   }
 ];
