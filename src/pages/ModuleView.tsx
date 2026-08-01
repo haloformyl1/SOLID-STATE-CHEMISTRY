@@ -12,6 +12,16 @@ import { PackingLab } from '../components/labs/PackingLab';
 import { LatticeBuilder } from '../components/labs/lattice/LatticeBuilder';
 import { ConceptMap } from '../components/labs/lattice/ConceptMap';
 import { UnitCellSharing } from '../components/labs/lattice/UnitCellSharing';
+import { WhatIsASolidLab } from '../components/labs/introduction/interactions/WhatIsASolidLab';
+import { SolidBuilderLab } from '../components/labs/introduction/interactions/SolidBuilderLab';
+import { CrystallineAmorphousComparison } from '../components/labs/introduction/interactions/CrystallineAmorphousComparison';
+import { AnisotropyLab } from '../components/labs/introduction/interactions/AnisotropyLab';
+import { ClassificationTreeLab } from '../components/labs/introduction/interactions/ClassificationTreeLab';
+import { BindingForceLab } from '../components/labs/introduction/interactions/BindingForceLab';
+import { ConductivityLab } from '../components/labs/introduction/interactions/ConductivityLab';
+import { GraphiteExceptionLab } from '../components/labs/introduction/interactions/GraphiteExceptionLab';
+import { NextModuleLink } from '../components/ui/NextModuleLink';
+
 
 
 import { CrystalSystemExplorer } from '../components/labs/systems/CrystalSystemExplorer';
@@ -97,6 +107,35 @@ export const ModuleView: React.FC = () => {
                 <div className="my-8 p-6 bg-[var(--bg-sec)] border border-[var(--acc-viol)]/30 rounded-xl overflow-x-auto text-center shadow-[inset_0_0_20px_rgba(124,58,237,0.05)]">
                   <BlockMath math={section.formulaTex} />
                 </div>
+              )}
+
+              {section.type === 'interactive_3d' && section.modelConfig?.type === 'what-is-a-solid' && (
+                <WhatIsASolidLab />
+              )}
+              {section.type === 'interactive_3d' && section.modelConfig?.type === 'solid-builder' && (
+                <SolidBuilderLab />
+              )}
+              {section.type === 'interactive_3d' && section.modelConfig?.type === 'crystalline-amorphous-comparison' && (
+                <CrystallineAmorphousComparison />
+              )}
+              {section.type === 'interactive_3d' && section.modelConfig?.type === 'anisotropy-lab' && (
+                <AnisotropyLab />
+              )}
+              {section.type === 'interactive_2d' && section.modelConfig?.type === 'classification-tree' && (
+                <ClassificationTreeLab />
+              )}
+              {section.type === 'interactive_3d' && section.modelConfig?.type === 'binding-force-lab' && (
+                <BindingForceLab />
+              )}
+              {section.type === 'interactive_3d' && section.modelConfig?.type === 'conductivity-lab' && (
+                <ConductivityLab />
+              )}
+              {section.type === 'interactive_3d' && section.modelConfig?.type === 'graphite-exception' && (
+                <GraphiteExceptionLab />
+              )}
+
+              {section.type === 'next_module_link' && section.modelConfig?.targetModuleId && (
+                <NextModuleLink targetModuleId={section.modelConfig.targetModuleId} text={section.content as {en: string, bn: string}} />
               )}
 
               {section.type === 'interactive_3d' && section.modelConfig?.type === 'unit-cell-selector' && (

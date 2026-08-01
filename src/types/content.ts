@@ -25,7 +25,7 @@ export interface Question {
 
 export interface SectionContent {
   id: string;
-  type: 'text' | 'formula' | 'example' | 'interactive_3d' | 'interactive_2d' | 'image' | 'warning' | 'advanced_insight' | 'concept_map' | 'comparison_table' | 'misconception';
+  type: 'text' | 'formula' | 'example' | 'interactive_3d' | 'interactive_2d' | 'image' | 'warning' | 'advanced_insight' | 'concept_map' | 'comparison_table' | 'misconception' | 'next_module_link';
   title?: BilingualString;
   content?: BilingualString;
   formulaTex?: string;
