@@ -1,4 +1,3 @@
-import { IntroductionModule } from './modules/00-introduction';
 import { UnitCellModule } from './modules/01-unit-cell';
 import { DensityModule } from './modules/02-density';
 import { DefectModule } from './modules/03-defects';
@@ -9,7 +8,6 @@ import { VoidsModule } from './modules/07-voids';
 import type { ModuleContent } from '../types/content';
 
 export const modules: ModuleContent[] = [
-  IntroductionModule,
   UnitCellModule,
   DensityModule,
   DefectModule,

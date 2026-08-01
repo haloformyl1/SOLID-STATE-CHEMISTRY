@@ -12,16 +12,8 @@ import { PackingLab } from '../components/labs/PackingLab';
 import { LatticeBuilder } from '../components/labs/lattice/LatticeBuilder';
 import { ConceptMap } from '../components/labs/lattice/ConceptMap';
 import { UnitCellSharing } from '../components/labs/lattice/UnitCellSharing';
-import { ClassificationTree } from '../components/labs/introduction/ClassificationTree';
-import { ClassificationChallenge } from '../components/labs/introduction/ClassificationChallenge';
-import { ConceptMap as IntroductionConceptMap } from '../components/labs/introduction/ConceptMap';
-import { 
-  WhatIsSolidAnim, 
-  GeneralCharacteristicsAnim, 
-  CrystallineAmorphousAnim, 
-  AnisotropyAnim, 
-  LatticeToUnitCellAnim 
-} from '../components/labs/introduction/AnimWrappers';
+
+
 import { CrystalSystemExplorer } from '../components/labs/systems/CrystalSystemExplorer';
 import { SystemComparisonTable } from '../components/labs/systems/SystemComparisonTable';
 import { BravaisDistribution } from '../components/labs/systems/BravaisDistribution';
@@ -122,30 +114,7 @@ export const ModuleView: React.FC = () => {
               {section.type === 'interactive_3d' && section.modelConfig?.type === 'packing-lab' && (
                 <PackingLab />
               )}
-              {section.type === 'interactive_3d' && section.modelConfig?.type === 'what-is-solid-anim' && (
-                <WhatIsSolidAnim />
-              )}
-              {section.type === 'interactive_3d' && section.modelConfig?.type === 'general-characteristics-anim' && (
-                <GeneralCharacteristicsAnim />
-              )}
-              {section.type === 'interactive_3d' && section.modelConfig?.type === 'crystalline-amorphous-anim' && (
-                <CrystallineAmorphousAnim />
-              )}
-              {section.type === 'interactive_3d' && section.modelConfig?.type === 'anisotropy-isotropy-anim' && (
-                <AnisotropyAnim />
-              )}
-              {section.type === 'interactive_2d' && section.modelConfig?.type === 'classification-tree' && (
-                <ClassificationTree />
-              )}
-              {section.type === 'interactive_2d' && section.modelConfig?.type === 'classification-challenge' && (
-                <ClassificationChallenge />
-              )}
-              {section.type === 'interactive_2d' && section.modelConfig?.type === 'concept-map' && (
-                <IntroductionConceptMap />
-              )}
-              {section.type === 'interactive_3d' && section.modelConfig?.type === 'lattice-to-unit-cell-anim' && (
-                <LatticeToUnitCellAnim />
-              )}
+
               {section.type === 'concept_map' && (
                 <ConceptMap />
               )}
@@ -221,6 +190,7 @@ export const ModuleView: React.FC = () => {
                   correct={section.modelConfig?.correct || { en: '', bn: '' }} 
                 />
               )}
+
             </section>
           ))}
         </div>
