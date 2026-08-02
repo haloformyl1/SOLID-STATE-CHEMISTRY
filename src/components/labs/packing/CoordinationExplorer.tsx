@@ -87,7 +87,7 @@ export const CoordinationExplorer: React.FC = () => {
       {/* Viewport */}
       <div className="relative min-h-[360px] flex-1 bg-[var(--canvas-background)]">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(41,70,91,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(41,70,91,0.2)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
-        <Canvas camera={{ position: [0, 1.5, 11], fov: 45 }}>
+        <Canvas camera={{ position: [0, 1.5, 11], fov: 45 }} dpr={[1, typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : 2]}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[10, 10, 10]} intensity={0.8} />
           

@@ -49,18 +49,28 @@ const CrystalLattice = ({ animated }: { animated: boolean }) => {
     <group ref={group} position={[0, compact ? 0.18 : 0.35, 0]} scale={compact ? 1.55 : 1}>
       <group position={[-0.5, -0.5, -0.5]}>
         {atoms.map((pos, i) => (
-          <Sphere key={`atom-${i}`} args={[0.3, 32, 32]} position={pos}>
-            <meshPhysicalMaterial
-              color="#38bdf8"
-              emissive="#075985"
-              emissiveIntensity={0.24}
-              metalness={0.16}
-              roughness={0.22}
-              transmission={0.2}
-              thickness={0.75}
-              ior={1.45}
-              clearcoat={0.9}
-            />
+          <Sphere key={`atom-${i}`} args={compact ? [0.3, 16, 16] : [0.3, 32, 32]} position={pos}>
+            {compact ? (
+              <meshStandardMaterial
+                color="#38bdf8"
+                emissive="#075985"
+                emissiveIntensity={0.24}
+                metalness={0.16}
+                roughness={0.22}
+              />
+            ) : (
+              <meshPhysicalMaterial
+                color="#38bdf8"
+                emissive="#075985"
+                emissiveIntensity={0.24}
+                metalness={0.16}
+                roughness={0.22}
+                transmission={0.2}
+                thickness={0.75}
+                ior={1.45}
+                clearcoat={0.9}
+              />
+            )}
           </Sphere>
         ))}
         {connections.map(([p1, p2], i) => (
@@ -113,7 +123,7 @@ export const HeroCrystalAnimation: React.FC = () => {
 
   return (
     <div ref={containerRef} className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(14,165,233,0.12),transparent_48%)]" role="img" aria-label="Animated face-centred crystal lattice">
-      <Canvas camera={{ position: [11.6, 9.5, 13.5], fov: 38 }} dpr={[1, 1.6]} frameloop={animated ? 'always' : 'demand'}>
+      <Canvas camera={{ position: [11.6, 9.5, 13.5], fov: 38 }} dpr={[1, typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : 1.6]} frameloop={animated ? 'always' : 'demand'}>
         <ResponsiveHeroCamera />
         <ambientLight intensity={0.78} />
         <pointLight position={[10, 10, 10]} intensity={1.35} color="#e0f2fe" />
