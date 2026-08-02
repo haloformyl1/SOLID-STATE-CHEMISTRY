@@ -43,23 +43,23 @@ export const Packing1DBuilder: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex gap-4 items-center justify-center bg-slate-100 dark:bg-slate-800 p-4 rounded-xl border border-gray-200 dark:border-slate-700">
+    <div className="flex h-full min-h-[520px] flex-col gap-4">
+      <div className="flex items-center justify-center gap-4 rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4">
         <button 
           onClick={() => { setCount(Math.max(1, count - 1)); setSelected(null); }}
-          className="p-2 bg-white dark:bg-slate-700 rounded-full shadow hover:bg-gray-50 transition-colors"
+          className="icon-button shadow"
           disabled={count <= 1}
         >
-          <Minus className="w-5 h-5 text-slate-700 dark:text-slate-300" />
+          <Minus className="w-5 h-5 text-[var(--text-norm)]" />
         </button>
-        <span className="font-bold text-lg text-slate-800 dark:text-slate-200 w-24 text-center">
+        <span className="font-bold text-lg text-[var(--text-str)] w-24 text-center">
           <BilingualText en={`${count} spheres`} bn={`${count}টি গোলক`} />
         </span>
         <button 
           onClick={() => setCount(Math.min(10, count + 1))}
-          className="p-2 bg-white dark:bg-slate-700 rounded-full shadow hover:bg-gray-50 transition-colors"
+          className="icon-button shadow"
         >
-          <Plus className="w-5 h-5 text-slate-700 dark:text-slate-300" />
+          <Plus className="w-5 h-5 text-[var(--text-norm)]" />
         </button>
       </div>
 
@@ -83,7 +83,7 @@ export const Packing1DBuilder: React.FC = () => {
         </div>
       )}
 
-      <div className="h-64 bg-slate-900 rounded-xl overflow-hidden relative border-2 border-slate-700 shadow-inner">
+      <div className="relative min-h-[360px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
         <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[10, 10, 10]} intensity={0.8} />
@@ -115,7 +115,7 @@ export const Packing1DBuilder: React.FC = () => {
           <OrbitControls enableRotate={false} makeDefault />
         </Canvas>
         
-        <div className="absolute top-4 right-4 bg-slate-800/80 backdrop-blur text-white text-xs px-3 py-1.5 rounded-full border border-slate-600">
+        <div className="absolute right-4 top-4 rounded-full border border-slate-600 bg-[#071923e8] px-3 py-1.5 text-xs text-white backdrop-blur">
           <BilingualText en="Click on a sphere to measure" bn="পরিমাপ করতে একটি গোলকে ক্লিক করুন" />
         </div>
       </div>

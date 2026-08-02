@@ -2,8 +2,18 @@ import React, { useState, useMemo } from 'react';
 import { CrystalCanvas } from '../3d/CrystalCanvas';
 import { BilingualText } from '../BilingualText';
 import { Sphere } from '@react-three/drei';
+import { Atom, CircleDotDashed } from 'lucide-react';
 
 type DefectType = 'normal' | 'vacancy' | 'interstitial' | 'schottky' | 'frenkel' | 'impurity';
+
+const defectOptions: { id: DefectType; en: string; bn: string }[] = [
+  { id: 'normal', en: 'Normal', bn: 'সাধারণ' },
+  { id: 'vacancy', en: 'Vacancy', bn: 'শূন্যস্থান' },
+  { id: 'interstitial', en: 'Interstitial', bn: 'আন্তঃস্থলীয়' },
+  { id: 'schottky', en: 'Schottky', bn: 'শটকি' },
+  { id: 'frenkel', en: 'Frenkel', bn: 'ফ্রেঙ্কেল' },
+  { id: 'impurity', en: 'Impurity', bn: 'অশুদ্ধি' },
+];
 
 export const DefectLab: React.FC = () => {
   const [defect, setDefect] = useState<DefectType>('normal');
@@ -67,49 +77,99 @@ export const DefectLab: React.FC = () => {
     impurity: { en: 'A foreign ion replaces a host ion. Example: Sr2+ in NaCl creates a vacancy.', bn: 'একটি বিদেশী আয়ন হোস্ট আয়নকে প্রতিস্থাপন করে। উদাহরণ: NaCl-এ Sr2+ একটি শূন্যস্থান তৈরি করে।' },
   };
 
+  const densityImpact: Record<DefectType, { en: string; bn: string }> = {
+    normal: { en: 'Reference state', bn: 'আদর্শ অবস্থা' },
+    vacancy: { en: 'Density decreases', bn: 'ঘনত্ব হ্রাস পায়' },
+    interstitial: { en: 'Density increases', bn: 'ঘনত্ব বৃদ্ধি পায়' },
+    schottky: { en: 'Density decreases', bn: 'ঘনত্ব হ্রাস পায়' },
+    frenkel: { en: 'Density unchanged', bn: 'ঘনত্ব অপরিবর্তিত' },
+    impurity: { en: 'Composition changes', bn: 'সংযুতি পরিবর্তিত হয়' },
+  };
+
   return (
-    <div className="flex flex-col md:flex-row gap-6 w-full mt-12 border-t border-gray-200 dark:border-slate-700 pt-8">
-      <div className="w-full md:w-1/3 flex flex-col gap-3">
-        <h3 className="font-semibold text-xl text-slate-800 dark:text-slate-200 mb-2">
-          <BilingualText en="Defect Laboratory" bn="ত্রুটি ল্যাবরেটরি" />
-        </h3>
-        
-        <div className="grid grid-cols-2 gap-2">
-          {(['normal', 'vacancy', 'interstitial', 'schottky', 'frenkel', 'impurity'] as DefectType[]).map((d) => (
+    <section className="flex min-h-full flex-1 flex-col bg-[var(--surface-primary)] p-4 sm:p-6 lg:p-7" aria-labelledby="defect-laboratory-title">
+      <div className="grid flex-1 gap-5 lg:grid-cols-[minmax(280px,0.78fr)_minmax(0,1.55fr)]">
+        <div className="flex flex-col rounded-2xl border border-[var(--border-default)] bg-[var(--surface-secondary)] p-5 shadow-[var(--shadow-low)] sm:p-6">
+          <div className="mb-5 flex items-start gap-3">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[var(--border-interactive)] bg-[var(--selected-state)] text-[var(--accent-primary)]" aria-hidden="true">
+              <CircleDotDashed className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="eyebrow mb-1"><BilingualText en="Point-defect explorer" bn="বিন্দু-ত্রুটি অনুসন্ধান" /></p>
+              <h3 id="defect-laboratory-title" className="text-xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-2xl">
+                <BilingualText en="Defect Laboratory" bn="ত্রুটি ল্যাবরেটরি" />
+              </h3>
+            </div>
+          </div>
+
+          <p className="mb-5 text-sm leading-relaxed text-[var(--text-muted)]">
+            <BilingualText en="Select a defect to compare its atomic arrangement and effect on the crystal." bn="পরমাণুর বিন্যাস এবং স্ফটিকের উপর প্রভাব তুলনা করতে একটি ত্রুটি নির্বাচন করুন।" />
+          </p>
+
+          <div className="grid grid-cols-2 gap-2" role="group" aria-label="Crystal defect type">
+          {defectOptions.map((option) => (
             <button
-              key={d}
-              onClick={() => setDefect(d)}
-              className={`p-3 rounded-lg border-2 transition-all font-medium capitalize text-sm ${defect === d ? 'border-primary bg-blue-50 dark:bg-blue-900/20 text-primary-dark' : 'border-gray-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700'}`}
+              key={option.id}
+              type="button"
+              onClick={() => setDefect(option.id)}
+              aria-pressed={defect === option.id}
+              className={`min-h-12 rounded-xl border px-3 py-2.5 text-sm font-bold transition-[color,background-color,border-color,box-shadow] ${defect === option.id
+                ? 'border-[var(--border-interactive)] bg-[var(--selected-state)] text-[var(--accent-primary)] shadow-[var(--shadow-low)]'
+                : 'border-[var(--border-default)] bg-[var(--surface-primary)] text-[var(--text-secondary)] hover:border-[var(--border-strong)] hover:bg-[var(--hover-state)] hover:text-[var(--text-primary)]'
+              }`}
             >
-              <BilingualText en={d} bn={d === 'normal' ? 'সাধারণ' : d === 'vacancy' ? 'শূন্যস্থান' : d === 'interstitial' ? 'আন্তঃস্থলীয়' : d === 'schottky' ? 'শটকি' : d === 'frenkel' ? 'ফ্রেঙ্কেল' : 'অশুদ্ধি'} />
+              <BilingualText en={option.en} bn={option.bn} />
             </button>
           ))}
+          </div>
+
+          <div className="mt-5 rounded-xl border border-[var(--border-default)] bg-[var(--surface-primary)] p-4 shadow-[var(--shadow-low)]" aria-live="polite">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+              <span className="text-xs font-extrabold uppercase tracking-[0.12em] text-[var(--text-muted)]">
+                <BilingualText en="Current structure" bn="বর্তমান গঠন" />
+              </span>
+              <span className="rounded-full border border-[color-mix(in_srgb,var(--accent-secondary)_45%,var(--border-default))] bg-[color-mix(in_srgb,var(--accent-secondary)_10%,var(--surface-primary))] px-2.5 py-1 text-xs font-bold text-[var(--accent-secondary)]">
+                <BilingualText key={`impact-${defect}`} en={densityImpact[defect].en} bn={densityImpact[defect].bn} isInline />
+              </span>
+            </div>
+            <p className="font-semibold leading-relaxed text-[var(--text-secondary)]">
+              <BilingualText key={`explanation-${defect}`} en={explanations[defect].en} bn={explanations[defect].bn} />
+            </p>
+          </div>
         </div>
 
-        <div className="mt-4 p-4 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg">
-          <p className="text-slate-700 dark:text-slate-300 font-medium">
-            <BilingualText en={explanations[defect].en} bn={explanations[defect].bn} />
-          </p>
+        <div className="flex min-h-[430px] flex-col overflow-hidden rounded-2xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-[var(--shadow-interactive)]">
+          <div className="flex flex-col gap-3 border-b border-[color-mix(in_srgb,var(--border-strong)_65%,transparent)] bg-[var(--canvas-surface)] px-4 py-3 text-sky-50 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-2 text-sm font-extrabold">
+              <Atom className="h-4 w-4 text-sky-300" aria-hidden="true" />
+              <BilingualText en="3D lattice preview" bn="ত্রিমাত্রিক জালক দৃশ্য" />
+            </div>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-bold text-sky-100/75" aria-label="Particle colour legend">
+              <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-blue-500" aria-hidden="true" /><BilingualText en="Cation" bn="ক্যাটায়ন" isInline /></span>
+              <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-red-500" aria-hidden="true" /><BilingualText en="Anion" bn="অ্যানায়ন" isInline /></span>
+              <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" /><BilingualText en="Impurity" bn="অশুদ্ধি" isInline /></span>
+            </div>
+          </div>
+
+          <div className="min-h-[380px] flex-1">
+            <CrystalCanvas ariaLabel={`${defectOptions.find((option) => option.id === defect)?.en} crystal defect model`}>
+              {particles.map(p => (
+                <Sphere key={p.id} position={p.pos} args={[p.type === 'B' ? 0.45 : p.type === 'impurity' ? 0.5 : 0.3, 32, 32]}>
+                  <meshStandardMaterial
+                    color={
+                      p.type === 'A' ? '#3b82f6' :
+                      p.type === 'B' ? '#ef4444' :
+                      p.type === 'impurity' ? '#10b981' :
+                      '#8b5cf6'
+                    }
+                    roughness={0.3} metalness={0.2}
+                  />
+                </Sphere>
+              ))}
+            </CrystalCanvas>
+          </div>
         </div>
       </div>
-
-      <div className="w-full md:w-2/3 h-[400px] relative rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-slate-700">
-        <CrystalCanvas>
-          {particles.map(p => (
-            <Sphere key={p.id} position={p.pos} args={[p.type === 'B' ? 0.45 : p.type === 'impurity' ? 0.5 : 0.3, 32, 32]}>
-              <meshStandardMaterial 
-                color={
-                  p.type === 'A' ? '#3b82f6' : 
-                  p.type === 'B' ? '#ef4444' : 
-                  p.type === 'impurity' ? '#10b981' : 
-                  '#8b5cf6'
-                } 
-                roughness={0.3} metalness={0.2} 
-              />
-            </Sphere>
-          ))}
-        </CrystalCanvas>
-      </div>
-    </div>
+    </section>
   );
 };

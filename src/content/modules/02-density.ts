@@ -31,7 +31,7 @@ export const DensityModule: ModuleContent = {
         en: 'Where Z = effective number of atoms, M = molar mass, N_A = Avogadro constant, and a = edge length.',
         bn: 'যেখানে Z = পরমাণুর কার্যকর সংখ্যা, M = মোলার ভর, N_A = অ্যাভোগাড্রো ধ্রুবক, এবং a = প্রান্তের দৈর্ঘ্য।'
       },
-      formulaTex: '\\rho = \\frac{Z \\cdot M}{N_A \\cdot a^3}'
+      formulaTex: String.raw`\rho = \frac{Z \cdot M}{N_A \cdot a^3}`
     },
     {
       id: 's3',

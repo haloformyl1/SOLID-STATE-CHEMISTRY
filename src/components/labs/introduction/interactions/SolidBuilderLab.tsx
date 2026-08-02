@@ -5,6 +5,7 @@ import type { LessonMode, AnimationStep } from '../engine/GuidedLessonTypes';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Sphere, Box } from '@react-three/drei';
 import { useSpring, a } from '@react-spring/three';
+import { AnimatedGroup } from '../engine/AnimatedLessonPrimitives';
 
 const steps: AnimationStep[] = [
   {
@@ -42,7 +43,8 @@ export const SolidBuilderLab: React.FC = () => {
 
   const pistonSpring = useSpring({
     position: [0, 2.5 - (appliedForce * 0.1), 0] as [number, number, number],
-    config: { tension: 120, friction: 14 }
+    config: { tension: 120 * speed, friction: 14 },
+    immediate: !isAnimOn,
   });
 
   return (
@@ -58,9 +60,9 @@ export const SolidBuilderLab: React.FC = () => {
       speed={speed}
     >
       {mode === 'challenge' && (
-        <div className="absolute top-4 right-4 z-10 flex flex-col gap-2 bg-[var(--bg-sec)]/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-amber-500/20 w-64">
-          <span className="text-sm font-bold text-amber-600 dark:text-amber-500 mb-2"><BilingualText en="Challenge: Apply Pressure" bn="অনুশীলন: চাপ প্রয়োগ করুন" /></span>
-          <label className="text-xs text-[var(--text-norm)]"><BilingualText en="Downward Force" bn="নিম্নমুখী বল" /></label>
+        <div className="absolute right-3 top-16 z-10 flex w-[min(16rem,calc(100%-1.5rem))] flex-col gap-2 rounded-xl border border-[color-mix(in_srgb,var(--accent-amber)_38%,transparent)] bg-[color-mix(in_srgb,var(--canvas-surface)_92%,transparent)] p-4 text-sky-100 shadow-xl backdrop-blur-md sm:right-4 sm:top-4">
+          <span className="mb-1 text-sm font-bold text-[var(--accent-amber)]"><BilingualText en="Challenge: Apply Pressure" bn="অনুশীলন: চাপ প্রয়োগ করুন" /></span>
+          <label className="text-xs text-sky-100/75"><BilingualText en="Downward Force" bn="নিম্নমুখী বল" /></label>
           <input 
             type="range" 
             min="0" max="5" step="0.1" 
@@ -68,16 +70,16 @@ export const SolidBuilderLab: React.FC = () => {
             onChange={(e) => setAppliedForce(parseFloat(e.target.value))}
             className="w-full accent-amber-500"
           />
-          <p className="text-[11px] text-[var(--text-norm)] opacity-70 mt-2">
+          <p className="mt-2 text-[11px] leading-relaxed text-sky-100/70">
             <BilingualText en="Observe that despite increasing the force, the volume reduction is negligible (low compressibility)." bn="লক্ষ্য করুন যে বল বাড়ানো সত্ত্বেও আয়তন হ্রাস নগণ্য (নিম্ন সংকোচনশীলতা)।" />
           </p>
         </div>
       )}
 
-      <Canvas camera={{ position: [5, 4, 5], fov: 40 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 10]} intensity={1} />
-        <OrbitControls enablePan={mode === 'explore'} enableZoom={mode === 'explore'} />
+      <Canvas camera={{ position: [5.8, 4.7, 7.5], fov: 40 }} dpr={[1, 1.75]}>
+        <ambientLight intensity={0.75} />
+        <directionalLight position={[10, 10, 10]} intensity={1.25} />
+        <OrbitControls target={[0, 0.35, 0]} enablePan={mode === 'explore'} enableZoom={mode === 'explore'} enableRotate={mode === 'explore'} />
         
         {/* Piston */}
         <a.group position={pistonSpring.position as any}>
@@ -97,16 +99,22 @@ export const SolidBuilderLab: React.FC = () => {
             [0, 1, 2].map(y => 
               [0, 1, 2].map(z => {
                 const isVibrating = isAnimOn && (stepIndex >= 1 || mode === 'challenge' || mode === 'explore');
-                // Extremely minor compression offset based on applied force
                 const compressionOffset = y * (appliedForce * -0.015);
-                const vibrationOffset = isVibrating ? Math.sin(Date.now() * 0.02 * speed + x + y + z) * 0.04 : 0;
                 
                 return (
-                  <group key={`${x}-${y}-${z}`} position={[x + vibrationOffset, y + compressionOffset + vibrationOffset, z + vibrationOffset]}>
+                  <AnimatedGroup
+                    key={`${x}-${y}-${z}`}
+                    basePosition={[x, y + compressionOffset, z]}
+                    enabled={isVibrating}
+                    speed={speed}
+                    phase={x * 1.9 + y * 2.4 + z * 2.7}
+                    amplitude={0.04}
+                    motion="vibrate"
+                  >
                     <Sphere args={[0.45, 32, 32]}>
-                      <meshStandardMaterial color="#3b82f6" />
+                      <meshStandardMaterial color="#2589dc" roughness={0.3} metalness={0.1} />
                     </Sphere>
-                  </group>
+                  </AnimatedGroup>
                 )
               })
             )

@@ -39,23 +39,23 @@ export const Packing3DSquare: React.FC = () => {
   }, [layers]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col sm:flex-row justify-between items-center bg-slate-100 dark:bg-slate-800 p-4 rounded-xl border border-gray-200 dark:border-slate-700">
+    <div className="flex h-full min-h-[540px] flex-col gap-4">
+      <div className="flex flex-col items-center justify-between rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4 sm:flex-row">
         <div className="flex items-center gap-3 mb-4 sm:mb-0">
           <div className="p-2 bg-blue-100 dark:bg-blue-900/50 rounded-full text-blue-600 dark:text-blue-400">
             <Layers className="w-5 h-5" />
           </div>
           <div>
-            <h4 className="font-bold text-slate-800 dark:text-slate-200">
+            <h4 className="font-bold text-[var(--text-str)]">
               <BilingualText en="AAA Stacking (Simple Cubic)" bn="AAA স্তরবিন্যাস (সরল ঘনকাকার)" />
             </h4>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-[var(--text-mut)]">
               <BilingualText en="Layers exactly aligned" bn="স্তরগুলি ঠিক সারিবদ্ধ" />
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-1.5 rounded-lg border border-gray-200 dark:border-slate-700 shadow-sm">
+        <div className="flex items-center gap-2 bg-[var(--bg-sec)] p-1.5 rounded-lg border border-[var(--border-sub)] shadow-sm">
           {[1, 2, 3].map(num => (
             <button
               key={num}
@@ -63,7 +63,7 @@ export const Packing3DSquare: React.FC = () => {
               className={`px-4 py-1.5 rounded-md font-bold text-sm transition-all ${
                 layers === num 
                   ? 'bg-blue-500 text-white shadow' 
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  : 'text-[var(--text-mut)] hover:bg-slate-100 dark:hover:bg-[var(--bg-canvas,transparent)]'
               }`}
             >
               <BilingualText en={`${num} Layer${num > 1 ? 's' : ''}`} bn={`${num}টি স্তর`} />
@@ -73,7 +73,7 @@ export const Packing3DSquare: React.FC = () => {
       </div>
 
       <div className="flex gap-4">
-        <div className="flex-1 bg-slate-900 h-96 rounded-xl overflow-hidden relative border-2 border-slate-700 shadow-inner">
+        <div className="relative min-h-[380px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
           <Canvas camera={{ position: [10, 10, 10], fov: 45 }}>
             <ambientLight intensity={0.6} />
             <directionalLight position={[10, 10, 10]} intensity={0.8} />

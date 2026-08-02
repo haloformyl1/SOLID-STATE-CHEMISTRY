@@ -4,6 +4,7 @@ import { BilingualText } from '../BilingualText';
 import { Line } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { Eye, EyeOff, Minus, Plus, RotateCcw } from 'lucide-react';
 
 type ShareType = 'corner' | 'face' | 'body' | 'edge';
 
@@ -16,40 +17,34 @@ type CellDef = {
   color: string;
 };
 
-const COLORS = [
-  "#ef4444", // red
-  "#3b82f6", // blue
-  "#10b981", // emerald
-  "#f59e0b", // amber
-  "#8b5cf6", // violet
-  "#ec4899", // pink
-  "#06b6d4", // cyan
-  "#f97316", // orange
-];
+const C_HEX = [
+  "#0284C7", "#0D9488", "#6D4AFF", "#D97706",
+  "#0EA5E9", "#9A7BFF", "#16845B", "#C23A47"
+]; // fallback hex for 3D canvas materials
 
 const DEFINITIONS: Record<ShareType, CellDef[]> = {
   corner: [
-    { pos: [1, 1, 1], phiStart: 0, phiLength: Math.PI/2, thetaStart: 0, thetaLength: Math.PI/2, color: COLORS[0] },
-    { pos: [1, 1, -1], phiStart: Math.PI/2, phiLength: Math.PI/2, thetaStart: 0, thetaLength: Math.PI/2, color: COLORS[1] },
-    { pos: [-1, 1, -1], phiStart: Math.PI, phiLength: Math.PI/2, thetaStart: 0, thetaLength: Math.PI/2, color: COLORS[2] },
-    { pos: [-1, 1, 1], phiStart: 3*Math.PI/2, phiLength: Math.PI/2, thetaStart: 0, thetaLength: Math.PI/2, color: COLORS[3] },
-    { pos: [1, -1, 1], phiStart: 0, phiLength: Math.PI/2, thetaStart: Math.PI/2, thetaLength: Math.PI/2, color: COLORS[4] },
-    { pos: [1, -1, -1], phiStart: Math.PI/2, phiLength: Math.PI/2, thetaStart: Math.PI/2, thetaLength: Math.PI/2, color: COLORS[5] },
-    { pos: [-1, -1, -1], phiStart: Math.PI, phiLength: Math.PI/2, thetaStart: Math.PI/2, thetaLength: Math.PI/2, color: COLORS[6] },
-    { pos: [-1, -1, 1], phiStart: 3*Math.PI/2, phiLength: Math.PI/2, thetaStart: Math.PI/2, thetaLength: Math.PI/2, color: COLORS[7] },
+    { pos: [1, 1, 1], phiStart: 0, phiLength: Math.PI/2, thetaStart: 0, thetaLength: Math.PI/2, color: C_HEX[0] },
+    { pos: [1, 1, -1], phiStart: Math.PI/2, phiLength: Math.PI/2, thetaStart: 0, thetaLength: Math.PI/2, color: C_HEX[1] },
+    { pos: [-1, 1, -1], phiStart: Math.PI, phiLength: Math.PI/2, thetaStart: 0, thetaLength: Math.PI/2, color: C_HEX[2] },
+    { pos: [-1, 1, 1], phiStart: 3*Math.PI/2, phiLength: Math.PI/2, thetaStart: 0, thetaLength: Math.PI/2, color: C_HEX[3] },
+    { pos: [1, -1, 1], phiStart: 0, phiLength: Math.PI/2, thetaStart: Math.PI/2, thetaLength: Math.PI/2, color: C_HEX[4] },
+    { pos: [1, -1, -1], phiStart: Math.PI/2, phiLength: Math.PI/2, thetaStart: Math.PI/2, thetaLength: Math.PI/2, color: C_HEX[5] },
+    { pos: [-1, -1, -1], phiStart: Math.PI, phiLength: Math.PI/2, thetaStart: Math.PI/2, thetaLength: Math.PI/2, color: C_HEX[6] },
+    { pos: [-1, -1, 1], phiStart: 3*Math.PI/2, phiLength: Math.PI/2, thetaStart: Math.PI/2, thetaLength: Math.PI/2, color: C_HEX[7] },
   ],
   face: [
-    { pos: [0, 0, 1], phiStart: -Math.PI/2, phiLength: Math.PI, thetaStart: 0, thetaLength: Math.PI, color: COLORS[0] },
-    { pos: [0, 0, -1], phiStart: Math.PI/2, phiLength: Math.PI, thetaStart: 0, thetaLength: Math.PI, color: COLORS[1] },
+    { pos: [0, 0, 1], phiStart: -Math.PI/2, phiLength: Math.PI, thetaStart: 0, thetaLength: Math.PI, color: C_HEX[0] },
+    { pos: [0, 0, -1], phiStart: Math.PI/2, phiLength: Math.PI, thetaStart: 0, thetaLength: Math.PI, color: C_HEX[1] },
   ],
   edge: [
-    { pos: [1, 1, 0], phiStart: 0, phiLength: Math.PI, thetaStart: 0, thetaLength: Math.PI/2, color: COLORS[0] },
-    { pos: [-1, 1, 0], phiStart: Math.PI, phiLength: Math.PI, thetaStart: 0, thetaLength: Math.PI/2, color: COLORS[1] },
-    { pos: [1, -1, 0], phiStart: 0, phiLength: Math.PI, thetaStart: Math.PI/2, thetaLength: Math.PI/2, color: COLORS[2] },
-    { pos: [-1, -1, 0], phiStart: Math.PI, phiLength: Math.PI, thetaStart: Math.PI/2, thetaLength: Math.PI/2, color: COLORS[3] },
+    { pos: [1, 1, 0], phiStart: 0, phiLength: Math.PI, thetaStart: 0, thetaLength: Math.PI/2, color: C_HEX[0] },
+    { pos: [-1, 1, 0], phiStart: Math.PI, phiLength: Math.PI, thetaStart: 0, thetaLength: Math.PI/2, color: C_HEX[1] },
+    { pos: [1, -1, 0], phiStart: 0, phiLength: Math.PI, thetaStart: Math.PI/2, thetaLength: Math.PI/2, color: C_HEX[2] },
+    { pos: [-1, -1, 0], phiStart: Math.PI, phiLength: Math.PI, thetaStart: Math.PI/2, thetaLength: Math.PI/2, color: C_HEX[3] },
   ],
   body: [
-    { pos: [0, 0, 0], phiStart: 0, phiLength: 2*Math.PI, thetaStart: 0, thetaLength: Math.PI, color: COLORS[0] },
+    { pos: [0, 0, 0], phiStart: 0, phiLength: 2*Math.PI, thetaStart: 0, thetaLength: Math.PI, color: C_HEX[0] },
   ]
 };
 
@@ -75,7 +70,7 @@ const EXPLANATIONS: Record<ShareType, { en: string; bn: string }[]> = {
     { en: "The fourth unit cell completes the arrangement. The edge atom is now fully enclosed by the 4 unit cells.", bn: "চতুর্থ একক কোষটি বিন্যাস সম্পূর্ণ করে। প্রান্তের পরমাণুটি এখন ৪টি একক কোষ দ্বারা সম্পূর্ণ আবদ্ধ।" },
   ],
   body: [
-    { en: "The atom is located at the body center of the unit cell. It is fully enclosed (1) and not shared with any other cell.", bn: "পরমাণুটি একক কোষের দেহ-কেন্দ্রে অবস্থিত। এটি সম্পূর্ণ আবদ্ধ (১) এবং অন্য কোনো কোষের সাথে ভাগ করা হয় না।" },
+    { en: "The atom is located at the body center of the unit cell. It is fully enclosed (1) and not shared with any other cell.", bn: "পরমাণুটি একক কোষের দেহ-কেন্দ্রে অবস্থিত। এটি সম্পূর্ণ আবদ্ধ (১) এবং অন্য কোনো কোষের সাথে ভাগ করা হয় অমূহ।" },
   ]
 };
 
@@ -143,7 +138,7 @@ const CellBox = ({ def, visible }: { def: CellDef, visible: boolean }) => {
   return (
     <group ref={groupRef}>
       {pts.map((_, i) => i % 2 === 0 && (
-        <Line key={i} points={[pts[i] as any, pts[i+1] as any]} color={def.color} lineWidth={1.5} transparent opacity={0.6} />
+        <Line key={i} points={[pts[i] as any, pts[i+1] as any]} color={def.color} lineWidth={1.5} transparent opacity={0.5} />
       ))}
     </group>
   );
@@ -154,103 +149,123 @@ export const AtomSharing: React.FC = () => {
   const defs = DEFINITIONS[type];
   const explanations = EXPLANATIONS[type];
   const [step, setStep] = useState(1);
+  const [showCells, setShowCells] = useState(true);
+  const [resetKey, setResetKey] = useState(0);
   const maxSteps = defs.length;
 
   useEffect(() => {
     setStep(1);
   }, [type]);
 
-  const formatFraction = (n: number, d: number) => {
-    if (n === 0) return '0';
-    if (n === d) return '1';
+  const getNumerator = (n: number, d: number) => {
+    if (n === 0) return 0;
+    if (n === d) return 1;
     const gcd = (a: number, b: number): number => b === 0 ? a : gcd(b, a % b);
-    const divisor = gcd(n, d);
-    return `${n / divisor}/${d / divisor}`;
+    return n / gcd(n, d);
   };
 
-  return (
-    <div className="flex flex-col md:flex-row gap-6 w-full mt-12 border-t border-gray-200 dark:border-slate-700 pt-8">
-      <div className="w-full md:w-1/3 flex flex-col gap-3">
-        <h3 className="font-semibold text-xl text-slate-800 dark:text-slate-200 mb-2">
-          <BilingualText en="Atom Sharing Visualizer" bn="পরমাণু ভাগাভাগি ভিজ্যুয়ালাইজার" />
-        </h3>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-          <BilingualText 
-            en="Select a position and use the step controls to assemble the crystal and see the atom's contribution." 
-            bn="একটি অবস্থান নির্বাচন করুন এবং স্ফটিক একত্রিত করতে এবং পরমাণুর অবদান দেখতে ধাপ নিয়ন্ত্রণগুলি ব্যবহার করুন।" 
-          />
-        </p>
+  const getDenominator = (n: number, d: number) => {
+    if (n === 0 || n === d) return 1;
+    const gcd = (a: number, b: number): number => b === 0 ? a : gcd(b, a % b);
+    return d / gcd(n, d);
+  };
 
-        <div className="grid grid-cols-2 gap-2 mb-4">
-          {(['corner', 'face', 'edge', 'body'] as ShareType[]).map((t) => (
-            <button
-              key={t}
-              onClick={() => setType(t)}
-              className={`p-3 rounded-lg border-2 transition-all font-medium capitalize ${type === t ? 'border-primary bg-blue-50 dark:bg-blue-900/20 text-primary-dark' : 'border-gray-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700'}`}
-            >
-              <BilingualText en={t} bn={t === 'corner' ? 'কোণ' : t === 'face' ? 'পৃষ্ঠ' : t === 'edge' ? 'প্রান্ত' : 'কেন্দ্র'} />
-            </button>
-          ))}
+  const num = getNumerator(step, maxSteps);
+  const den = getDenominator(step, maxSteps);
+
+  return (
+    <div className="flex h-full min-h-0 w-full flex-col bg-[var(--surface-primary)] lg:flex-row">
+      <aside className="z-10 flex w-full shrink-0 flex-col border-b border-[var(--border-default)] bg-[var(--surface-secondary)] p-4 sm:p-5 lg:w-[370px] lg:border-b-0 lg:border-r lg:p-6" aria-label="Atom sharing controls">
+        <div>
+          <p className="eyebrow mb-2 text-[10px]"><BilingualText en="Guided visualizer" bn="নির্দেশিত ভিজ্যুয়ালাইজার" /></p>
+          <h3 className="text-xl font-extrabold text-[var(--text-primary)]"><BilingualText en="Atom Sharing" bn="পরমাণু ভাগাভাগি" /></h3>
+          <div className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]"><BilingualText en="Assemble the crystal to see the atom's volume contribution." bn="পরমাণুর আয়তনের অবদান দেখতে স্ফটিকটি একত্রিত করুন।" /></div>
         </div>
 
-        <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-gray-200 dark:border-slate-700">
-          <div className="flex items-center justify-between mb-4">
-            <button 
-              disabled={step === 1} 
-              onClick={() => setStep(s => Math.max(1, s - 1))}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors font-bold text-xl text-slate-700 dark:text-slate-200"
-            >
-              -
+        <fieldset className="mt-5">
+          <legend className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]"><BilingualText en="Atom position" bn="পরমাণুর অবস্থান" /></legend>
+          <div className="grid grid-cols-4 gap-2 lg:grid-cols-2">
+            {(['corner', 'face', 'edge', 'body'] as ShareType[]).map((position) => {
+              const selected = type === position;
+              return (
+                <button
+                  type="button"
+                  key={position}
+                  onClick={() => setType(position)}
+                  aria-pressed={selected}
+                  className={`min-h-12 rounded-lg border px-2 py-2 text-sm font-bold capitalize transition-all ${selected ? 'border-[var(--border-interactive)] bg-[var(--selected-state)] text-[var(--accent-primary)] shadow-[var(--shadow-low)]' : 'border-[var(--border-default)] bg-[var(--surface-primary)] text-[var(--text-secondary)] hover:border-[var(--border-strong)] hover:bg-[var(--hover-state)]'}`}
+                >
+                  <BilingualText en={position} bn={position === 'corner' ? 'কোণ' : position === 'face' ? 'পৃষ্ঠ' : position === 'edge' ? 'প্রান্ত' : 'কেন্দ্র'} />
+                </button>
+              );
+            })}
+          </div>
+        </fieldset>
+
+        <div className="surface-panel mt-5 flex flex-1 flex-col p-4 sm:p-5">
+          <div className="flex items-center justify-between gap-3">
+            <button type="button" disabled={step === 1} onClick={() => setStep((value) => Math.max(1, value - 1))} className="icon-button" aria-label="Remove one sharing cell">
+              <Minus className="h-5 w-5" />
             </button>
             <div className="text-center">
-              <div className="font-bold text-slate-800 dark:text-slate-200">
-                {step} / {maxSteps}
-              </div>
-              <div className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">
-                <BilingualText en="Cells" bn="কোষ" />
-              </div>
+              <div className="text-xl font-black tabular-nums text-[var(--text-primary)]">{step} / {maxSteps}</div>
+              <div className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--text-muted)]"><BilingualText en="Unit cells" bn="একক কোষ" /></div>
             </div>
-            <button 
-              disabled={step === maxSteps} 
-              onClick={() => setStep(s => Math.min(maxSteps, s + 1))}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors font-bold text-xl text-slate-700 dark:text-slate-200"
-            >
-              +
+            <button type="button" disabled={step === maxSteps} onClick={() => setStep((value) => Math.min(maxSteps, value + 1))} className="icon-button" aria-label="Add one sharing cell">
+              <Plus className="h-5 w-5" />
             </button>
           </div>
 
-          <div className="flex flex-col items-center justify-center bg-emerald-50 dark:bg-emerald-900/30 p-3 rounded-lg border border-emerald-100 dark:border-emerald-800/50">
-            <span className="text-sm font-medium text-emerald-800 dark:text-emerald-400 mb-1">
-              <BilingualText en="Current Contribution:" bn="বর্তমান অবদান:" />
-            </span>
-            <span className="text-3xl font-bold text-emerald-600 dark:text-emerald-500">
-              {formatFraction(step, maxSteps)}
-            </span>
+          <div className="mt-4 flex gap-1" role="progressbar" aria-label="Sharing cell assembly" aria-valuemin={1} aria-valuemax={maxSteps} aria-valuenow={step}>
+            {defs.map((_, index) => <span key={index} className={`h-1.5 flex-1 rounded-full ${index < step ? 'bg-[var(--accent-primary)]' : 'bg-[var(--surface-elevated)]'}`} />)}
           </div>
 
-          <div className="mt-4 p-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg shadow-inner">
-            <p className="text-sm text-slate-700 dark:text-slate-300 italic transition-all">
-              <BilingualText 
-                en={explanations[step - 1].en} 
-                bn={explanations[step - 1].bn} 
-              />
-            </p>
+          <div className="mt-5 flex items-center justify-between gap-5 rounded-xl border border-[color-mix(in_srgb,var(--success)_28%,var(--border-default))] bg-[color-mix(in_srgb,var(--success)_9%,transparent)] px-4 py-4">
+            <span className="text-xs font-extrabold uppercase tracking-[0.1em] text-[var(--success)]"><BilingualText en="Enclosed volume" bn="আবদ্ধ আয়তন" /></span>
+            {den === 1 ? (
+              <span className="text-4xl font-black tabular-nums text-[var(--success)]">{num}</span>
+            ) : (
+              <span className="flex flex-col items-center text-2xl font-black leading-none text-[var(--success)]" aria-label={`${num} over ${den}`}>
+                <span className="border-b-2 border-current px-3 pb-1">{num}</span>
+                <span className="px-3 pt-1">{den}</span>
+              </span>
+            )}
+          </div>
+
+          <div className="mt-5 border-t border-[var(--border-default)] pt-4">
+            <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[var(--accent-secondary)]"><BilingualText en="Observe" bn="পর্যবেক্ষণ করুন" /></p>
+            <div className="text-sm font-medium leading-relaxed text-[var(--text-secondary)]"><BilingualText en={explanations[step - 1].en} bn={explanations[step - 1].bn} /></div>
           </div>
         </div>
-      </div>
 
-      <div className="w-full md:w-2/3 h-[400px] relative rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-slate-700">
-        <CrystalCanvas>
-          {defs.map((def, index) => {
-            const isVisible = index < step;
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <button type="button" onClick={() => setShowCells((value) => !value)} aria-pressed={showCells} className={`btn px-3 ${showCells ? 'btn-outline' : 'btn-ghost'}`}>
+            {showCells ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+            <BilingualText en="Sharing cells" bn="ভাগকারী কোষ" />
+          </button>
+          <button type="button" onClick={() => setResetKey((key) => key + 1)} className="btn btn-ghost px-3">
+            <RotateCcw className="h-4 w-4" />
+            <BilingualText en="Reset view" bn="দৃশ্য রিসেট" />
+          </button>
+        </div>
+      </aside>
+
+      <div className="relative min-h-[440px] flex-1 bg-[var(--canvas-background)] lg:min-h-[650px]">
+        <CrystalCanvas resetKey={resetKey} cameraPosition={[6.4, 5.4, 6.4]} ariaLabel={`${type} atom sharing model at step ${step} of ${maxSteps}`}>
+          {defs.map((definition, index) => {
+            const visible = index < step;
             return (
               <group key={index}>
-                <FractionSlice def={def} visible={isVisible} />
-                <CellBox def={def} visible={isVisible} />
+                <FractionSlice def={definition} visible={visible} />
+                <CellBox def={definition} visible={visible && showCells} />
               </group>
             );
           })}
         </CrystalCanvas>
+        <div className="pointer-events-none absolute left-4 top-4 rounded-lg border border-white/10 bg-[#071923]/78 px-3 py-2 text-xs font-bold text-sky-100 backdrop-blur-sm">
+          <span className="mr-2 capitalize text-sky-300">{type}</span>
+          <BilingualText en="contribution" bn="অবদান" />
+        </div>
       </div>
     </div>
   );

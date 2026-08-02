@@ -31,8 +31,8 @@ export const VoidComparisonTable: React.FC = () => {
   ];
 
   return (
-    <div className="overflow-x-auto my-8 border border-gray-200 dark:border-slate-700 rounded-xl shadow-sm">
-      <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+    <div className="overflow-x-auto my-8 border border-[var(--border-sub)] rounded-xl shadow-sm">
+      <table className="w-full text-left text-sm text-[var(--text-norm)]">
         <thead className="bg-primary text-white uppercase font-semibold">
           <tr>
             <th className="px-4 py-4 w-1/3"><BilingualText en="Property" bn="বৈশিষ্ট্য" /></th>
@@ -40,16 +40,16 @@ export const VoidComparisonTable: React.FC = () => {
             <th className="px-4 py-4 border-l border-primary-light/30"><BilingualText en="Octahedral Void (OV)" bn="অষ্টতলকীয় শূন্যস্থান (OV)" /></th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 dark:divide-slate-700 bg-white dark:bg-slate-900">
+        <tbody className="divide-y divide-[var(--border-sub)] bg-[var(--bg-sec)]">
           {data.map((row, i) => (
-            <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-              <td className="px-4 py-4 font-semibold text-slate-800 dark:text-slate-200">
+            <tr key={i} className="hover:bg-[var(--bg-sec)] dark:hover:bg-[var(--bg-canvas,transparent)]/50 transition-colors">
+              <td className="px-4 py-4 font-semibold text-[var(--text-str)]">
                 <BilingualText en={row.prop.en} bn={row.prop.bn} />
               </td>
-              <td className="px-4 py-4 border-l border-gray-200 dark:border-slate-700 font-medium">
+              <td className="px-4 py-4 border-l border-[var(--border-sub)] font-medium">
                 {typeof row.tv === 'string' ? row.tv : <BilingualText en={row.tv.en} bn={row.tv.bn} />}
               </td>
-              <td className="px-4 py-4 border-l border-gray-200 dark:border-slate-700 font-medium">
+              <td className="px-4 py-4 border-l border-[var(--border-sub)] font-medium">
                 {typeof row.ov === 'string' ? row.ov : <BilingualText en={row.ov.en} bn={row.ov.bn} />}
               </td>
             </tr>

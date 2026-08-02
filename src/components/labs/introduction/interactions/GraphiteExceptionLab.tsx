@@ -4,7 +4,7 @@ import { GuidedLessonEngine } from '../engine/GuidedLessonEngine';
 import type { LessonMode, AnimationStep } from '../engine/GuidedLessonTypes';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
-import { useSpring, a } from '@react-spring/three';
+import { AnimatedGroup } from '../engine/AnimatedLessonPrimitives';
 
 const steps: AnimationStep[] = [
   {
@@ -95,9 +95,9 @@ export const GraphiteExceptionLab: React.FC = () => {
       speed={speed}
     >
       {(mode === 'challenge' || mode === 'explore') && (
-        <div className="absolute top-4 right-4 z-10 flex flex-col gap-2 bg-[var(--bg-sec)]/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-amber-500/20 w-64">
-          <span className="text-sm font-bold text-amber-600 dark:text-amber-500 mb-2"><BilingualText en="Challenge: Slide Layers" bn="অনুশীলন: স্তরগুলিকে পিছলে দিন" /></span>
-          <label className="text-xs text-[var(--text-norm)]"><BilingualText en="Shear Force" bn="শিয়ার বল" /></label>
+        <div className="absolute right-3 top-16 z-10 flex w-[min(16rem,calc(100%-1.5rem))] flex-col gap-2 rounded-xl border border-[color-mix(in_srgb,var(--accent-amber)_38%,transparent)] bg-[color-mix(in_srgb,var(--canvas-surface)_92%,transparent)] p-4 text-sky-100 shadow-xl backdrop-blur-md sm:right-4 sm:top-4">
+          <span className="mb-1 text-sm font-bold text-[var(--accent-amber)]"><BilingualText en="Challenge: Slide Layers" bn="অনুশীলন: স্তরগুলিকে পিছলে দিন" /></span>
+          <label className="text-xs text-sky-100/75"><BilingualText en="Shear Force" bn="শিয়ার বল" /></label>
           <input 
             type="range" 
             min="-2" max="2" step="0.1" 
@@ -105,15 +105,15 @@ export const GraphiteExceptionLab: React.FC = () => {
             onChange={(e) => setSlideAmount(parseFloat(e.target.value))}
             className="w-full accent-amber-500"
           />
-          <p className="text-[11px] text-[var(--text-norm)] opacity-70 mt-2">
+          <p className="mt-2 text-[11px] leading-relaxed text-sky-100/70">
             <BilingualText en="Apply force to slide the top layer. This illustrates why graphite is soft (lubricant)." bn="উপরের স্তরটি পিছলে দিতে বল প্রয়োগ করুন। এটি ব্যাখ্যা করে কেন গ্র্যাফাইট নরম (লুব্রিকেন্ট)।" />
           </p>
         </div>
       )}
 
-      <Canvas camera={{ position: [3, 2, 4], fov: 40 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[5, 10, 5]} intensity={1} />
+      <Canvas camera={{ position: [5, 4, 7], fov: 42 }} dpr={[1, 1.75]}>
+        <ambientLight intensity={0.75} />
+        <directionalLight position={[5, 10, 7]} intensity={1.2} />
         <OrbitControls enablePan={mode === 'explore'} enableZoom={mode === 'explore'} />
         
         {/* Bottom Layer */}
@@ -125,8 +125,7 @@ export const GraphiteExceptionLab: React.FC = () => {
             {[
               [0, 1], [0.866, 0.5], [0.866, -0.5], [0, -1], [-0.866, -0.5], [-0.866, 0.5], [0, 0]
             ].map((p, i) => {
-              // Calculate dynamic position based on slide
-              const topX = mode === 'guided' ? (shouldSlide ? Math.sin(Date.now() * 0.002 * speed) : 0) : slideAmount;
+              const topX = mode === 'guided' ? 0 : slideAmount;
               return (
                 <Line 
                   key={`vdw${i}`} 
@@ -143,23 +142,35 @@ export const GraphiteExceptionLab: React.FC = () => {
         )}
 
         {/* Top Layer */}
-        <group position={[
-          mode === 'guided' ? (shouldSlide ? Math.sin(Date.now() * 0.002 * speed) : 0) : slideAmount, 
-          0, 
-          0
-        ]}>
+        <AnimatedGroup
+          basePosition={[mode === 'guided' ? 0 : slideAmount, 0, 0]}
+          enabled={shouldSlide}
+          speed={speed}
+          amplitude={0.8}
+          motion="slide"
+        >
           {createLayer(1, "#3b82f6")}
           
           {/* Delocalised electrons */}
-          {(stepIndex === 3 || mode !== 'guided') && isAnimOn && Array.from({ length: 5 }).map((_, i) => {
-             const time = Date.now() * 0.005 * speed;
-             return (
-              <Sphere key={`e-${i}`} args={[0.08, 16, 16]} position={[Math.sin(time + i)*1.5, 0.8, Math.cos(time + i)*1.5]}>
-                <meshBasicMaterial color="#fef08a" />
-              </Sphere>
-             );
+          {(stepIndex === 3 || mode !== 'guided') && Array.from({ length: 5 }).map((_, i) => {
+            const angle = (i / 5) * Math.PI * 2;
+            return (
+              <AnimatedGroup
+                key={`e-${i}`}
+                basePosition={[Math.cos(angle) * 1.25, 0.78, Math.sin(angle) * 1.25]}
+                enabled={isAnimOn}
+                speed={speed * 1.35}
+                phase={angle}
+                amplitude={0.38}
+                motion="orbit"
+              >
+                <Sphere args={[0.08, 16, 16]}>
+                  <meshBasicMaterial color="#fef08a" />
+                </Sphere>
+              </AnimatedGroup>
+            );
           })}
-        </group>
+        </AnimatedGroup>
 
       </Canvas>
     </GuidedLessonEngine>

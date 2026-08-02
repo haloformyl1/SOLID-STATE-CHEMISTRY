@@ -173,21 +173,21 @@ export const Packing3DHex: React.FC<Packing3DHexProps> = ({ packingType }) => {
   }, [layers, packingType]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-slate-100 dark:bg-slate-800 p-4 rounded-xl border border-gray-200 dark:border-slate-700">
+    <div className="flex h-full min-h-[580px] flex-col gap-4">
+      <div className="flex flex-col items-center justify-between gap-4 rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4 md:flex-row">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-indigo-100 dark:bg-indigo-900/50 rounded-full text-indigo-600 dark:text-indigo-400">
             <Layers className="w-5 h-5" />
           </div>
           <div>
-            <h4 className="font-bold text-slate-800 dark:text-slate-200">
+            <h4 className="font-bold text-[var(--text-str)]">
               {packingType === 'hcp' ? (
                 <BilingualText en="HCP: ABAB... Stacking" bn="HCP: ABAB... স্তরবিন্যাস" />
               ) : (
                 <BilingualText en="CCP: ABCABC... Stacking" bn="CCP: ABCABC... স্তরবিন্যাস" />
               )}
             </h4>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-[var(--text-mut)]">
               {packingType === 'hcp' ? (
                 <BilingualText en="Third layer is directly above the first layer." bn="তৃতীয় স্তরটি প্রথম স্তরের ঠিক উপরে থাকে।" />
               ) : (
@@ -198,7 +198,7 @@ export const Packing3DHex: React.FC<Packing3DHexProps> = ({ packingType }) => {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <div className="flex items-center gap-1 bg-white dark:bg-slate-900 p-1.5 rounded-lg border border-gray-200 dark:border-slate-700 shadow-sm">
+          <div className="flex items-center gap-1 bg-[var(--bg-sec)] p-1.5 rounded-lg border border-[var(--border-sub)] shadow-sm">
             {[1, 2, 3, 4].map(num => (
               <button
                 key={num}
@@ -206,7 +206,7 @@ export const Packing3DHex: React.FC<Packing3DHexProps> = ({ packingType }) => {
                 className={`px-3 py-1.5 rounded-md font-bold text-sm transition-all ${
                   layers === num 
                     ? 'bg-indigo-500 text-white shadow' 
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    : 'text-[var(--text-mut)] hover:bg-slate-100 dark:hover:bg-[var(--bg-canvas,transparent)]'
                 }`}
               >
                 {num}
@@ -214,20 +214,20 @@ export const Packing3DHex: React.FC<Packing3DHexProps> = ({ packingType }) => {
             ))}
           </div>
           
-          <label className="flex items-center gap-2 cursor-pointer bg-white dark:bg-slate-900 px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 shadow-sm text-sm font-medium text-slate-700 dark:text-slate-300">
-            <input type="checkbox" checked={exploded} onChange={e => setExploded(e.target.checked)} className="rounded text-indigo-500" />
+          <label className="flex items-center gap-2 cursor-pointer bg-[var(--bg-sec)] px-3 py-2 rounded-lg border border-[var(--border-sub)] shadow-sm text-sm font-medium text-[var(--text-norm)]">
+            <input type="checkbox" checked={exploded} onChange={e => setExploded(e.target.checked)} className="rounded accent-[var(--accent-primary)]" />
             <BilingualText en="Exploded View" bn="বিস্ফোরিত দৃশ্য" />
           </label>
 
-          <label className="flex items-center gap-2 cursor-pointer bg-white dark:bg-slate-900 px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 shadow-sm text-sm font-medium text-slate-700 dark:text-slate-300">
-            <input type="checkbox" checked={showVoids} onChange={e => setShowVoids(e.target.checked)} className="rounded text-indigo-500" />
+          <label className="flex items-center gap-2 cursor-pointer bg-[var(--bg-sec)] px-3 py-2 rounded-lg border border-[var(--border-sub)] shadow-sm text-sm font-medium text-[var(--text-norm)]">
+            <input type="checkbox" checked={showVoids} onChange={e => setShowVoids(e.target.checked)} className="rounded accent-[var(--accent-primary)]" />
             <BilingualText en="Show Voids" bn="শূন্যস্থান দেখান" />
           </label>
         </div>
       </div>
 
       <div className="flex gap-4">
-        <div className="flex-1 bg-slate-900 h-[28rem] rounded-xl overflow-hidden relative border-2 border-slate-700 shadow-inner">
+        <div className="relative min-h-[420px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
           <Canvas camera={{ position: [12, 12, 12], fov: 45 }}>
             <ambientLight intensity={0.6} />
             <directionalLight position={[10, 10, 10]} intensity={0.8} />
@@ -289,7 +289,7 @@ export const Packing3DHex: React.FC<Packing3DHexProps> = ({ packingType }) => {
           )}
 
           {showVoids && layers >= 2 && (
-            <div className="absolute bottom-4 left-4 right-4 bg-slate-800/80 backdrop-blur border border-slate-600 p-3 rounded-lg text-white shadow-lg animate-fade-in-up">
+            <div className="absolute bottom-4 left-4 right-4 bg-[var(--bg-canvas,transparent)]/80 backdrop-blur border border-slate-600 p-3 rounded-lg text-white shadow-lg animate-fade-in-up">
               <div className="flex gap-4">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 bg-orange-500 rounded"></div>
@@ -304,16 +304,16 @@ export const Packing3DHex: React.FC<Packing3DHexProps> = ({ packingType }) => {
           )}
 
           <div className="absolute top-4 right-4 flex flex-col gap-2 pointer-events-none">
-            <div className="flex items-center gap-2 bg-slate-800/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-600 text-xs text-white">
+            <div className="flex items-center gap-2 bg-[var(--bg-canvas,transparent)]/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-600 text-xs text-white">
               <div className="w-3 h-3 rounded-full bg-blue-500"></div> A Layer
             </div>
             {layers >= 2 && (
-              <div className="flex items-center gap-2 bg-slate-800/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-600 text-xs text-white">
+              <div className="flex items-center gap-2 bg-[var(--bg-canvas,transparent)]/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-600 text-xs text-white">
                 <div className="w-3 h-3 rounded-full bg-emerald-500"></div> B Layer
               </div>
             )}
             {layers >= 3 && packingType === 'ccp' && (
-              <div className="flex items-center gap-2 bg-slate-800/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-600 text-xs text-white">
+              <div className="flex items-center gap-2 bg-[var(--bg-canvas,transparent)]/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-600 text-xs text-white">
                 <div className="w-3 h-3 rounded-full bg-amber-500"></div> C Layer
               </div>
             )}

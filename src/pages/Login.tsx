@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
-import { Lock, Mail, AlertCircle, KeyRound, Loader2, ArrowLeft } from 'lucide-react';
+import { Lock, Mail, AlertCircle, KeyRound, Loader2, ArrowLeft, Moon, Sun } from 'lucide-react';
 import emailjs from '@emailjs/browser';
+import { BrandMark } from '../components/BrandMark';
 
 export const Login = () => {
   const [step, setStep] = useState<1 | 2>(1);
@@ -17,6 +18,8 @@ export const Login = () => {
   
   const login = useStore((state) => state.login);
   const adminLogin = useStore((state) => state.adminLogin);
+  const theme = useStore((state) => state.theme);
+  const setTheme = useStore((state) => state.setTheme);
   const navigate = useNavigate();
 
   // Generate a random 6-digit OTP
@@ -85,12 +88,19 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-[var(--bg-main)] to-[var(--bg-sec)]">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--page-background)] px-4 py-20">
       {/* Decorative background elements */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-[var(--acc-prim)]/10 blur-3xl"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[var(--acc-viol)]/10 blur-3xl"></div>
+      <div className="crystal-grid absolute inset-y-0 right-0 hidden w-[48%] opacity-95 lg:block" aria-hidden="true"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,color-mix(in_srgb,var(--accent-primary)_10%,transparent),transparent_32rem)]" aria-hidden="true"></div>
+
+      <button type="button" onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} className="icon-button absolute right-4 top-4 z-20" aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}>
+        {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5 text-[var(--accent-amber)]" />}
+      </button>
       
-      <div className="glass-panel relative z-10 w-full max-w-md p-8 rounded-2xl animate-fade-in-up border border-[var(--border-sub)]">
+      <div className="glass-panel relative z-10 w-full max-w-lg rounded-[var(--radius-lg)] p-6 shadow-[var(--shadow-modal)] animate-fade-in-up sm:p-8">
+        <div className="mb-7 flex justify-center border-b border-[var(--border-default)] pb-6">
+          <BrandMark />
+        </div>
         
         {step === 2 && (
           <button 
@@ -105,23 +115,23 @@ export const Login = () => {
         <div className="flex bg-[var(--surf-elev)] p-1 rounded-xl mb-8 border border-[var(--border-sub)]">
           <button
             onClick={() => { setLoginMode('student'); setError(''); }}
-            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${loginMode === 'student' ? 'bg-[var(--acc-prim)] text-white shadow-md' : 'text-[var(--text-mut)] hover:text-[var(--text-norm)]'}`}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${loginMode === 'student' ? 'bg-[var(--acc-prim)] text-[var(--button-primary-text)] shadow-md' : 'text-[var(--text-mut)] hover:text-[var(--text-norm)]'}`}
           >
             Student Login
           </button>
           <button
             onClick={() => { setLoginMode('admin'); setError(''); }}
-            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${loginMode === 'admin' ? 'bg-[var(--acc-prim)] text-white shadow-md' : 'text-[var(--text-mut)] hover:text-[var(--text-norm)]'}`}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${loginMode === 'admin' ? 'bg-[var(--acc-prim)] text-[var(--button-primary-text)] shadow-md' : 'text-[var(--text-mut)] hover:text-[var(--text-norm)]'}`}
           >
             Admin Access
           </button>
         </div>
 
         <div className="text-center mb-8 mt-4">
-          <div className="w-16 h-16 bg-[var(--bg-sec)] rounded-xl flex items-center justify-center mx-auto mb-4 border border-[var(--border-sub)] shadow-inner">
+          <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] shadow-inner">
             <Lock className="w-8 h-8 text-[var(--acc-prim)]" />
           </div>
-          <h1 className="text-3xl font-bold text-[var(--text-str)] mb-2 font-['Outfit']">
+          <h1 className="mb-2 text-3xl font-black text-[var(--text-primary)]">
             {loginMode === 'student' ? 'Student Login' : 'Admin Login'}
           </h1>
           <p className="text-[var(--text-mut)]">
@@ -160,7 +170,7 @@ export const Login = () => {
 
             <button
               type="submit"
-              className="w-full py-3 px-4 bg-gradient-to-r from-[var(--acc-prim)] to-[var(--acc-sec)] hover:opacity-90 text-white rounded-xl font-medium transition-all hover:shadow-lg hover:shadow-[var(--acc-prim)]/20 active:scale-[0.98]"
+              className="btn btn-primary w-full py-3"
             >
               Access Editor Mode
             </button>
@@ -194,7 +204,7 @@ export const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 px-4 bg-gradient-to-r from-[var(--acc-prim)] to-[var(--acc-sec)] hover:opacity-90 text-white rounded-xl font-medium transition-all hover:shadow-lg hover:shadow-[var(--acc-prim)]/20 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="btn btn-primary w-full py-3"
             >
               {isLoading ? (
                 <>
@@ -239,7 +249,7 @@ export const Login = () => {
 
             <button
               type="submit"
-              className="w-full py-3 px-4 bg-gradient-to-r from-[var(--acc-prim)] to-[var(--acc-sec)] hover:opacity-90 text-white rounded-xl font-medium transition-all hover:shadow-lg hover:shadow-[var(--acc-prim)]/20 active:scale-[0.98]"
+              className="btn btn-primary w-full py-3"
             >
               Access Laboratory
             </button>
@@ -248,9 +258,11 @@ export const Login = () => {
       </div>
       
       {/* Footer */}
-      <div className="absolute bottom-4 w-full text-center z-10">
-        <p className="font-medium text-[var(--text-str)] text-sm m-0">
-          Designed & Prepared By- Arghyadeep Roy Contact- 9830507435.
+      <div className="absolute bottom-3 z-10 w-full px-4 text-center">
+        <p className="m-0 text-xs font-semibold leading-relaxed text-[var(--text-secondary)] sm:text-sm">
+          <span className="block sm:inline">Designed &amp; Prepared By- Arghyadeep Roy</span>
+          <span className="hidden px-2 opacity-50 sm:inline" aria-hidden="true">•</span>
+          <span className="block sm:inline">Contact- 9830507435</span>
         </p>
       </div>
     </div>

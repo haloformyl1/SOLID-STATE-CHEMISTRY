@@ -12,8 +12,8 @@ export const NextModuleLink: React.FC<NextModuleLinkProps> = ({ targetModuleId, 
   return (
     <div className="mt-12 mb-8 flex justify-end">
       <Link 
-        to={`/module/${targetModuleId}`}
-        className="group relative inline-flex items-center gap-3 bg-primary hover:bg-primary-dark text-white px-6 py-4 rounded-xl font-bold shadow-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/30 overflow-hidden"
+        to={`/learn/${targetModuleId}`}
+        className="btn btn-primary group relative overflow-hidden px-6 py-4"
       >
         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
         <span className="relative z-10 text-lg">

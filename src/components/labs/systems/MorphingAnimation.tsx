@@ -99,41 +99,41 @@ export const MorphingAnimation: React.FC = () => {
       }, 3000);
     }
     return () => clearInterval(timer);
-  }, [playing]);
+  }, [playing, sequence.length]);
 
   return (
-    <div className="w-full bg-white dark:bg-slate-800 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-slate-700">
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="w-full md:w-2/3 h-[400px] bg-slate-50 dark:bg-slate-900 rounded-lg relative overflow-hidden">
+    <div className="flex h-full min-h-[520px] w-full flex-col rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4 md:p-6">
+      <div className="flex flex-1 flex-col gap-6 md:flex-row">
+        <div className="relative min-h-[380px] w-full overflow-hidden rounded-lg border border-[var(--border-strong)] bg-[var(--canvas-background)] md:w-2/3">
           <Canvas camera={{ position: [5, 4, 6], fov: 45 }}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 10]} intensity={1} />
             <AnimatedCell targetParams={sequence[step].params} animating={true} />
             <OrbitControls enablePan={false} autoRotate={playing} autoRotateSpeed={1} />
           </Canvas>
-          <div className="absolute top-4 left-4 bg-white/90 dark:bg-slate-800/90 p-2 rounded shadow text-sm font-bold text-slate-800 dark:text-slate-200">
+          <div className="absolute left-4 top-4 rounded border border-slate-600 bg-[#071923e8] p-2 text-sm font-bold text-white shadow backdrop-blur">
             <BilingualText en={sequence[step].name.en} bn={sequence[step].name.bn} />
           </div>
         </div>
         <div className="w-full md:w-1/3 flex flex-col justify-center space-y-6">
           <div>
-            <h3 className="text-xl font-bold mb-2 dark:text-white">
+            <h3 className="text-xl font-bold mb-2 text-[var(--text-str)]">
               <BilingualText en="Morphing Animation" bn="রূপান্তর অ্যানিমেশন" />
             </h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+            <p className="text-[var(--text-mut)] text-sm mb-4">
               <BilingualText 
                 en="Watch how changing edge lengths and angles transforms one cell geometry into another." 
                 bn="দেখুন কীভাবে প্রান্তের দৈর্ঘ্য এবং কোণ পরিবর্তন করে একটি কোষের জ্যামিতি অন্যটিতে রূপান্তরিত হয়।" 
               />
             </p>
-            <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg border border-amber-200 dark:border-amber-800/30 text-xs text-amber-800 dark:text-amber-200 font-medium mb-6">
+            <div className="mb-6 rounded-lg border border-[color-mix(in_srgb,var(--warning)_35%,var(--border-default))] bg-[color-mix(in_srgb,var(--warning)_10%,var(--surface-primary))] p-3 text-xs font-medium text-[var(--text-secondary)]">
               <BilingualText 
                 en="Note: This is a geometric learning animation; it is not a physical phase-transition simulation." 
                 bn="সতর্কতা: এটি জ্যামিতিক পার্থক্য বোঝানোর অ্যানিমেশন; এটি কোনো বাস্তব দশা পরিবর্তনের অনুকরণ নয়।" 
               />
             </div>
-            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800/30">
-              <p className="text-blue-900 dark:text-blue-100 font-medium">
+            <div className="rounded-lg border border-[color-mix(in_srgb,var(--accent-primary)_28%,var(--border-default))] bg-[color-mix(in_srgb,var(--accent-primary)_9%,var(--surface-primary))] p-4">
+              <p className="font-medium text-[var(--text-primary)]">
                 <BilingualText en={sequence[step].desc.en} bn={sequence[step].desc.bn} />
               </p>
             </div>
@@ -141,14 +141,14 @@ export const MorphingAnimation: React.FC = () => {
           <div className="flex gap-4">
             <button
               onClick={() => setPlaying(!playing)}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+              className="btn btn-primary gap-2 px-4 py-2"
             >
               {playing ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
               <BilingualText en={playing ? "Pause" : "Play"} bn={playing ? "থামান" : "চালান"} />
             </button>
             <button
               onClick={() => { setStep(0); setPlaying(false); }}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg hover:bg-gray-300 dark:hover:bg-slate-600 transition-colors"
+              className="btn btn-secondary gap-2 px-4 py-2"
             >
               <RotateCcw className="w-5 h-5" />
               <BilingualText en="Reset" bn="রিসেট" />

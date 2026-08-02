@@ -1,59 +1,76 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
+import { Check, ChevronDown, Globe2 } from 'lucide-react';
 import { useStore, type LanguageMode } from '../store/useStore';
-import { Globe, Check } from 'lucide-react';
 
-export const LanguageSelector: React.FC = () => {
+interface LanguageSelectorProps { compact?: boolean; }
+
+const options: { value: LanguageMode; label: string; shortLabel: string; lang?: string }[] = [
+  { value: 'en', label: 'English', shortLabel: 'EN' },
+  { value: 'bn', label: 'বাংলা', shortLabel: 'বাংলা', lang: 'bn' },
+  { value: 'bilingual', label: 'English + বাংলা', shortLabel: 'EN+বাংলা' },
+];
+
+export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ compact = false }) => {
   const { language, setLanguage } = useStore();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
-  const options: { value: LanguageMode; label: string }[] = [
-    { value: 'en', label: 'English' },
-    { value: 'bn', label: 'বাংলা' },
-    { value: 'bilingual', label: 'English + বাংলা' }
-  ];
+  const menuId = useId();
+  const activeOption = options.find((option) => option.value === language) ?? options[0];
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
+    const closeFromOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) setIsOpen(false);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    const closeFromKeyboard = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
+    document.addEventListener('mousedown', closeFromOutside);
+    document.addEventListener('keydown', closeFromKeyboard);
+    return () => {
+      document.removeEventListener('mousedown', closeFromOutside);
+      document.removeEventListener('keydown', closeFromKeyboard);
+    };
   }, []);
 
   return (
-    <div className="relative" ref={menuRef}>
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--border-sub)] hover:bg-[var(--bg-sec)] transition-colors text-sm font-medium text-[var(--text-str)] shadow-sm"
+    <div className={`relative ${compact ? '' : 'w-full'}`} ref={menuRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen((open) => !open)}
+        className={`flex min-h-11 items-center gap-2 rounded-lg border border-[var(--border-default)] bg-[var(--surface-primary)] px-2.5 text-sm font-bold text-[var(--text-primary)] shadow-sm transition-colors hover:border-[var(--border-strong)] hover:bg-[var(--hover-state)] ${compact ? '' : 'w-full justify-between px-3'}`}
         aria-label="Language / ভাষা"
+        aria-expanded={isOpen}
+        aria-haspopup="menu"
+        aria-controls={menuId}
       >
-        <Globe className="w-4 h-4 text-[var(--acc-prim)]" />
-        <span className="hidden sm:inline">Language / ভাষা</span>
-        <span className="sm:hidden">{options.find(o => o.value === language)?.label.split(' ')[0]}</span>
+        <span className="flex min-w-0 items-center gap-2">
+          <Globe2 className="h-4 w-4 shrink-0 text-[var(--accent-primary)]" aria-hidden="true" />
+          <span className={compact ? 'hidden 2xl:inline' : ''}>Language / <span lang="bn">ভাষা</span></span>
+          <span className={`${compact ? 'hidden sm:inline 2xl:hidden' : 'hidden'} max-w-[74px] truncate text-[11px] text-[var(--accent-primary)]`}>{activeOption.shortLabel}</span>
+        </span>
+        <ChevronDown className={`h-3.5 w-3.5 shrink-0 text-[var(--text-muted)] transition-transform ${isOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-48 glass-panel rounded-xl shadow-lg z-50 overflow-hidden border border-[var(--border-sub)] animate-fade-in-up">
-          {options.map(opt => (
-            <button
-              key={opt.value}
-              onClick={() => {
-                setLanguage(opt.value);
-                setIsOpen(false);
-              }}
-              className={`w-full text-left px-4 py-3 flex items-center justify-between transition-colors ${
-                language === opt.value 
-                  ? 'bg-[var(--acc-prim)]/10 text-[var(--acc-prim)] font-bold' 
-                  : 'text-[var(--text-norm)] hover:bg-[var(--bg-sec)] hover:text-[var(--text-str)]'
-              }`}
-            >
-              {opt.label}
-              {language === opt.value && <Check className="w-4 h-4" />}
-            </button>
-          ))}
+        <div id={menuId} role="menu" className={`glass-panel absolute top-full z-[100] mt-2 overflow-hidden rounded-xl p-1.5 shadow-[var(--shadow-modal)] ${compact ? 'right-0 w-56' : 'inset-x-0 w-full'}`}>
+          <div className="px-3 pb-2 pt-1 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]">Choose language</div>
+          {options.map((option) => {
+            const selected = language === option.value;
+            return (
+              <button
+                type="button"
+                role="menuitemradio"
+                aria-checked={selected}
+                key={option.value}
+                lang={option.lang}
+                onClick={() => { setLanguage(option.value); setIsOpen(false); }}
+                className={`flex min-h-11 w-full items-center justify-between rounded-lg px-3 text-left text-sm transition-colors ${selected ? 'bg-[var(--selected-state)] font-bold text-[var(--accent-primary)]' : 'text-[var(--text-secondary)] hover:bg-[var(--hover-state)] hover:text-[var(--text-primary)]'}`}
+              >
+                {option.label}
+                {selected && <Check className="h-4 w-4" aria-hidden="true" />}
+              </button>
+            );
+          })}
         </div>
       )}
     </div>

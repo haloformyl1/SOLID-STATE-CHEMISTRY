@@ -3,7 +3,6 @@ import { BilingualText } from '../../../BilingualText';
 import { GuidedLessonEngine } from '../engine/GuidedLessonEngine';
 import type { LessonMode, AnimationStep } from '../engine/GuidedLessonTypes';
 import { motion } from 'framer-motion';
-import { CheckCircle2, XCircle } from 'lucide-react';
 
 const steps: AnimationStep[] = [
   {
@@ -43,13 +42,9 @@ export const ClassificationTreeLab: React.FC = () => {
   const [stepIndex, setStepIndex] = useState(0);
   const [isAnimOn, setIsAnimOn] = useState(true);
   const [speed, setSpeed] = useState(1);
-  
-  // Challenge mode state
   const [placedNodes, setPlacedNodes] = useState<Record<string, string>>({});
-  
-  const handleDrop = (nodeId: string, targetId: string) => {
-    setPlacedNodes(prev => ({ ...prev, [targetId]: nodeId }));
-  };
+  const [selectedNode, setSelectedNode] = useState<string | null>(null);
+  const [classificationFeedback, setClassificationFeedback] = useState('');
 
   const draggables = [
     { id: 'ionic', en: 'Ionic', bn: 'আয়নিক' },
@@ -61,10 +56,20 @@ export const ClassificationTreeLab: React.FC = () => {
     { id: 'hbonded', en: 'Hydrogen-bonded', bn: 'হাইড্রোজেন-বন্ধনযুক্ত' }
   ];
 
-  const checkCorrectness = (targetId: string, expectedIds: string[]) => {
-    const placed = placedNodes[targetId];
-    if (!placed) return null;
-    return expectedIds.includes(placed);
+  const placeSelectedNode = (targetId: string, expectedId: string) => {
+    if (!selectedNode) {
+      setClassificationFeedback('Select a label first.');
+      return;
+    }
+
+    if (selectedNode !== expectedId) {
+      setClassificationFeedback('That label belongs on a different branch. Try another target.');
+      return;
+    }
+
+    setPlacedNodes((placed) => ({ ...placed, [targetId]: selectedNode }));
+    setSelectedNode(null);
+    setClassificationFeedback('Correct placement.');
   };
 
   return (
@@ -79,40 +84,35 @@ export const ClassificationTreeLab: React.FC = () => {
       isAnimationOn={isAnimOn}
       speed={speed}
     >
-      <div className="w-full h-full flex flex-col p-8 items-center justify-start bg-[var(--bg-norm)] relative">
+      <div className="relative flex h-full w-full flex-col items-center justify-start overflow-auto bg-[var(--canvas-background)] p-4 text-sky-100 sm:p-8">
         
         {mode === 'challenge' && (
-          <div className="absolute top-4 w-full flex flex-wrap justify-center gap-2 z-10 px-4">
+          <div className="absolute inset-x-3 top-16 z-10 flex flex-wrap justify-center gap-2 rounded-xl border border-white/10 bg-[color-mix(in_srgb,var(--canvas-surface)_94%,transparent)] p-3 shadow-xl backdrop-blur-md sm:inset-x-6">
             {draggables.map(d => {
-              // Hide if already correctly placed
-              const isPlacedCorrectly = Object.entries(placedNodes).some(([targetId, nodeId]) => {
-                if (nodeId !== d.id) return false;
-                if (targetId.startsWith('main') && ['ionic','metallic','network','molecular'].includes(nodeId)) return true;
-                if (targetId.startsWith('sub') && ['nonpolar','polar','hbonded'].includes(nodeId)) return true;
-                return false;
-              });
+              const isPlacedCorrectly = Object.values(placedNodes).includes(d.id);
               if (isPlacedCorrectly) return null;
 
               return (
-                <motion.div
+                <motion.button
+                  type="button"
                   key={d.id}
-                  drag
-                  dragSnapToOrigin
-                  onDragEnd={(e, info) => {
-                    // Simple hit detection logic could be implemented here based on coordinates
-                    // For brevity, we simulate a drop zone logic (in a real app, use bounding boxes)
-                    // We'll leave the full bounding box logic out and just show the static tree for this conceptual lab.
+                  onClick={() => {
+                    setSelectedNode(d.id);
+                    setClassificationFeedback(`${d.en} selected. Choose its branch.`);
                   }}
-                  className="bg-white dark:bg-slate-800 border-2 border-primary/50 p-2 rounded-lg shadow-md cursor-grab active:cursor-grabbing text-sm font-medium z-50 text-[var(--text-norm)]"
+                  whileTap={isAnimOn ? { scale: 0.96 } : undefined}
+                  className={`z-50 rounded-lg border px-3 py-2 text-sm font-bold shadow-md transition-colors ${selectedNode === d.id ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)] text-[var(--button-primary-text)]' : 'border-white/15 bg-[var(--canvas-background)] text-sky-100 hover:border-sky-300/60 hover:bg-white/5'}`}
+                  aria-pressed={selectedNode === d.id}
                 >
                   <BilingualText en={d.en} bn={d.bn} />
-                </motion.div>
+                </motion.button>
               );
             })}
+            <div className="w-full text-center text-xs font-medium text-sky-100/70" aria-live="polite">{classificationFeedback || 'Select a label, then choose its matching branch.'}</div>
           </div>
         )}
 
-        <div className="flex flex-col items-center mt-12 w-full max-w-3xl">
+        <div className={`flex w-full max-w-3xl flex-col items-center ${mode === 'challenge' ? 'mt-44 sm:mt-36' : 'mt-12'}`}>
           {/* Root */}
           <div className="bg-primary text-white font-bold py-3 px-6 rounded-xl shadow-lg z-10 text-center">
             <BilingualText en="Crystalline Solids" bn="স্ফটিকাকার কঠিন" />
@@ -133,10 +133,17 @@ export const ClassificationTreeLab: React.FC = () => {
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: visible ? 1 : 0, scale: visible ? 1 : 0.8 }}
-                    className="bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800 py-2 px-3 rounded-lg shadow-sm text-center text-sm font-medium w-11/12 min-h-[48px] flex items-center justify-center"
+                    transition={{ duration: isAnimOn ? 0.28 / speed : 0 }}
+                    className="flex min-h-[48px] w-11/12 items-center justify-center rounded-lg border border-sky-400/25 bg-sky-400/10 px-3 py-2 text-center text-sm font-bold text-sky-200 shadow-sm"
                   >
                     {mode === 'challenge' ? (
-                      <span className="opacity-50 border border-dashed border-blue-400 w-full h-full p-2 rounded flex items-center justify-center">Drop Here</span>
+                      <button
+                        type="button"
+                        onClick={() => placeSelectedNode(`main-${i}`, ['ionic', 'metallic', 'network', 'molecular'][i])}
+                        className="flex h-full w-full items-center justify-center rounded border border-dashed border-sky-300/55 p-2 text-xs text-sky-100/75 hover:bg-sky-300/10 hover:text-white"
+                      >
+                        {placedNodes[`main-${i}`] ? <BilingualText en={name} bn={i===0 ? 'আয়নিক' : i===1 ? 'ধাতব' : i===2 ? 'সমযোজী (জালকীয়)' : 'আণবিক'} /> : 'Place label'}
+                      </button>
                     ) : (
                       <BilingualText 
                         en={name} 
@@ -148,8 +155,8 @@ export const ClassificationTreeLab: React.FC = () => {
                   {/* Level 2 (Sub-branches for Molecular) */}
                   {isMolecular && (
                     <>
-                      <motion.div animate={{ opacity: visible && (mode !== 'guided' || stepIndex >= 3) ? 1 : 0 }} className="w-0 h-6 border-l-2 border-primary/30 mt-0"></motion.div>
-                      <motion.div animate={{ opacity: visible && (mode !== 'guided' || stepIndex >= 3) ? 1 : 0 }} className="w-full h-0 border-t-2 border-primary/30"></motion.div>
+                      <motion.div animate={{ opacity: visible && (mode !== 'guided' || stepIndex >= 3) ? 1 : 0 }} transition={{ duration: isAnimOn ? 0.28 / speed : 0 }} className="w-0 h-6 border-l-2 border-primary/30 mt-0"></motion.div>
+                      <motion.div animate={{ opacity: visible && (mode !== 'guided' || stepIndex >= 3) ? 1 : 0 }} transition={{ duration: isAnimOn ? 0.28 / speed : 0 }} className="w-full h-0 border-t-2 border-primary/30"></motion.div>
                       <div className="flex justify-between w-[250%] -ml-[75%] mt-4">
                         {['Non-polar', 'Polar', 'Hydrogen-bonded'].map((sub, j) => (
                           <div key={j} className="flex flex-col items-center w-1/3">
@@ -157,10 +164,17 @@ export const ClassificationTreeLab: React.FC = () => {
                             <motion.div 
                               initial={{ opacity: 0 }}
                               animate={{ opacity: visible && (mode !== 'guided' || stepIndex >= 3) ? 1 : 0 }}
-                              className="bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 py-2 px-2 rounded-lg shadow-sm text-center text-xs font-medium w-11/12 min-h-[48px] flex items-center justify-center"
+                              transition={{ duration: isAnimOn ? 0.28 / speed : 0 }}
+                              className="flex min-h-[48px] w-11/12 items-center justify-center rounded-lg border border-emerald-300/25 bg-emerald-400/10 px-2 py-2 text-center text-xs font-bold text-emerald-200 shadow-sm"
                             >
                               {mode === 'challenge' ? (
-                                <span className="opacity-50 border border-dashed border-emerald-400 w-full h-full p-1 rounded flex items-center justify-center text-[10px]">Drop Here</span>
+                                <button
+                                  type="button"
+                                  onClick={() => placeSelectedNode(`sub-${j}`, ['nonpolar', 'polar', 'hbonded'][j])}
+                                  className="flex h-full w-full items-center justify-center rounded border border-dashed border-emerald-300/55 p-1 text-[10px] text-emerald-100/80 hover:bg-emerald-300/10 hover:text-white"
+                                >
+                                  {placedNodes[`sub-${j}`] ? <BilingualText en={sub} bn={j===0 ? 'অধ্রুবীয়' : j===1 ? 'ধ্রুবীয়' : 'হাইড্রোজেন-বন্ধনযুক্ত'} /> : 'Place label'}
+                                </button>
                               ) : (
                                 <BilingualText 
                                   en={sub} 

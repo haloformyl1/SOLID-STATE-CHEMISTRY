@@ -120,9 +120,9 @@ export const CrystalSystemExplorer: React.FC = () => {
   const { points, edges, va, vb, vc } = useMemo(() => drawUnitCell(a, b, c, alpha, beta, gamma), [a, b, c, alpha, beta, gamma]);
 
   return (
-    <div className="w-full bg-slate-50 dark:bg-slate-900 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-slate-800">
-      <div className="flex flex-col xl:flex-row gap-6">
-        <div className="w-full xl:w-2/3 h-[500px] bg-white dark:bg-slate-800 rounded-lg relative overflow-hidden border border-gray-200 dark:border-slate-700">
+    <div className="flex h-full min-h-[560px] w-full flex-col rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4 md:p-6">
+      <div className="flex flex-1 flex-col gap-6 xl:flex-row">
+        <div className="relative min-h-[420px] w-full overflow-hidden rounded-lg border border-[var(--border-strong)] bg-[var(--canvas-background)] xl:w-2/3">
           <Canvas camera={{ position: [5, 4, 6], fov: 45 }}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 10]} intensity={1} />
@@ -154,8 +154,8 @@ export const CrystalSystemExplorer: React.FC = () => {
             <OrbitControls enablePan={true} />
           </Canvas>
 
-          <div className="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 p-3 rounded-lg shadow backdrop-blur text-sm">
-            <div className="font-mono text-slate-800 dark:text-slate-200">
+          <div className="absolute right-4 top-4 rounded-lg border border-slate-600 bg-[#071923e8] p-3 text-sm text-white shadow backdrop-blur">
+            <div className="font-mono">
               a={a.toFixed(1)} b={b.toFixed(1)} c={c.toFixed(1)}<br/>
               α={alpha}° β={beta}° γ={gamma}°
             </div>
@@ -163,26 +163,26 @@ export const CrystalSystemExplorer: React.FC = () => {
         </div>
 
         <div className="w-full xl:w-1/3 flex flex-col space-y-4">
-          <h3 className="text-xl font-bold dark:text-white">
+          <h3 className="text-xl font-bold text-[var(--text-str)]">
             <BilingualText en="Crystal System Explorer" bn="স্ফটিক তন্ত্র অন্বেষক" />
           </h3>
 
           <select 
             value={system} 
             onChange={(e) => handleSystemChange(e.target.value as CrystalSystem)}
-            className="w-full p-3 rounded-lg bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-primary"
+            className="w-full rounded-lg border border-[var(--border-strong)] bg-[var(--surface-primary)] p-3 font-medium text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--accent-primary)]"
           >
             {['Cubic', 'Tetragonal', 'Orthorhombic', 'Monoclinic', 'Triclinic', 'Hexagonal', 'Rhombohedral'].map(s => (
               <option key={s} value={s}>{s}</option>
             ))}
           </select>
 
-          <div className="space-y-4 bg-white dark:bg-slate-800 p-4 rounded-lg border border-gray-200 dark:border-slate-700">
+          <div className="space-y-4 rounded-lg border border-[var(--border-default)] bg-[var(--surface-primary)] p-4">
             <div>
-              <h4 className="font-semibold text-slate-700 dark:text-slate-300 mb-2">Edge Lengths (a, b, c)</h4>
+              <h4 className="font-semibold text-[var(--text-norm)] mb-2">Edge Lengths (a, b, c)</h4>
               {['a', 'b', 'c'].map(param => (
                 <div key={param} className="flex items-center gap-3 mb-2">
-                  <label className="w-4 font-mono font-bold text-slate-600 dark:text-slate-400">{param}</label>
+                  <label className="w-4 font-mono font-bold text-[var(--text-mut)]">{param}</label>
                   <input 
                     type="range" min="1" max="4" step="0.1"
                     value={param === 'a' ? a : param === 'b' ? b : c}
@@ -195,7 +195,7 @@ export const CrystalSystemExplorer: React.FC = () => {
                     }
                     className="flex-1 accent-primary"
                   />
-                  <span className="w-8 text-right font-mono text-sm dark:text-slate-300">
+                  <span className="w-8 text-right font-mono text-sm text-[var(--text-norm)]">
                     {param === 'a' ? a : param === 'b' ? b : c}
                   </span>
                 </div>
@@ -203,10 +203,10 @@ export const CrystalSystemExplorer: React.FC = () => {
             </div>
 
             <div>
-              <h4 className="font-semibold text-slate-700 dark:text-slate-300 mb-2">Angles (α, β, γ)</h4>
+              <h4 className="font-semibold text-[var(--text-norm)] mb-2">Angles (α, β, γ)</h4>
               {['alpha', 'beta', 'gamma'].map(param => (
                 <div key={param} className="flex items-center gap-3 mb-2">
-                  <label className="w-6 font-mono font-bold text-slate-600 dark:text-slate-400">
+                  <label className="w-6 font-mono font-bold text-[var(--text-mut)]">
                     {param === 'alpha' ? 'α' : param === 'beta' ? 'β' : 'γ'}
                   </label>
                   <input 
@@ -221,7 +221,7 @@ export const CrystalSystemExplorer: React.FC = () => {
                     }
                     className="flex-1 accent-secondary"
                   />
-                  <span className="w-10 text-right font-mono text-sm dark:text-slate-300">
+                  <span className="w-10 text-right font-mono text-sm text-[var(--text-norm)]">
                     {param === 'alpha' ? alpha : param === 'beta' ? beta : gamma}°
                   </span>
                 </div>
@@ -229,12 +229,12 @@ export const CrystalSystemExplorer: React.FC = () => {
             </div>
           </div>
 
-          <label className="flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-300">
+          <label className="flex items-center gap-2 cursor-pointer text-[var(--text-norm)]">
             <input 
               type="checkbox" 
               checked={showLabels} 
               onChange={(e) => setShowLabels(e.target.checked)}
-              className="rounded text-primary focus:ring-primary w-4 h-4"
+              className="h-4 w-4 rounded accent-[var(--accent-primary)]"
             />
             <BilingualText en="Show a, b, c labels" bn="a, b, c লেবেল দেখান" />
           </label>

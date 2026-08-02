@@ -4,8 +4,15 @@ import { BilingualText } from '../BilingualText';
 import { Sphere, Box, Tetrahedron, Octahedron, Line, OrbitControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { Play, Pause, SkipForward, SkipBack, CheckCircle2, View } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, CheckCircle2, View, Layers3 } from 'lucide-react';
 import { allSequences, type PackingType } from './GuidedAnimationData';
+
+const packingModes: { id: PackingType; en: string; bn: string }[] = [
+  { id: 'square2d', en: '2D Square', bn: '২ডি বর্গাকার' },
+  { id: 'hexagonal2d', en: '2D Hexagonal', bn: '২ডি ষড়ভুজাকার' },
+  { id: 'hcp3d', en: '3D HCP', bn: '৩ডি HCP' },
+  { id: 'ccp3d', en: '3D CCP', bn: '৩ডি CCP' },
+];
 
 const AnimatedAtom: React.FC<any> = ({ targetPosition, isVisible, isHighlighted, isDimmed }) => {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -259,7 +266,7 @@ export const PackingLab: React.FC = () => {
     } else {
       setCheckpointPassed(true);
     }
-  }, [currentStepIndex, sequence]);
+  }, [currentStep.checkpoint, currentStepIndex, sequence]);
 
   // Playback Loop
   useEffect(() => {
@@ -287,85 +294,106 @@ export const PackingLab: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full mt-12 border-t border-gray-200 dark:border-slate-700 pt-8">
-      
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-slate-100 dark:bg-slate-800 p-4 rounded-xl border border-gray-200 dark:border-slate-700">
-        <h3 className="font-semibold text-xl text-slate-800 dark:text-slate-200">
-          <BilingualText en="Guided Animations: Packing & Voids" bn="নির্দেশিত অ্যানিমেশন: প্যাকিং এবং শূন্যস্থান" />
-        </h3>
-        
-        <div className="flex flex-wrap gap-2">
-          <button onClick={() => handleModeChange('square2d')} className={`px-4 py-2 rounded-lg border-2 text-sm font-bold transition-all ${packing === 'square2d' ? 'border-primary bg-blue-500 text-white shadow' : 'border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
-            <BilingualText en="2D Square" bn="২ডি বর্গাকার" />
-          </button>
-          <button onClick={() => handleModeChange('hexagonal2d')} className={`px-4 py-2 rounded-lg border-2 text-sm font-bold transition-all ${packing === 'hexagonal2d' ? 'border-primary bg-blue-500 text-white shadow' : 'border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
-            <BilingualText en="2D Hexagonal" bn="২ডি ষড়ভুজাকার" />
-          </button>
-          <button onClick={() => handleModeChange('hcp3d')} className={`px-4 py-2 rounded-lg border-2 text-sm font-bold transition-all ${packing === 'hcp3d' ? 'border-primary bg-blue-500 text-white shadow' : 'border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
-            <BilingualText en="3D HCP" bn="৩ডি HCP" />
-          </button>
-          <button onClick={() => handleModeChange('ccp3d')} className={`px-4 py-2 rounded-lg border-2 text-sm font-bold transition-all ${packing === 'ccp3d' ? 'border-primary bg-blue-500 text-white shadow' : 'border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
-            <BilingualText en="3D CCP" bn="৩ডি CCP" />
-          </button>
+    <section className="flex min-h-full flex-1 flex-col bg-[var(--surface-primary)] p-4 sm:p-6 lg:p-7" aria-labelledby="packing-laboratory-title">
+      <header className="mb-5 flex flex-col gap-5 rounded-2xl border border-[var(--border-default)] bg-[var(--surface-secondary)] p-5 shadow-[var(--shadow-low)] xl:flex-row xl:items-center xl:justify-between">
+        <div className="flex min-w-0 items-start gap-3">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-[var(--border-interactive)] bg-[var(--selected-state)] text-[var(--accent-primary)]" aria-hidden="true">
+            <Layers3 className="h-5 w-5" />
+          </span>
+          <div>
+            <p className="eyebrow mb-1"><BilingualText en="Guided animation" bn="নির্দেশিত অ্যানিমেশন" /></p>
+            <h3 id="packing-laboratory-title" className="text-xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-2xl">
+              <BilingualText en="Packing & Voids" bn="প্যাকিং এবং শূন্যস্থান" />
+            </h3>
+          </div>
         </div>
-      </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
-        
-        {/* Left Column: Player Controls & Narration */}
-        <div className="w-full md:w-1/3 flex flex-col gap-4">
-          <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl p-5 shadow-sm">
-            <h4 className="font-bold text-lg text-primary mb-1">
-              Step {currentStepIndex + 1} of {sequence.steps.length}
-            </h4>
-            <h5 className="font-bold text-slate-800 dark:text-slate-200 mb-4">
-              <BilingualText en={currentStep.titleEn} bn={currentStep.titleBn} />
-            </h5>
-            
-            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-lg border border-slate-100 dark:border-slate-700 min-h-[120px] flex items-center justify-center text-center">
-              <p className="text-slate-700 dark:text-slate-300">
-                <BilingualText en={currentStep.narrationEn} bn={currentStep.narrationBn} />
-              </p>
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap" role="group" aria-label="Packing model">
+          {packingModes.map((mode) => (
+            <button
+              key={mode.id}
+              type="button"
+              onClick={() => handleModeChange(mode.id)}
+              aria-pressed={packing === mode.id}
+              className={`min-h-11 rounded-xl border px-3 py-2 text-sm font-bold transition-[color,background-color,border-color,box-shadow] sm:px-4 ${packing === mode.id
+                ? 'border-[var(--border-interactive)] bg-[var(--accent-primary)] text-[var(--button-primary-text)] shadow-[var(--shadow-low)]'
+                : 'border-[var(--border-default)] bg-[var(--surface-primary)] text-[var(--text-secondary)] hover:border-[var(--border-strong)] hover:bg-[var(--hover-state)] hover:text-[var(--text-primary)]'
+              }`}
+            >
+              <BilingualText en={mode.en} bn={mode.bn} />
+            </button>
+          ))}
+        </div>
+      </header>
+
+      <div className="grid flex-1 gap-5 lg:grid-cols-[minmax(280px,0.72fr)_minmax(0,1.45fr)]">
+        <aside className="flex flex-col rounded-2xl border border-[var(--border-default)] bg-[var(--surface-secondary)] p-5 shadow-[var(--shadow-low)] sm:p-6" aria-live="polite">
+          <div className="mb-5">
+            <div className="mb-2 flex items-center justify-between gap-3">
+              <span className="text-sm font-extrabold text-[var(--accent-primary)]">
+                <BilingualText key={`progress-${packing}-${currentStepIndex}`} en={`Step ${currentStepIndex + 1} of ${sequence.steps.length}`} bn={`ধাপ ${currentStepIndex + 1} / ${sequence.steps.length}`} isInline />
+              </span>
+              <span className="text-xs font-bold text-[var(--text-muted)]">{Math.round(((currentStepIndex + 1) / sequence.steps.length) * 100)}%</span>
             </div>
+            <div className="h-1.5 overflow-hidden rounded-full bg-[var(--disabled-state)]" role="progressbar" aria-label="Animation progress" aria-valuemin={1} aria-valuemax={sequence.steps.length} aria-valuenow={currentStepIndex + 1}>
+              <div className="h-full rounded-full bg-[var(--accent-primary)] transition-[width]" style={{ width: `${((currentStepIndex + 1) / sequence.steps.length) * 100}%` }} />
+            </div>
+          </div>
 
-            {currentStep.checkpoint && !checkpointPassed && (
-              <div className="mt-4 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
-                <p className="font-bold text-orange-800 dark:text-orange-300 mb-2">
-                  <BilingualText en={currentStep.checkpoint.promptEn} bn={currentStep.checkpoint.promptBn} />
+          <h4 className="mb-4 text-lg font-extrabold text-[var(--text-primary)]">
+            <BilingualText key={`${packing}-${currentStepIndex}-title`} en={currentStep.titleEn} bn={currentStep.titleBn} />
+          </h4>
+
+          <div className="flex min-h-[132px] items-center justify-center rounded-xl border border-[var(--border-default)] bg-[var(--narration-background)] p-5 text-center shadow-[var(--shadow-low)]">
+            <p className="font-medium leading-relaxed text-[var(--text-secondary)]">
+              <BilingualText key={`${packing}-${currentStepIndex}-narration`} en={currentStep.narrationEn} bn={currentStep.narrationBn} />
+            </p>
+          </div>
+
+          {currentStep.checkpoint && !checkpointPassed && (
+              <div className="mt-4 rounded-xl border border-[color-mix(in_srgb,var(--warning)_50%,var(--border-default))] bg-[color-mix(in_srgb,var(--warning)_11%,var(--surface-primary))] p-4">
+                <p className="mb-3 font-bold text-[var(--warning)]">
+                  <BilingualText key={`${packing}-${currentStepIndex}-checkpoint`} en={currentStep.checkpoint.promptEn} bn={currentStep.checkpoint.promptBn} />
                 </p>
-                <form onSubmit={handleCheckpointSubmit} className="flex gap-2">
-                  <input 
-                    type="text" 
-                    value={checkpointAnswer} 
-                    onChange={e => setCheckpointAnswer(e.target.value)} 
-                    className="flex-1 px-3 py-2 border border-orange-300 dark:border-orange-700 rounded-md bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                <form onSubmit={handleCheckpointSubmit} className="flex flex-col gap-2 sm:flex-row">
+                  <input
+                    type="text"
+                    value={checkpointAnswer}
+                    onChange={e => setCheckpointAnswer(e.target.value)}
+                    className="min-w-0 flex-1 border-[color-mix(in_srgb,var(--warning)_55%,var(--border-default))] bg-[var(--surface-interactive)] px-3 py-2 text-[var(--text-primary)]"
                     placeholder="Enter answer..."
+                    aria-label="Checkpoint answer"
                   />
-                  <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md font-bold transition-colors">
+                  <button type="submit" className="rounded-lg bg-[var(--warning)] px-4 py-2 font-bold text-[var(--text-inverse)] transition-opacity hover:opacity-90">
                     Check
                   </button>
                 </form>
               </div>
-            )}
+          )}
 
-            <div className="mt-6 flex items-center justify-between border-t border-gray-100 dark:border-slate-800 pt-4">
+          <div className="mt-auto flex items-center justify-between border-t border-[var(--border-default)] pt-5 sm:mt-6">
               <button 
+                type="button"
                 onClick={() => setCurrentStepIndex(Math.max(0, currentStepIndex - 1))}
                 disabled={currentStepIndex === 0}
-                className="p-2 text-slate-500 hover:text-primary disabled:opacity-30 transition-colors"
+                className="icon-button h-11 w-11 text-[var(--text-secondary)] disabled:cursor-not-allowed disabled:opacity-35"
+                aria-label="Previous animation step"
               >
-                <SkipBack className="w-6 h-6" />
+                <SkipBack className="h-5 w-5" />
               </button>
-              
+
               <button 
+                type="button"
                 onClick={() => setIsPlaying(!isPlaying)}
                 disabled={!!currentStep.checkpoint && !checkpointPassed}
-                className="p-4 bg-primary text-white rounded-full hover:bg-blue-600 disabled:bg-gray-400 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1"
+                className="grid h-14 w-14 place-items-center rounded-full bg-[var(--accent-primary)] text-[var(--button-primary-text)] shadow-[var(--shadow-interactive)] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:bg-[var(--disabled-state)] disabled:text-[var(--text-muted)] disabled:shadow-none"
+                aria-label={isPlaying ? 'Pause guided animation' : 'Play guided animation'}
               >
-                {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8 ml-1" />}
+                {isPlaying ? <Pause className="h-7 w-7" /> : <Play className="ml-0.5 h-7 w-7" />}
               </button>
-              
+
               <button 
+                type="button"
                 onClick={() => {
                   if (currentStep.checkpoint && !checkpointPassed) {
                      setCheckpointAnswer(String(currentStep.checkpoint.expectedAnswer));
@@ -375,85 +403,90 @@ export const PackingLab: React.FC = () => {
                   }
                 }}
                 disabled={currentStepIndex === sequence.steps.length - 1}
-                className="p-2 text-slate-500 hover:text-primary disabled:opacity-30 transition-colors flex items-center gap-1"
+                className="icon-button h-11 w-11 text-[var(--text-secondary)] disabled:cursor-not-allowed disabled:opacity-35"
+                aria-label={currentStep.checkpoint && !checkpointPassed ? 'Reveal checkpoint answer' : 'Next animation step'}
               >
-                {currentStep.checkpoint && !checkpointPassed ? <CheckCircle2 className="w-6 h-6 text-orange-500" /> : <SkipForward className="w-6 h-6" />}
+                {currentStep.checkpoint && !checkpointPassed ? <CheckCircle2 className="h-5 w-5 text-[var(--warning)]" /> : <SkipForward className="h-5 w-5" />}
               </button>
-            </div>
           </div>
-        </div>
+        </aside>
 
-        {/* Right Column: 3D Visualization */}
-        <div className="w-full md:w-2/3 h-[500px] relative rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-slate-700 bg-slate-900">
-          
-          {/* Free Camera Toggle */}
-          <div className="absolute top-4 right-4 z-10">
+        <div className="flex min-h-[500px] flex-col overflow-hidden rounded-2xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-[var(--shadow-interactive)]">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[color-mix(in_srgb,var(--border-strong)_65%,transparent)] bg-[var(--canvas-surface)] px-4 py-3 text-sky-50">
+            <div className="flex items-center gap-2 text-sm font-extrabold">
+              <Layers3 className="h-4 w-4 text-sky-300" aria-hidden="true" />
+              <BilingualText en="Packing model" bn="প্যাকিং মডেল" />
+            </div>
             <button 
+              type="button"
               onClick={() => setIsFreeCamera(!isFreeCamera)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-bold transition-colors ${
+              aria-pressed={isFreeCamera}
+              className={`flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-bold transition-colors sm:text-sm ${
                 isFreeCamera 
-                  ? 'bg-blue-500 text-white shadow-md' 
-                  : 'bg-white/10 text-white/70 hover:bg-white/20 backdrop-blur-md'
+                  ? 'border-sky-300 bg-sky-400 text-slate-950 shadow-md'
+                  : 'border-sky-100/20 bg-white/10 text-sky-100/75 hover:border-sky-300/60 hover:bg-white/15 hover:text-white'
               }`}
             >
-              <View className="w-4 h-4" />
-              <BilingualText en={isFreeCamera ? 'Free Camera: ON' : 'Free Camera: OFF'} bn={isFreeCamera ? 'ফ্রি ক্যামেরা: চালু' : 'ফ্রি ক্যামেরা: বন্ধ'} />
+              <View className="h-4 w-4" aria-hidden="true" />
+              <BilingualText key={`camera-${isFreeCamera}`} en={isFreeCamera ? 'Free Camera: ON' : 'Free Camera: OFF'} bn={isFreeCamera ? 'ফ্রি ক্যামেরা: চালু' : 'ফ্রি ক্যামেরা: বন্ধ'} />
             </button>
           </div>
 
-          <CrystalCanvas>
-            <ambientLight intensity={0.6} />
-            <directionalLight position={[10, 10, 10]} intensity={0.8} />
-            <directionalLight position={[-10, -10, -10]} intensity={0.3} color="#4338ca" />
-            
-            {isFreeCamera && <OrbitControls makeDefault />}
-            <CameraRig active={!isFreeCamera} position={currentStep.camera?.position as [number, number, number] || [8, 8, 8]} />
-            
-            <group rotation={[-Math.PI / 4, 0, 0]}>
-              {particles.map((p) => {
-                const isVisible = visibleParticleIds.has(p.id);
-                const isHighlighted = currentStep.highlightParticleIds?.includes(p.id) ?? false;
-                const isDimmed = currentStep.dimOtherParticles && !isHighlighted;
-                
-                return (
-                  <AnimatedAtom 
-                    key={p.id} 
-                    targetPosition={p.pos} 
-                    isVisible={isVisible} 
-                    isHighlighted={isHighlighted} 
-                    isDimmed={isDimmed} 
-                  />
-                );
-              })}
-              
-              {voids.map((v) => {
-                const isVisible = visibleVoidIds.has(v.id);
-                const isHighlighted = currentStep.highlightParticleIds?.includes(v.id) ?? false;
-                const isDimmed = currentStep.dimOtherParticles && !isHighlighted;
+          <div className="min-h-[440px] flex-1">
+            <CrystalCanvas ariaLabel={`${packingModes.find((mode) => mode.id === packing)?.en} packing animation, step ${currentStepIndex + 1} of ${sequence.steps.length}`}>
+              <ambientLight intensity={0.6} />
+              <directionalLight position={[10, 10, 10]} intensity={0.8} />
+              <directionalLight position={[-10, -10, -10]} intensity={0.3} color="#4338ca" />
 
-                return (
-                  <AnimatedVoid 
-                    key={v.id} 
-                    targetPosition={v.pos} 
-                    type={v.type} 
-                    isVisible={isVisible}
-                    isDimmed={isDimmed}
-                  />
-                );
-              })}
+              {isFreeCamera && <OrbitControls makeDefault />}
+              <CameraRig active={!isFreeCamera} position={currentStep.camera?.position as [number, number, number] || [8, 8, 8]} />
 
-              {currentStep.showContactLines?.map((line, idx) => {
-                const p1 = particles.find(p => p.id === line.from)?.pos;
-                const p2 = particles.find(p => p.id === line.to)?.pos;
-                if (p1 && p2) {
-                   return <Line key={idx} points={[p1.toArray(), p2.toArray()]} color="white" lineWidth={3} />;
-                }
-                return null;
-              })}
-            </group>
-          </CrystalCanvas>
+              <group rotation={[-Math.PI / 4, 0, 0]}>
+                {particles.map((p) => {
+                  const isVisible = visibleParticleIds.has(p.id);
+                  const isHighlighted = currentStep.highlightParticleIds?.includes(p.id) ?? false;
+                  const isDimmed = currentStep.dimOtherParticles && !isHighlighted;
+
+                  return (
+                    <AnimatedAtom
+                      key={p.id}
+                      targetPosition={p.pos}
+                      isVisible={isVisible}
+                      isHighlighted={isHighlighted}
+                      isDimmed={isDimmed}
+                    />
+                  );
+                })}
+
+                {voids.map((v) => {
+                  const isVisible = visibleVoidIds.has(v.id);
+                  const isHighlighted = currentStep.highlightParticleIds?.includes(v.id) ?? false;
+                  const isDimmed = currentStep.dimOtherParticles && !isHighlighted;
+
+                  return (
+                    <AnimatedVoid
+                      key={v.id}
+                      targetPosition={v.pos}
+                      type={v.type}
+                      isVisible={isVisible}
+                      isDimmed={isDimmed}
+                    />
+                  );
+                })}
+
+                {currentStep.showContactLines?.map((line, idx) => {
+                  const p1 = particles.find(p => p.id === line.from)?.pos;
+                  const p2 = particles.find(p => p.id === line.to)?.pos;
+                  if (p1 && p2) {
+                    return <Line key={idx} points={[p1.toArray(), p2.toArray()]} color="white" lineWidth={3} />;
+                  }
+                  return null;
+                })}
+              </group>
+            </CrystalCanvas>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

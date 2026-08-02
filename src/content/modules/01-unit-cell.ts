@@ -22,7 +22,8 @@ export const UnitCellModule: ModuleContent = {
       content: {
         en: 'A crystal lattice is a regular, repeating three-dimensional arrangement of points in space. Each point, called a lattice point, represents the position of a constituent particle (atom, ion, or molecule).',
         bn: 'স্ফটিক জালক হলো ত্রিমাত্রিক স্থানে বিন্দুগুলির একটি নিয়মিত, পুনরাবৃত্তিমূলক বিন্যাস। প্রতিটি বিন্দু, যাকে জালক বিন্দু বলা হয়, একটি গঠনকারী কণার (পরমাণু, আয়ন বা অণু) অবস্থান নির্দেশ করে।'
-      }
+      },
+      modelConfig: { type: 'lattice-builder' }
     },
     {
       id: 's2',
@@ -31,7 +32,8 @@ export const UnitCellModule: ModuleContent = {
       content: {
         en: 'A unit cell is the smallest repeating portion of a crystal lattice. When repeated in different directions, it generates the entire crystal lattice, much like a single brick is repeated to build a wall.',
         bn: 'একক কোষ হলো স্ফটিক জালকের ক্ষুদ্রতম পুনরাবৃত্তিমূলক অংশ। এটি বিভিন্ন দিকে পুনরাবৃত্ত হলে সম্পূর্ণ স্ফটিক জালক তৈরি করে, ঠিক যেমন একটি ইট বারবার ব্যবহার করে একটি দেওয়াল তৈরি হয়।'
-      }
+      },
+      modelConfig: { type: 'unit-cell-sharing' }
     },
     {
       id: 's3',

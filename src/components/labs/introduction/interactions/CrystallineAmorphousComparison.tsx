@@ -3,8 +3,32 @@ import { BilingualText } from '../../../BilingualText';
 import { GuidedLessonEngine } from '../engine/GuidedLessonEngine';
 import type { LessonMode, AnimationStep } from '../engine/GuidedLessonTypes';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Sphere, Line, Html } from '@react-three/drei';
-import { useSpring, a } from '@react-spring/three';
+import { OrbitControls, Sphere, Line } from '@react-three/drei';
+import { a, useSpring } from '@react-spring/three';
+
+interface RevealedSphereProps {
+  position: [number, number, number];
+  color: string;
+  visible: boolean;
+  animated: boolean;
+  speed: number;
+}
+
+const RevealedSphere: React.FC<RevealedSphereProps> = ({ position, color, visible, animated, speed }) => {
+  const spring = useSpring({
+    scale: visible ? 1 : 0,
+    config: { tension: 170 * speed, friction: 18 },
+    immediate: !animated,
+  });
+
+  return (
+    <a.group position={position} scale={spring.scale}>
+      <Sphere args={[0.3, 32, 32]}>
+        <meshStandardMaterial color={color} roughness={0.3} metalness={0.08} />
+      </Sphere>
+    </a.group>
+  );
+};
 
 const steps: AnimationStep[] = [
   {
@@ -97,18 +121,18 @@ export const CrystallineAmorphousComparison: React.FC = () => {
       isAnimationOn={isAnimOn}
       speed={speed}
     >
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-12 pointer-events-none z-10 w-full px-12">
-        <div className="flex-1 text-center font-bold text-blue-600 dark:text-blue-400 text-lg drop-shadow-md">
+      <div className="pointer-events-none absolute inset-x-3 top-16 z-10 flex gap-3 sm:inset-x-8 sm:top-4 sm:gap-8">
+        <div className="flex-1 rounded-lg border border-sky-400/20 bg-[color-mix(in_srgb,var(--canvas-surface)_88%,transparent)] px-2 py-2 text-center text-sm font-bold text-sky-300 shadow-lg backdrop-blur-sm sm:text-base">
           <BilingualText en="Crystalline Solid" bn="স্ফটিকাকার কঠিন" />
         </div>
-        <div className="flex-1 text-center font-bold text-amber-600 dark:text-amber-500 text-lg drop-shadow-md">
+        <div className="flex-1 rounded-lg border border-amber-400/20 bg-[color-mix(in_srgb,var(--canvas-surface)_88%,transparent)] px-2 py-2 text-center text-sm font-bold text-amber-300 shadow-lg backdrop-blur-sm sm:text-base">
           <BilingualText en="Amorphous Solid" bn="অস্ফটিকাকার কঠিন" />
         </div>
       </div>
 
-      <Canvas camera={{ position: [0, 0, 8], fov: 40 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[0, 0, 10]} intensity={1} />
+      <Canvas camera={{ position: [0, 0, 11.5], fov: 42 }} dpr={[1, 1.75]}>
+        <ambientLight intensity={0.75} />
+        <directionalLight position={[0, 2, 10]} intensity={1.2} />
         <OrbitControls enablePan={mode === 'explore'} enableZoom={mode === 'explore'} enableRotate={mode === 'explore'} />
         
         {/* Crystalline Group - Left Side */}
@@ -117,10 +141,15 @@ export const CrystallineAmorphousComparison: React.FC = () => {
             const isRow1 = pos[1] === -1.5;
             const visible = stepIndex >= 2 || (stepIndex >= 1 && isRow1) || mode !== 'guided';
             
-            return visible && (
-              <Sphere key={`c-${idx}`} args={[0.3, 32, 32]} position={pos as [number,number,number]}>
-                <meshStandardMaterial color={stepIndex === 5 ? "#10b981" : "#3b82f6"} />
-              </Sphere>
+            return (
+              <RevealedSphere
+                key={`c-${idx}`}
+                position={pos as [number, number, number]}
+                color={stepIndex === 5 ? '#10b981' : '#2589dc'}
+                visible={visible}
+                animated={isAnimOn}
+                speed={speed}
+              />
             );
           })}
           
@@ -141,10 +170,15 @@ export const CrystallineAmorphousComparison: React.FC = () => {
             const isCluster = idx === 5 || idx === 6 || idx === 9;
             const color = (stepIndex === 4 && isCluster) ? "#ef4444" : "#f59e0b";
             
-            return visible && (
-              <Sphere key={`a-${idx}`} args={[0.3, 32, 32]} position={pos as [number,number,number]}>
-                <meshStandardMaterial color={color} />
-              </Sphere>
+            return (
+              <RevealedSphere
+                key={`a-${idx}`}
+                position={pos as [number, number, number]}
+                color={color}
+                visible={visible}
+                animated={isAnimOn}
+                speed={speed}
+              />
             );
           })}
           

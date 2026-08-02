@@ -1,10 +1,9 @@
 import React from 'react';
 import { PracticeCenter } from '../components/practice/PracticeCenter';
+import { PageContainer } from '../components/ui/LayoutPrimitives';
 
-export const Practice: React.FC = () => {
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <PracticeCenter />
-    </div>
-  );
-};
+export const Practice: React.FC = () => (
+  <div className="w-full">
+    <PageContainer><PracticeCenter /></PageContainer>
+  </div>
+);

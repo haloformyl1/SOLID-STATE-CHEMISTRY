@@ -1,0 +1,60 @@
+@layer base {
+  :root {
+    color-scheme: light;
+
+    --page-background: #f4f9fc;
+    --page-background-secondary: #eaf3f8;
+    --surface-primary: #ffffff;
+    --surface-secondary: #f8fbfd;
+    --surface-elevated: #f1f7fa;
+    --surface-interactive: #ffffff;
+
+    --text-primary: #102a3a;
+    --text-secondary: #315268;
+    --text-muted: #607f92;
+    --text-inverse: #ffffff;
+    --button-primary-text: #ffffff;
+
+    --accent-primary: #027dbb;
+    --accent-primary-strong: #03699b;
+    --accent-secondary: #0d9488;
+    --accent-violet: #6d4aff;
+    --accent-amber: #c96b05;
+
+    --border-default: #c9dfea;
+    --border-strong: #97c4d8;
+    --border-interactive: #0284c7;
+
+    --success: #137a54;
+    --warning: #a85f05;
+    --error: #ba3442;
+    --information: #027dbb;
+
+    --focus-ring: rgba(2, 132, 199, 0.42);
+    --selected-state: rgba(2, 132, 199, 0.11);
+    --hover-state: rgba(2, 132, 199, 0.075);
+    --disabled-state: rgba(107, 135, 152, 0.12);
+    --scrim: rgba(6, 19, 29, 0.55);
+
+    --canvas-background: #071923;
+    --canvas-surface: #0b2230;
+    --canvas-grid: rgba(125, 211, 252, 0.09);
+    --formula-background: #f3f0ff;
+    --narration-background: #eef9f7;
+    --header-background: rgba(248, 251, 253, 0.94);
+
+    --shadow-low: 0 1px 2px rgba(16, 42, 58, 0.06), 0 8px 24px rgba(16, 42, 58, 0.05);
+    --shadow-medium: 0 12px 32px rgba(16, 42, 58, 0.1);
+    --shadow-interactive: 0 18px 44px rgba(2, 132, 199, 0.13);
+    --shadow-modal: 0 24px 72px rgba(6, 19, 29, 0.24);
+
+    --atom-a: #0284c7;
+    --atom-b: #0d9488;
+    --atom-c: #6d4aff;
+    --atom-selected: #d97706;
+    --atom-neighbor: #0ea5e9;
+    --void-tetra: #6d4aff;
+    --void-octa: #0d9488;
+    --lattice-boundary: #6d8797;
+  }
+}

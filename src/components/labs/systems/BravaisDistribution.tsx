@@ -15,12 +15,12 @@ export const BravaisDistribution: React.FC = () => {
   const [active, setActive] = useState<string | null>(null);
 
   return (
-    <div className="w-full bg-slate-50 dark:bg-slate-900 rounded-xl p-6 md:p-8 border border-gray-200 dark:border-slate-800 my-8">
+    <div className="my-8 w-full rounded-xl border border-[var(--border-default)] bg-[var(--surface-secondary)] p-6 md:p-8">
       <div className="text-center mb-8">
-        <h3 className="text-2xl font-bold dark:text-white mb-2">
+        <h3 className="text-2xl font-bold text-[var(--text-str)] mb-2">
           <BilingualText en="Fourteen Bravais Lattices" bn="চৌদ্দটি ব্রাভেই জালক" />
         </h3>
-        <p className="text-xl font-mono font-bold text-slate-700 dark:text-slate-300">
+        <p className="text-xl font-mono font-bold text-[var(--text-norm)]">
           3 + 2 + 4 + 2 + 1 + 1 + 1 = 14
         </p>
       </div>
@@ -42,16 +42,16 @@ export const BravaisDistribution: React.FC = () => {
         ))}
       </div>
 
-      <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-200 dark:border-slate-700 min-h-[150px] flex items-center justify-center text-center transition-all duration-300">
+      <div className="flex min-h-[150px] items-center justify-center rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-6 text-center transition-all duration-300">
         {active ? (
           <div className="animate-fade-in-up">
-            <h4 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">
+            <h4 className="mb-4 text-xl font-bold text-[var(--text-primary)]">
               <BilingualText en={systems.find(s => s.id === active)!.name.en} bn={systems.find(s => s.id === active)!.name.bn} />
               {' '}- {systems.find(s => s.id === active)!.count} Bravais Lattices
             </h4>
             <div className="flex flex-wrap justify-center gap-3">
               {systems.find(s => s.id === active)!.types.map(t => (
-                <div key={t} className="px-4 py-2 bg-slate-100 dark:bg-slate-700 rounded-lg font-bold text-slate-700 dark:text-slate-200 shadow-sm border border-gray-200 dark:border-slate-600">
+                <div key={t} className="rounded-lg border border-[var(--border-strong)] bg-[var(--surface-primary)] px-4 py-2 font-bold text-[var(--text-secondary)] shadow-sm">
                   {t === 'P' && 'Primitive (P)'}
                   {t === 'I' && 'Body-centred (I)'}
                   {t === 'F' && 'Face-centred (F)'}
@@ -62,13 +62,13 @@ export const BravaisDistribution: React.FC = () => {
             </div>
           </div>
         ) : (
-          <p className="text-slate-500 dark:text-slate-400 font-medium">
+          <p className="font-medium text-[var(--text-muted)]">
             <BilingualText en="Select a crystal system above to view its Bravais lattices." bn="ব্রাভেই জালক দেখতে ওপরের একটি স্ফটিক তন্ত্র নির্বাচন করুন।" />
           </p>
         )}
       </div>
 
-      <div className="mt-6 text-sm text-slate-600 dark:text-slate-400 grid grid-cols-2 md:grid-cols-5 gap-2 text-center bg-white dark:bg-slate-800 p-4 rounded-lg border border-gray-200 dark:border-slate-700">
+      <div className="mt-6 text-sm text-[var(--text-mut)] grid grid-cols-2 md:grid-cols-5 gap-2 text-center bg-[var(--surf-elev)] p-4 rounded-lg border border-[var(--border-sub)]">
         <div><strong>P</strong> = Primitive<br/>(আদিম)</div>
         <div><strong>I</strong> = Body-centred<br/>(দেহকেন্দ্রিক)</div>
         <div><strong>F</strong> = Face-centred<br/>(তলকেন্দ্রিক)</div>

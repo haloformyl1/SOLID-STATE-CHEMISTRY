@@ -88,10 +88,10 @@ export const LatticeBuilder: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-white dark:bg-slate-800 rounded-xl p-4 md:p-6 shadow-sm border border-gray-200 dark:border-slate-700">
-      <div className="flex flex-col lg:flex-row gap-6">
-        <div className="w-full lg:w-2/3 flex flex-col gap-4">
-          <div className="h-[400px] bg-slate-50 dark:bg-slate-900 rounded-lg relative overflow-hidden border border-gray-200 dark:border-slate-800">
+    <div className="flex h-full min-h-[520px] w-full flex-col rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4 shadow-sm md:p-6">
+      <div className="flex flex-1 flex-col gap-6 lg:flex-row">
+        <div className="flex min-h-[380px] w-full flex-col gap-4 lg:w-2/3">
+          <div className="relative min-h-[320px] flex-1 overflow-hidden rounded-lg border border-[var(--border-strong)] bg-[var(--canvas-background)]">
             <Canvas camera={{ position: [3, 2, 4], fov: 45 }}>
               <ambientLight intensity={0.6} />
               <directionalLight position={[10, 10, 5]} intensity={1} />
@@ -104,21 +104,21 @@ export const LatticeBuilder: React.FC = () => {
             </Canvas>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-3 bg-slate-50 dark:bg-slate-900 p-3 rounded-lg border border-gray-200 dark:border-slate-800">
+          <div className="flex flex-wrap items-center justify-center gap-3 rounded-lg border border-[var(--border-default)] bg-[var(--surface-secondary)] p-3">
             <button
               onClick={() => setStep(Math.max(0, step - 1))}
               disabled={step === 0}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700 disabled:opacity-50 text-slate-700 dark:text-slate-300"
+              className="icon-button disabled:opacity-50"
             >
               <SkipBack className="w-5 h-5" />
             </button>
-            <div className="px-4 py-1 font-mono font-medium text-slate-700 dark:text-slate-300">
+            <div className="px-4 py-1 font-mono font-medium text-[var(--text-norm)]">
               {step + 1} / {steps.length}
             </div>
             <button
               onClick={() => setStep(Math.min(steps.length - 1, step + 1))}
               disabled={step === steps.length - 1}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700 disabled:opacity-50 text-slate-700 dark:text-slate-300"
+              className="icon-button disabled:opacity-50"
             >
               <SkipForward className="w-5 h-5" />
             </button>
@@ -127,34 +127,34 @@ export const LatticeBuilder: React.FC = () => {
 
         <div className="w-full lg:w-1/3 flex flex-col space-y-6">
           <div>
-            <h3 className="text-xl font-bold mb-2 dark:text-white">
+            <h3 className="text-xl font-bold mb-2 text-[var(--text-str)]">
               <BilingualText en="Building the Lattice" bn="জালক তৈরি করা" />
             </h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
+            <p className="text-[var(--text-mut)] text-sm leading-relaxed mb-6">
               <BilingualText 
                 en="Follow the steps to see how a single point extends into an infinite 3D periodic lattice, and how the unit cell is defined." 
                 bn="ধাপগুলি অনুসরণ করে দেখুন কীভাবে একটি একক বিন্দু অসীম 3D পর্যায়বৃত্ত জালকে পরিণত হয় এবং কীভাবে একক কোষ সংজ্ঞায়িত করা হয়।" 
               />
             </p>
 
-            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800/30 mb-6">
-              <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+            <div className="mb-6 rounded-lg border border-[color-mix(in_srgb,var(--accent-primary)_28%,var(--border-default))] bg-[color-mix(in_srgb,var(--accent-primary)_9%,var(--surface-primary))] p-4">
+              <h4 className="mb-2 font-semibold text-[var(--text-primary)]">
                 <BilingualText en="Current Step" bn="বর্তমান ধাপ" />
               </h4>
-              <p className="text-blue-800 dark:text-blue-200">
+              <p className="text-[var(--text-secondary)]">
                 <BilingualText en={steps[step].desc.en} bn={steps[step].desc.bn} />
               </p>
             </div>
 
             <div className="space-y-3">
-              <h4 className="font-semibold text-slate-700 dark:text-slate-300 text-sm uppercase tracking-wider">
+              <h4 className="font-semibold text-[var(--text-norm)] text-sm uppercase tracking-wider">
                 <BilingualText en="View Mode" bn="দর্শন মোড" />
               </h4>
               <div className="flex flex-col gap-2">
                 <button
                   onClick={() => setMode('points')}
                   className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
-                    mode === 'points' ? 'bg-primary/10 border-primary text-primary dark:text-primary-light' : 'bg-transparent border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                    mode === 'points' ? 'border-[var(--border-interactive)] bg-[var(--selected-state)] text-[var(--accent-primary)]' : 'border-[var(--border-default)] bg-transparent text-[var(--text-secondary)] hover:bg-[var(--hover-state)]'
                   }`}
                 >
                   <Minimize className="w-5 h-5" />
@@ -163,7 +163,7 @@ export const LatticeBuilder: React.FC = () => {
                 <button
                   onClick={() => setMode('particles')}
                   className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
-                    mode === 'particles' ? 'bg-primary/10 border-primary text-primary dark:text-primary-light' : 'bg-transparent border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                    mode === 'particles' ? 'border-[var(--border-interactive)] bg-[var(--selected-state)] text-[var(--accent-primary)]' : 'border-[var(--border-default)] bg-transparent text-[var(--text-secondary)] hover:bg-[var(--hover-state)]'
                   }`}
                 >
                   <BoxIcon className="w-5 h-5" />
@@ -172,7 +172,7 @@ export const LatticeBuilder: React.FC = () => {
                 <button
                   onClick={() => setMode('both')}
                   className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
-                    mode === 'both' ? 'bg-primary/10 border-primary text-primary dark:text-primary-light' : 'bg-transparent border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                    mode === 'both' ? 'border-[var(--border-interactive)] bg-[var(--selected-state)] text-[var(--accent-primary)]' : 'border-[var(--border-default)] bg-transparent text-[var(--text-secondary)] hover:bg-[var(--hover-state)]'
                   }`}
                 >
                   <Layers className="w-5 h-5" />
@@ -182,8 +182,8 @@ export const LatticeBuilder: React.FC = () => {
             </div>
 
             {mode === 'points' && (
-              <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/30 rounded-lg">
-                <p className="text-sm text-amber-800 dark:text-amber-200 text-center">
+              <div className="mt-4 rounded-lg border border-[color-mix(in_srgb,var(--warning)_35%,var(--border-default))] bg-[color-mix(in_srgb,var(--warning)_10%,var(--surface-primary))] p-3">
+                <p className="text-center text-sm text-[var(--text-secondary)]">
                   <BilingualText 
                     en="A lattice point is a geometrical position; the particle or group attached to it is the basis." 
                     bn="জালক বিন্দু একটি জ্যামিতিক অবস্থান; এর সঙ্গে যুক্ত কণা বা কণাগুচ্ছ হল ভিত্তি।" 

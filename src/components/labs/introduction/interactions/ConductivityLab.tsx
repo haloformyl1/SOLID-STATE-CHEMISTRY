@@ -4,7 +4,7 @@ import { GuidedLessonEngine } from '../engine/GuidedLessonEngine';
 import type { LessonMode, AnimationStep } from '../engine/GuidedLessonTypes';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
-import { useSpring, a } from '@react-spring/three';
+import { AnimatedGroup } from '../engine/AnimatedLessonPrimitives';
 
 const steps: AnimationStep[] = [
   {
@@ -36,8 +36,8 @@ export const ConductivityLab: React.FC = () => {
 
   const isMolten = mode === 'guided' ? stepIndex === 1 : temperature > 800;
 
-  const bulbColor = isMolten && isAnimOn ? "#fef08a" : "#475569";
-  const bulbGlow = isMolten && isAnimOn ? 1.5 : 0;
+  const bulbColor = isMolten ? '#fef08a' : '#475569';
+
 
   return (
     <GuidedLessonEngine
@@ -52,9 +52,9 @@ export const ConductivityLab: React.FC = () => {
       speed={speed}
     >
       {(mode === 'challenge' || mode === 'explore') && (
-        <div className="absolute top-4 right-4 z-10 flex flex-col gap-2 bg-[var(--bg-sec)]/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-amber-500/20 w-64">
-          <span className="text-sm font-bold text-amber-600 dark:text-amber-500 mb-2"><BilingualText en="Challenge: Heat the Solid" bn="অনুশীলন: কঠিনকে উত্তপ্ত করুন" /></span>
-          <label className="text-xs text-[var(--text-norm)]">Temperature (°C): {temperature}</label>
+        <div className="absolute right-3 top-16 z-10 flex w-[min(16rem,calc(100%-1.5rem))] flex-col gap-2 rounded-xl border border-[color-mix(in_srgb,var(--accent-amber)_38%,transparent)] bg-[color-mix(in_srgb,var(--canvas-surface)_92%,transparent)] p-4 text-sky-100 shadow-xl backdrop-blur-md sm:right-4 sm:top-4">
+          <span className="mb-1 text-sm font-bold text-[var(--accent-amber)]"><BilingualText en="Challenge: Heat the Solid" bn="অনুশীলন: কঠিনকে উত্তপ্ত করুন" /></span>
+          <label className="text-xs text-sky-100/75">Temperature (°C): {temperature}</label>
           <input 
             type="range" 
             min="25" max="1000" step="5" 
@@ -62,27 +62,28 @@ export const ConductivityLab: React.FC = () => {
             onChange={(e) => setTemperature(parseInt(e.target.value))}
             className="w-full accent-amber-500"
           />
-          <p className="text-[11px] text-[var(--text-norm)] opacity-70 mt-2">
+          <p className="mt-2 text-[11px] leading-relaxed text-sky-100/70">
             <BilingualText en="Heat above melting point (~800°C) to observe conductivity." bn="পরিবাহিতা পর্যবেক্ষণ করতে গলনাঙ্কের উপরে (~800°C) উত্তপ্ত করুন।" />
           </p>
         </div>
       )}
 
       {/* 2D Overlay for Bulb (easier than full 3D bulb modeling) */}
-      <div className="absolute top-8 left-8 z-10 flex flex-col items-center">
+      <div className="absolute bottom-20 left-5 z-10 flex flex-col items-center rounded-xl border border-white/10 bg-[color-mix(in_srgb,var(--canvas-surface)_86%,transparent)] p-3 shadow-lg backdrop-blur-sm sm:bottom-auto sm:left-8 sm:top-24">
         <div 
-          className="w-12 h-12 rounded-full border-2 border-slate-600 transition-all duration-500"
+          className="h-12 w-12 rounded-full border-2 border-slate-500 transition-all duration-500"
           style={{ 
             backgroundColor: bulbColor, 
-            boxShadow: isMolten && isAnimOn ? `0 0 20px 5px rgba(254, 240, 138, 0.6)` : 'none' 
+            boxShadow: isMolten ? '0 0 20px 5px rgba(254, 240, 138, 0.6)' : 'none',
           }}
-        ></div>
-        <div className="w-6 h-6 bg-slate-700 rounded-b-md"></div>
+          aria-label={isMolten ? 'Circuit bulb on' : 'Circuit bulb off'}
+        />
+        <div className="h-6 w-6 rounded-b-md bg-slate-600" />
       </div>
 
-      <Canvas camera={{ position: [0, 2, 7], fov: 40 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[0, 5, 5]} intensity={1} />
+      <Canvas camera={{ position: [0, 2, 10], fov: 42 }} dpr={[1, 1.75]}>
+        <ambientLight intensity={0.75} />
+        <directionalLight position={[0, 5, 7]} intensity={1.2} />
         <OrbitControls enablePan={mode === 'explore'} enableZoom={mode === 'explore'} />
         
         {/* Electrodes */}
@@ -103,24 +104,22 @@ export const ConductivityLab: React.FC = () => {
             [-1, 0, 1].map(y => 
               [-1, 0, 1].map(z => {
                 const isPositive = (x+y+z) % 2 !== 0;
-                
-                // If molten, they move. Positive towards negative electrode (left), Negative towards positive electrode (right)
-                const time = Date.now() * 0.002 * speed;
-                let px = x, py = y, pz = z;
-                
-                if (isMolten && isAnimOn) {
-                  // Random drift + directional flow
-                  const driftX = isPositive ? -1 * (time % 2) : 1 * (time % 2);
-                  const noise = Math.sin(time * 5 + x + y) * 0.5;
-                  px = x * 1.5 + driftX + noise;
-                  py = y * 1.5 + Math.cos(time * 4 + z) * 0.5;
-                  pz = z * 1.5 + Math.sin(time * 3 + x) * 0.5;
-                }
 
                 return (
-                  <Sphere key={`${x}${y}${z}`} args={[0.3, 32, 32]} position={[px, py, pz]}>
-                    <meshStandardMaterial color={isPositive ? "#ef4444" : "#10b981"} />
-                  </Sphere>
+                  <AnimatedGroup
+                    key={`${x}${y}${z}`}
+                    basePosition={[x * 1.35, y * 1.25, z * 1.25]}
+                    enabled={isMolten && isAnimOn}
+                    speed={speed}
+                    phase={(x + 2) * 0.17 + (y + 2) * 0.31 + (z + 2) * 0.47}
+                    amplitude={1.15}
+                    direction={isPositive ? -1 : 1}
+                    motion="flow"
+                  >
+                    <Sphere args={[0.3, 32, 32]}>
+                      <meshStandardMaterial color={isPositive ? '#ef4444' : '#10b981'} roughness={0.3} metalness={0.08} />
+                    </Sphere>
+                  </AnimatedGroup>
                 );
               })
             )

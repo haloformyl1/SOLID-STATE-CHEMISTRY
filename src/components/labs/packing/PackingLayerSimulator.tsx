@@ -101,9 +101,9 @@ export const PackingLayerSimulator: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
-        <h4 className="font-bold text-slate-800 dark:text-slate-200 mb-4 text-center">
+    <div className="flex h-full min-h-[620px] flex-col gap-4">
+      <div className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-6">
+        <h4 className="font-bold text-[var(--text-str)] mb-4 text-center">
           <BilingualText en="Build Your Crystal" bn="আপনার স্ফটিক তৈরি করুন" />
         </h4>
         
@@ -135,13 +135,13 @@ export const PackingLayerSimulator: React.FC = () => {
             </button>
           </div>
           
-          <div className="h-16 w-px bg-slate-200 dark:bg-slate-700 hidden md:block"></div>
+          <div className="hidden h-16 w-px bg-[var(--border-default)] md:block"></div>
           
           <div className="flex gap-2">
-            <button onClick={undo} disabled={sequence.length <= 1} className="p-3 bg-white dark:bg-slate-700 rounded-xl shadow-sm border border-slate-200 dark:border-slate-600 hover:bg-slate-50 disabled:opacity-50">
-              <Undo className="w-5 h-5 text-slate-700 dark:text-slate-300" />
+            <button type="button" onClick={undo} disabled={sequence.length <= 1} className="icon-button h-12 w-12 rounded-xl disabled:opacity-50">
+              <Undo className="w-5 h-5 text-[var(--text-norm)]" />
             </button>
-            <button onClick={reset} disabled={sequence.length <= 1} className="p-3 bg-white dark:bg-slate-700 rounded-xl shadow-sm border border-slate-200 dark:border-slate-600 hover:bg-red-50 disabled:opacity-50">
+            <button type="button" onClick={reset} disabled={sequence.length <= 1} className="icon-button h-12 w-12 rounded-xl disabled:opacity-50">
               <Trash2 className="w-5 h-5 text-red-500" />
             </button>
           </div>
@@ -174,7 +174,7 @@ export const PackingLayerSimulator: React.FC = () => {
       </div>
 
       <div className="flex gap-4">
-        <div className="flex-1 bg-slate-900 h-[28rem] rounded-xl overflow-hidden relative border-2 border-slate-700 shadow-inner">
+        <div className="relative min-h-[420px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
           <Canvas camera={{ position: [12, 10, 12], fov: 45 }}>
             <ambientLight intensity={0.6} />
             <directionalLight position={[10, 10, 10]} intensity={0.8} />

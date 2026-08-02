@@ -70,17 +70,17 @@ export const VoidExplorer: React.FC = () => {
   const [showLines, setShowLines] = useState(true);
 
   return (
-    <div className="w-full bg-slate-50 dark:bg-slate-900 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-slate-800">
+    <div className="w-full bg-[var(--bg-sec)] rounded-xl p-4 md:p-6 border border-[var(--border-sub)]">
       <div className="flex flex-col xl:flex-row gap-6">
-        <div className="w-full xl:w-2/3 h-[450px] bg-white dark:bg-slate-800 rounded-lg relative overflow-hidden border border-gray-200 dark:border-slate-700">
+        <div className="w-full xl:w-2/3 h-[450px] bg-[var(--surf-elev)] rounded-lg relative overflow-hidden border border-[var(--border-sub)]">
           <Canvas camera={{ position: [4, 3, 5], fov: 45 }}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 10]} intensity={1} />
             <VoidModel type={type} showLines={showLines} />
             <OrbitControls enablePan={false} autoRotate autoRotateSpeed={1.5} />
           </Canvas>
-          <div className="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 p-2 rounded shadow backdrop-blur">
-            <span className="font-bold text-slate-800 dark:text-slate-200">
+          <div className="absolute top-4 right-4 bg-[var(--bg-sec)]/90 p-2 rounded shadow backdrop-blur">
+            <span className="font-bold text-[var(--text-str)]">
               <BilingualText 
                 en={type === 'tetrahedral' ? 'Tetrahedral Void' : 'Octahedral Void'} 
                 bn={type === 'tetrahedral' ? 'চতুস্তলকীয় শূন্যস্থান' : 'অষ্টতলকীয় শূন্যস্থান'} 
@@ -91,10 +91,10 @@ export const VoidExplorer: React.FC = () => {
 
         <div className="w-full xl:w-1/3 flex flex-col justify-center space-y-6">
           <div>
-            <h3 className="text-xl font-bold mb-2 dark:text-white">
+            <h3 className="text-xl font-bold mb-2 text-[var(--text-str)]">
               <BilingualText en="Explore Interstitial Voids" bn="অন্তর্বর্তী শূন্যস্থান অন্বেষণ করুন" />
             </h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm mb-6">
+            <p className="text-[var(--text-mut)] text-sm mb-6">
               <BilingualText 
                 en="Voids are the empty spaces left between closely packed spheres. The red sphere represents the void's center." 
                 bn="শূন্যস্থান হলো নিবিড়ভাবে সন্নিবেশিত গোলকগুলির মধ্যবর্তী ফাঁকা স্থান। লাল গোলকটি শূন্যস্থানের কেন্দ্র নির্দেশ করে।" 
@@ -105,13 +105,13 @@ export const VoidExplorer: React.FC = () => {
               <button
                 onClick={() => setType('tetrahedral')}
                 className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
-                  type === 'tetrahedral' ? 'border-primary bg-primary/10' : 'border-gray-200 dark:border-slate-700 hover:border-primary/50'
+                  type === 'tetrahedral' ? 'border-primary bg-primary/10' : 'border-[var(--border-sub)] hover:border-primary/50'
                 }`}
               >
-                <div className="font-bold text-slate-800 dark:text-slate-200 mb-1">
+                <div className="font-bold text-[var(--text-str)] mb-1">
                   <BilingualText en="Tetrahedral Void (TV)" bn="চতুস্তলকীয় শূন্যস্থান (TV)" />
                 </div>
-                <div className="text-xs text-slate-600 dark:text-slate-400">
+                <div className="text-xs text-[var(--text-mut)]">
                   <BilingualText en="Formed by 4 spheres. Coordination number = 4." bn="৪টি গোলক দ্বারা গঠিত। সর্বাঙ্ক সংখ্যা = ৪।" />
                 </div>
               </button>
@@ -119,20 +119,20 @@ export const VoidExplorer: React.FC = () => {
               <button
                 onClick={() => setType('octahedral')}
                 className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
-                  type === 'octahedral' ? 'border-primary bg-primary/10' : 'border-gray-200 dark:border-slate-700 hover:border-primary/50'
+                  type === 'octahedral' ? 'border-primary bg-primary/10' : 'border-[var(--border-sub)] hover:border-primary/50'
                 }`}
               >
-                <div className="font-bold text-slate-800 dark:text-slate-200 mb-1">
+                <div className="font-bold text-[var(--text-str)] mb-1">
                   <BilingualText en="Octahedral Void (OV)" bn="অষ্টতলকীয় শূন্যস্থান (OV)" />
                 </div>
-                <div className="text-xs text-slate-600 dark:text-slate-400">
+                <div className="text-xs text-[var(--text-mut)]">
                   <BilingualText en="Formed by 6 spheres. Coordination number = 6." bn="৬টি গোলক দ্বারা গঠিত। সর্বাঙ্ক সংখ্যা = ৬।" />
                 </div>
               </button>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-gray-200 dark:border-slate-700">
-              <label className="flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-300 font-medium">
+            <div className="mt-6 pt-4 border-t border-[var(--border-sub)]">
+              <label className="flex items-center gap-2 cursor-pointer text-[var(--text-norm)] font-medium">
                 <input 
                   type="checkbox" 
                   checked={showLines} 

@@ -6,26 +6,17 @@ export const IntroductionModule: ModuleContent = {
     en: 'Introduction to the Solid State',
     bn: 'কঠিন অবস্থার ভূমিকা'
   },
-  description: {
-    en: 'Explore the fundamental nature of solid matter, including molecular interactions, crystalline structures, and crystal lattices.',
-    bn: 'কঠিন পদার্থের মৌলিক প্রকৃতি অন্বেষণ করুন, যার মধ্যে আণবিক মিথস্ক্রিয়া, স্ফটিকাকার গঠন এবং স্ফটিক জালক অন্তর্ভুক্ত।'
-  },
-  estimatedMinutes: 45,
-  difficulty: 'beginner',
-  prerequisites: [
-    { en: 'Basic Atomic Structure', bn: 'মৌলিক পারমাণবিক গঠন' },
-    { en: 'Chemical Bonding', bn: 'রাসায়নিক বন্ধন' }
-  ],
-  topics: [
-    { en: 'Crystalline vs Amorphous', bn: 'স্ফটিকাকার বনাম অস্ফটিকাকার' },
-    { en: 'Solid Classifications', bn: 'কঠিন পদার্থের শ্রেণিবিন্যাস' },
-    { en: 'Lattice & Unit Cell Basics', bn: 'জালক এবং একক কোষের প্রাথমিক ধারণা' }
-  ],
+  
+  order: 0,
   learningObjectives: [
     { en: 'Understand the general characteristics of solid state matter.', bn: 'কঠিন অবস্থার পদার্থের সাধারণ বৈশিষ্ট্যগুলি বুঝতে পারা।' },
     { en: 'Differentiate between crystalline and amorphous solids.', bn: 'স্ফটিকাকার এবং অস্ফটিকাকার কঠিন পদার্থের মধ্যে পার্থক্য করতে পারা।' },
     { en: 'Classify crystalline solids based on binding forces.', bn: 'বন্ধন বলের উপর ভিত্তি করে স্ফটিকাকার কঠিন পদার্থগুলিকে শ্রেণিবদ্ধ করা।' }
   ],
+  misconceptions: [],
+  summary: [],
+  practiceQuestionIds: [],
+  glossaryReferences: [],
   sections: [
     // 1. What Is a Solid?
     {
@@ -82,71 +73,86 @@ export const IntroductionModule: ModuleContent = {
       },
       modelConfig: { type: 'classification-tree-lab' }
     },
+    {
+      id: 'sec-binding-forces',
+      type: 'interactive_3d',
+      title: { en: 'Interactive Exploration: Binding Forces', bn: 'ইন্টারেক্টিভ অন্বেষণ: বন্ধন বল' },
+      content: { en: 'Explore the different types of binding forces that hold crystalline solids together.', bn: 'স্ফটিকাকার কঠিন পদার্থগুলিকে একত্রে ধরে রাখা বিভিন্ন ধরণের বন্ধন বলগুলি অন্বেষণ করুন।' },
+      modelConfig: { type: 'binding-force-lab' }
+    },
     // 5.1 Ionic Solids
     {
       id: 'sec-ionic',
-      type: 'interactive_2d',
+      type: 'text',
       title: { en: 'Ionic Solids', bn: 'আয়নিক কঠিন' },
       content: {
         en: 'Constituent particles are cations and anions held by strong electrostatic attraction. They are generally hard and brittle, have high melting points, and are poor electrical conductors in the solid state. However, they conduct electricity when molten or in aqueous solution because the ions become mobile. Examples: NaCl, KCl, MgO.',
         bn: 'গঠনকারী কণাগুলি হল ক্যাটায়ন এবং অ্যানায়ন যা শক্তিশালী স্থির-তড়িৎ আকর্ষণ বল দ্বারা যুক্ত থাকে। এগুলি সাধারণত শক্ত এবং ভঙ্গুর হয়, গলনাঙ্ক উচ্চ হয় এবং কঠিন অবস্থায় বিদ্যুৎ পরিবহনে অক্ষম। তবে গলিত বা জলীয় দ্রবণে এরা বিদ্যুৎ পরিবহন করে কারণ তখন আয়নগুলি সচল হয়। উদাহরণ: NaCl, KCl, MgO।'
-      },
-      modelConfig: { type: 'ionic-lab' }
+      }
+    },
+    {
+      id: 'sec-conductivity-lab',
+      type: 'interactive_3d',
+      title: { en: 'Interactive Exploration: Ionic Conductivity', bn: 'ইন্টারেক্টিভ অন্বেষণ: আয়নিক পরিবাহিতা' },
+      content: { en: 'Understand why ionic solids conduct electricity only in the molten state.', bn: 'আয়নিক কঠিন পদার্থগুলি কেন কেবল গলিত অবস্থায় বিদ্যুৎ পরিবহন করে তা বুঝুন।' },
+      modelConfig: { type: 'conductivity-lab' }
     },
     // 5.2 Metallic Solids
     {
       id: 'sec-metallic',
-      type: 'interactive_2d',
+      type: 'text',
       title: { en: 'Metallic Solids', bn: 'ধাতব কঠিন' },
       content: {
         en: 'The microscopic model consists of positive metal cores associated with delocalised valence electrons, held together by metallic bonding. They are good electrical and thermal conductors, generally malleable and ductile, often lustrous, and have varying hardness and melting points. Examples: Fe, Cu, Zn, Ag, Au.',
         bn: 'এর আণুবীক্ষণিক মডেলে ধনাত্মক ধাতব কোর (core) এবং স্থানান্তরযোগ্য (delocalised) যোজ্যতা ইলেকট্রন থাকে, যা ধাতব বন্ধন দ্বারা একত্রে যুক্ত থাকে। এরা বিদ্যুৎ এবং তাপের সুপরিবাহী, সাধারণত নমনীয় এবং প্রসারণশীল, প্রায়শই উজ্জ্বল হয় এবং এদের কাঠিন্য ও গলনাঙ্ক পরিবর্তনশীল। উদাহরণ: Fe, Cu, Zn, Ag, Au।'
-      },
-      modelConfig: { type: 'metallic-lab' }
+      }
     },
     // 5.3 Covalent or Network Solids
     {
       id: 'sec-covalent',
-      type: 'interactive_2d',
+      type: 'text',
       title: { en: 'Covalent or Network Solids', bn: 'সমযোজী বা জালকীয় কঠিন' },
       content: {
         en: 'Constituent units are atoms connected through an extended network of strong, directional covalent bonds. They are generally very hard, have very high melting points, are difficult to deform, and are generally poor electrical conductors (e.g., diamond, silicon carbide). Graphite is an important exception: it has strong covalent bonds within sheets, but weaker attractions between sheets allowing them to slide, and delocalised electrons permit electrical conduction.',
         bn: 'গঠনকারী এককগুলি হল পরমাণু যা শক্তিশালী ও দিকনির্ভর সমযোজী বন্ধনে যুক্ত একটি বিস্তৃত জালক তৈরি করে। এরা সাধারণত খুব শক্ত হয়, খুব উচ্চ গলনাঙ্ক বিশিষ্ট হয়, এদের আকৃতি বিকৃত করা কঠিন এবং সাধারণত বিদ্যুৎ পরিবহনে অক্ষম (যেমন- হীরা, সিলিকন কার্বাইড)। গ্রাফাইট একটি গুরুত্বপূর্ণ ব্যতিক্রম: এর স্তরগুলির মধ্যে শক্তিশালী সমযোজী বন্ধন থাকে, কিন্তু স্তরগুলির মাঝে দুর্বল আকর্ষণ থাকে যার ফলে স্তরগুলি পিছলে যেতে পারে, এবং স্থানান্তরযোগ্য ইলেকট্রন বিদ্যুৎ পরিবহনে সাহায্য করে।'
-      },
-      modelConfig: { type: 'network-lab' }
+      }
+    },
+    {
+      id: 'sec-graphite-exception',
+      type: 'interactive_3d',
+      title: { en: 'Interactive Exploration: Graphite', bn: 'ইন্টারেক্টিভ অন্বেষণ: গ্রাফাইট' },
+      content: { en: 'Graphite is a covalent solid but conducts electricity due to delocalised electrons between layers.', bn: 'গ্রাফাইট একটি সমযোজী কঠিন পদার্থ হওয়া সত্ত্বেও স্তরগুলির মধ্যে স্থানান্তরযোগ্য ইলেকট্রনের কারণে বিদ্যুৎ পরিবহন করে।' },
+      modelConfig: { type: 'graphite-exception-lab' }
     },
     // 5.4.1 Non-polar Molecular Solids
     {
       id: 'sec-non-polar',
-      type: 'interactive_2d',
+      type: 'text',
       title: { en: 'Non-polar Molecular Solids', bn: 'অধ্রুবীয় আণবিক কঠিন' },
       content: {
         en: 'Constituent particles are non-polar molecules (or noble gas atoms) held by weak London dispersion forces involving temporary and induced dipoles. They are generally soft, low melting, and insulating. Examples: Solid Ar, dry ice (CO₂), I₂.',
         bn: 'গঠনকারী কণাগুলি হল অধ্রুবীয় অণু (বা নিষ্ক্রিয় গ্যাসের পরমাণু) যা ক্ষণস্থায়ী এবং আবেশিত ডাইপোল যুক্ত দুর্বল লন্ডন বিচ্ছুরণ বল (dispersion force) দ্বারা আবদ্ধ থাকে। এরা সাধারণত নরম, নিম্ন গলনাঙ্ক বিশিষ্ট এবং অন্তরক হয়। উদাহরণ: কঠিন Ar, শুষ্ক বরফ (CO₂), I₂।'
-      },
-      modelConfig: { type: 'dispersion-lab' }
+      }
     },
     // 5.4.2 Polar Molecular Solids
     {
       id: 'sec-polar',
-      type: 'interactive_2d',
+      type: 'text',
       title: { en: 'Polar Molecular Solids', bn: 'ধ্রুবীয় আণবিক কঠিন' },
       content: {
         en: 'Constituent particles are polar molecules with permanent dipole moments held by dipole-dipole interactions. Favourable orientations occur when δ+ aligns toward δ−. They are generally soft, have low-to-moderate melting points compared to ionic solids, and are insulating. Examples: Solid HCl, solid SO₂.',
         bn: 'গঠনকারী কণাগুলি হল স্থায়ী ডাইপোল মোমেন্ট যুক্ত ধ্রুবীয় অণু, যা ডাইপোল-ডাইপোল মিথস্ক্রিয়া দ্বারা আবদ্ধ থাকে। অণুগুলির অনুকূল বিন্যাস ঘটে যখন δ+ প্রান্ত δ− প্রান্তের দিকে মুখ করে থাকে। আয়নিক কঠিন পদার্থের তুলনায় এরা সাধারণত নরম, নিম্ন-থেকে-মাঝারি গলনাঙ্ক বিশিষ্ট এবং অন্তরক হয়। উদাহরণ: কঠিন HCl, কঠিন SO₂।'
-      },
-      modelConfig: { type: 'hcl-orientation-lab' }
+      }
     },
     // 5.4.3 Hydrogen-Bonded Molecular Solids
     {
       id: 'sec-h-bonded',
-      type: 'interactive_2d',
+      type: 'text',
       title: { en: 'Hydrogen-Bonded Molecular Solids', bn: 'হাইড্রোজেন-বন্ধনযুক্ত আণবিক কঠিন' },
       content: {
         en: 'Hydrogen bonding occurs when hydrogen covalently bonded to a strongly electronegative atom (N, O, F) interacts with another electronegative atom bearing a lone pair. They generally have higher melting points than comparable molecules without hydrogen bonding, are insulating, and remain molecular rather than network solids. Examples: Ice (H₂O).',
         bn: 'হাইড্রোজেন বন্ধন তখন গঠিত হয় যখন তীব্র তড়িৎ-ঋণাত্মক পরমাণুর (N, O, F) সাথে সমযোজী বন্ধনে যুক্ত হাইড্রোজেন অন্য একটি তড়িৎ-ঋণাত্মক পরমাণুর (যার নিঃসঙ্গ ইলেকট্রন জোড় আছে) সাথে মিথস্ক্রিয়া করে। সমতুল্য সাধারণ আণবিক কঠিন পদার্থের তুলনায় এদের গলনাঙ্ক সাধারণত বেশি হয়, এরা অন্তরক হয় এবং জালকীয় কঠিন না হয়ে আণবিক কঠিন হিসেবেই থাকে। উদাহরণ: বরফ (H₂O)।'
-      },
-      modelConfig: { type: 'hydrogen-bond-lab' }
+      }
     },
     // 6. Crystal Lattice and Space Lattice
     {

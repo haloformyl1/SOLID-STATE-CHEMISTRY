@@ -35,13 +35,13 @@ export const HcpAtomCounter: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col sm:flex-row justify-between items-center bg-slate-100 dark:bg-slate-800 p-4 rounded-xl border border-gray-200 dark:border-slate-700 gap-4">
+    <div className="flex h-full min-h-[520px] flex-col gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4 sm:flex-row sm:items-center">
         <div className="flex-1">
-          <h4 className="font-bold text-slate-800 dark:text-slate-200">
+          <h4 className="font-bold text-[var(--text-primary)]">
             <BilingualText en="HCP Effective Atoms Calculation" bn="HCP কার্যকর পরমাণু গণনা" />
           </h4>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">
             {step === 0 && <BilingualText en="Start by highlighting the different positions." bn="ভিন্ন ভিন্ন অবস্থান হাইলাইট করে শুরু করুন।" />}
             {step === 1 && <BilingualText en="12 corners shared by 6 cells each. (12 × 1/6 = 2)" bn="১২টি কোণ প্রত্যেকে ৬টি কোষ দ্বারা ভাগ করা হয়। (১২ × ১/৬ = ২)" />}
             {step === 2 && <BilingualText en="2 face-centres shared by 2 cells each. (2 × 1/2 = 1)" bn="২টি পৃষ্ঠকেন্দ্র প্রত্যেকে ২টি কোষ দ্বারা ভাগ করা হয়। (২ × ১/২ = ১)" />}
@@ -52,7 +52,8 @@ export const HcpAtomCounter: React.FC = () => {
 
         <button 
           onClick={() => setStep(s => (s + 1) % 5)}
-          className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition-colors whitespace-nowrap shadow-sm"
+          type="button"
+          className="btn btn-primary whitespace-nowrap px-6 py-2 font-bold"
         >
           {step === 4 ? (
             <BilingualText en="Reset" bn="রিসেট" />
@@ -62,10 +63,10 @@ export const HcpAtomCounter: React.FC = () => {
         </button>
       </div>
 
-      <div className="h-80 bg-slate-900 rounded-xl overflow-hidden relative border-2 border-slate-700 shadow-inner">
-        <Canvas camera={{ position: [8, 6, 8], fov: 40 }}>
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[10, 10, 10]} intensity={0.8} />
+      <div className="relative min-h-[360px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
+        <Canvas camera={{ position: [4.8, 3.4, 4.8], fov: 38 }}>
+          <ambientLight intensity={1.1} />
+          <directionalLight position={[8, 10, 7]} intensity={1.25} />
           
           {/* Draw prism edges */}
           {corners.map((v, i) => (
@@ -86,7 +87,7 @@ export const HcpAtomCounter: React.FC = () => {
             <Sphere key={`c-${i}`} position={p} args={[r, 32, 32]}>
               <meshStandardMaterial 
                 color={step === 1 || step === 4 ? "#ef4444" : "#94a3b8"} 
-                transparent opacity={step === 0 || step === 1 || step === 4 ? 0.9 : 0.2} 
+                transparent opacity={step === 0 || step === 1 || step === 4 ? 0.96 : 0.16} 
               />
             </Sphere>
           ))}
@@ -96,7 +97,7 @@ export const HcpAtomCounter: React.FC = () => {
             <Sphere key={`f-${i}`} position={p} args={[r, 32, 32]}>
               <meshStandardMaterial 
                 color={step === 2 || step === 4 ? "#3b82f6" : "#94a3b8"} 
-                transparent opacity={step === 0 || step === 2 || step === 4 ? 0.9 : 0.2} 
+                transparent opacity={step === 0 || step === 2 || step === 4 ? 0.96 : 0.16} 
               />
             </Sphere>
           ))}
@@ -106,12 +107,12 @@ export const HcpAtomCounter: React.FC = () => {
             <Sphere key={`b-${i}`} position={p} args={[r, 32, 32]}>
               <meshStandardMaterial 
                 color={step === 3 || step === 4 ? "#10b981" : "#94a3b8"} 
-                transparent opacity={step === 0 || step === 3 || step === 4 ? 0.9 : 0.2} 
+                transparent opacity={step === 0 || step === 3 || step === 4 ? 0.96 : 0.16} 
               />
             </Sphere>
           ))}
 
-          <OrbitControls makeDefault />
+          <OrbitControls makeDefault enableDamping dampingFactor={0.08} minDistance={3.2} maxDistance={12} />
         </Canvas>
       </div>
     </div>

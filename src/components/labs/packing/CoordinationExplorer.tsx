@@ -48,6 +48,26 @@ export const CoordinationExplorer: React.FC = () => {
           }
         }
       }
+    } else if (structure === '3d-bcc') {
+      const offset = d / Math.sqrt(3);
+      for (const x of [-offset, offset]) {
+        for (const y of [-offset, offset]) {
+          for (const z of [-offset, offset]) points.push([x, y, z]);
+        }
+      }
+    } else if (structure === '3d-hcp' || structure === '3d-ccp') {
+      for (let i = 0; i < 6; i++) {
+        const angle = (i * Math.PI) / 3;
+        points.push([d * Math.cos(angle), d * Math.sin(angle), 0]);
+      }
+      const layerRadius = d / Math.sqrt(3);
+      const layerHeight = d * Math.sqrt(2 / 3);
+      for (let i = 0; i < 3; i++) {
+        const aboveAngle = Math.PI / 6 + (i * 2 * Math.PI) / 3;
+        const belowAngle = structure === '3d-hcp' ? aboveAngle : aboveAngle + Math.PI / 3;
+        points.push([layerRadius * Math.cos(aboveAngle), layerRadius * Math.sin(aboveAngle), layerHeight]);
+        points.push([layerRadius * Math.cos(belowAngle), layerRadius * Math.sin(belowAngle), -layerHeight]);
+      }
     }
     
     return points.map((pos, idx) => ({
@@ -62,12 +82,12 @@ export const CoordinationExplorer: React.FC = () => {
   const currentCount = Math.min(countStep, neighbours.length);
 
   return (
-    <div className="flex flex-col md:flex-row w-full h-[500px] border border-[var(--border-sub)] rounded-xl overflow-hidden glass-panel my-8">
+    <div className="glass-panel my-0 flex h-full min-h-[520px] w-full flex-col overflow-hidden rounded-xl border border-[var(--border-strong)] md:flex-row">
       
       {/* Viewport */}
-      <div className="flex-1 relative bg-[#07131F]">
+      <div className="relative min-h-[360px] flex-1 bg-[var(--canvas-background)]">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(41,70,91,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(41,70,91,0.2)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
-        <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
+        <Canvas camera={{ position: [0, 1.5, 11], fov: 45 }}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[10, 10, 10]} intensity={0.8} />
           
@@ -109,7 +129,7 @@ export const CoordinationExplorer: React.FC = () => {
       <ScientificPanel title={<BilingualText en="Coordination Number Explorer" bn="সমন্বয় সংখ্যা অন্বেষণকারী" />}>
         
         <div className="grid grid-cols-2 gap-2">
-          {(['1d', '2d-square', '2d-hex', '3d-sc'] as StructureType[]).map(s => (
+          {(['1d', '2d-square', '2d-hex', '3d-sc', '3d-bcc', '3d-hcp', '3d-ccp'] as StructureType[]).map(s => (
             <button 
               key={s}
               onClick={() => { setStructure(s); setCountStep(0); }}

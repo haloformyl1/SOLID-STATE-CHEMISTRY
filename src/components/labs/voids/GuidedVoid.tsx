@@ -86,9 +86,9 @@ export const GuidedVoid: React.FC = () => {
   ];
 
   return (
-    <div className="w-full bg-white dark:bg-slate-800 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-slate-700 mt-8">
+    <div className="w-full bg-[var(--surf-elev)] rounded-xl p-4 md:p-6 border border-[var(--border-sub)] mt-8">
       <div className="flex flex-col md:flex-row gap-6">
-        <div className="w-full md:w-2/3 h-[400px] bg-slate-50 dark:bg-slate-900 rounded-lg relative border border-gray-200 dark:border-slate-800 overflow-hidden">
+        <div className="w-full md:w-2/3 h-[400px] bg-[var(--bg-sec)] rounded-lg relative border border-[var(--border-sub)] overflow-hidden">
           <Canvas camera={{ position: [5, -4, 4], fov: 45 }}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 10]} intensity={1} />
@@ -96,21 +96,21 @@ export const GuidedVoid: React.FC = () => {
             <OrbitControls enablePan={false} autoRotate autoRotateSpeed={1} />
           </Canvas>
           
-          <div className="absolute bottom-4 left-4 right-4 flex justify-center items-center gap-4 bg-white/90 dark:bg-slate-900/90 py-2 px-4 rounded-full shadow-md w-max mx-auto">
+          <div className="absolute bottom-4 left-4 right-4 flex justify-center items-center gap-4 bg-[var(--bg-sec)]/90 py-2 px-4 rounded-full shadow-md w-max mx-auto">
             <button
               onClick={() => setStep(Math.max(0, step - 1))}
               disabled={step === 0}
-              className="p-1 rounded hover:bg-gray-200 dark:hover:bg-slate-700 disabled:opacity-30 text-slate-700 dark:text-slate-300 transition-colors"
+              className="p-1 rounded hover:bg-gray-200 dark:hover:bg-[var(--bg-canvas,transparent)] disabled:opacity-30 text-[var(--text-norm)] transition-colors"
             >
               <SkipBack className="w-5 h-5" />
             </button>
-            <span className="font-mono font-bold text-slate-700 dark:text-slate-300">
+            <span className="font-mono font-bold text-[var(--text-norm)]">
               {step + 1} / 3
             </span>
             <button
               onClick={() => setStep(Math.min(2, step + 1))}
               disabled={step === 2}
-              className="p-1 rounded hover:bg-gray-200 dark:hover:bg-slate-700 disabled:opacity-30 text-slate-700 dark:text-slate-300 transition-colors"
+              className="p-1 rounded hover:bg-gray-200 dark:hover:bg-[var(--bg-canvas,transparent)] disabled:opacity-30 text-[var(--text-norm)] transition-colors"
             >
               <SkipForward className="w-5 h-5" />
             </button>
@@ -118,10 +118,10 @@ export const GuidedVoid: React.FC = () => {
         </div>
 
         <div className="w-full md:w-1/3 flex flex-col justify-center space-y-4">
-          <h3 className="text-xl font-bold dark:text-white">
+          <h3 className="text-xl font-bold text-[var(--text-str)]">
             <BilingualText en="Building an Octahedral Void" bn="অষ্টতলকীয় শূন্যস্থান তৈরি" />
           </h3>
-          <p className="text-slate-600 dark:text-slate-400 text-sm">
+          <p className="text-[var(--text-mut)] text-sm">
             <BilingualText 
               en="Step through the animation to see how an octahedral void is formed by two layers of spheres." 
               bn="অ্যানিমেশনের ধাপগুলো অনুসরণ করে দেখুন কীভাবে দুটি স্তরের গোলক দ্বারা একটি অষ্টতলকীয় শূন্যস্থান গঠিত হয়।" 

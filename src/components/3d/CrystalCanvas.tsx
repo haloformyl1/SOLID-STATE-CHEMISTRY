@@ -1,33 +1,63 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, PerspectiveCamera, Grid } from '@react-three/drei';
+import { Environment, Grid, OrbitControls, PerspectiveCamera } from '@react-three/drei';
+import { ErrorState } from '../ui/States';
 
 interface CrystalCanvasProps {
   children: React.ReactNode;
+  cameraPosition?: [number, number, number];
+  cameraTarget?: [number, number, number];
+  resetKey?: number;
+  ariaLabel?: string;
 }
 
-export const CrystalCanvas: React.FC<CrystalCanvasProps> = ({ children }) => {
+export const CrystalCanvas: React.FC<CrystalCanvasProps> = ({
+  children,
+  cameraPosition = [5.5, 4.8, 5.5],
+  cameraTarget = [0, 0, 0],
+  resetKey = 0,
+  ariaLabel = 'Interactive three-dimensional crystal model',
+}) => {
+  const webGLAvailable = useMemo(() => {
+    if (typeof document === 'undefined') return true;
+    try {
+      const canvas = document.createElement('canvas');
+      return Boolean(canvas.getContext('webgl2') || canvas.getContext('webgl'));
+    } catch {
+      return false;
+    }
+  }, []);
+
+  if (!webGLAvailable) {
+    return <ErrorState title="WebGL is unavailable" message="Use a browser with hardware-accelerated WebGL to view this interactive model. The surrounding explanation remains available." />;
+  }
+
   return (
-    <div className="w-full h-full min-h-[400px] bg-slate-900 rounded-xl overflow-hidden relative shadow-inner">
-      <Canvas shadows>
-        <PerspectiveCamera makeDefault position={[5, 5, 5]} fov={50} />
-        <OrbitControls 
-          enablePan={true}
-          enableZoom={true}
-          enableRotate={true}
-          autoRotate={false}
-          autoRotateSpeed={2}
+    <div className="relative h-full min-h-[380px] w-full overflow-hidden bg-[var(--canvas-background)]" role="img" aria-label={ariaLabel}>
+      <Canvas dpr={[1, 1.75]} shadows gl={{ antialias: true, powerPreference: 'high-performance' }}>
+        <color attach="background" args={['#06131d']} />
+        <PerspectiveCamera key={`camera-${resetKey}`} makeDefault position={cameraPosition} fov={46} near={0.1} far={100} />
+        <OrbitControls
+          key={`controls-${resetKey}`}
+          enableDamping
+          dampingFactor={0.08}
+          enablePan
+          enableRotate
+          enableZoom
+          target={cameraTarget}
+          maxDistance={13}
+          minDistance={3.2}
           makeDefault
         />
-        
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
-        <directionalLight position={[-10, -10, -5]} intensity={0.5} />
-        
+
+        <ambientLight intensity={0.65} />
+        <directionalLight position={[9, 10, 7]} intensity={1.55} castShadow />
+        <directionalLight position={[-8, -5, -6]} intensity={0.45} color="#7dd3fc" />
+
         <Suspense fallback={null}>
           <Environment preset="city" />
-          <group position={[0, -1, 0]}>
-            <Grid infiniteGrid fadeDistance={20} sectionColor="#475569" cellColor="#334155" />
+          <group position={[0, -0.9, 0]}>
+            <Grid infiniteGrid fadeDistance={18} fadeStrength={2.5} sectionColor="#2d718f" cellColor="#173d4f" sectionSize={2} />
             {children}
           </group>
         </Suspense>

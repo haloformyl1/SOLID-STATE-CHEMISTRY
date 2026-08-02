@@ -141,31 +141,31 @@ export const Packing2DBuilder: React.FC<Packing2DBuilderProps> = ({ packingType 
   const selectedNeighbours = selectedIdx !== null ? getNeighbours(selectedIdx) : [];
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap gap-6 items-center justify-center bg-slate-100 dark:bg-slate-800 p-4 rounded-xl border border-gray-200 dark:border-slate-700">
+    <div className="flex h-full min-h-[580px] flex-col gap-4">
+      <div className="flex flex-wrap items-center justify-center gap-6 rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4">
         <div className="flex flex-col items-center gap-2">
-          <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+          <span className="text-sm font-semibold text-slate-500 text-[var(--text-mut)]">
             <BilingualText en="Rows" bn="সারি" />
           </span>
           <div className="flex items-center gap-3">
-            <button onClick={() => setRows(Math.max(1, rows - 1))} className="p-1.5 bg-white dark:bg-slate-700 rounded shadow hover:bg-gray-50"><Minus className="w-4 h-4" /></button>
+            <button type="button" onClick={() => setRows(Math.max(1, rows - 1))} className="icon-button h-8 w-8 shadow"><Minus className="w-4 h-4" /></button>
             <span className="font-bold text-lg w-6 text-center">{rows}</span>
-            <button onClick={() => setRows(Math.min(8, rows + 1))} className="p-1.5 bg-white dark:bg-slate-700 rounded shadow hover:bg-gray-50"><Plus className="w-4 h-4" /></button>
+            <button type="button" onClick={() => setRows(Math.min(8, rows + 1))} className="icon-button h-8 w-8 shadow"><Plus className="w-4 h-4" /></button>
           </div>
         </div>
         <div className="flex flex-col items-center gap-2">
-          <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+          <span className="text-sm font-semibold text-slate-500 text-[var(--text-mut)]">
             <BilingualText en="Columns" bn="কলাম" />
           </span>
           <div className="flex items-center gap-3">
-            <button onClick={() => setCols(Math.max(1, cols - 1))} className="p-1.5 bg-white dark:bg-slate-700 rounded shadow hover:bg-gray-50"><Minus className="w-4 h-4" /></button>
+            <button type="button" onClick={() => setCols(Math.max(1, cols - 1))} className="icon-button h-8 w-8 shadow"><Minus className="w-4 h-4" /></button>
             <span className="font-bold text-lg w-6 text-center">{cols}</span>
-            <button onClick={() => setCols(Math.min(8, cols + 1))} className="p-1.5 bg-white dark:bg-slate-700 rounded shadow hover:bg-gray-50"><Plus className="w-4 h-4" /></button>
+            <button type="button" onClick={() => setCols(Math.min(8, cols + 1))} className="icon-button h-8 w-8 shadow"><Plus className="w-4 h-4" /></button>
           </div>
         </div>
-        <div className="flex flex-col items-center gap-2 ml-4 pl-6 border-l border-slate-300 dark:border-slate-600">
-          <label className="flex items-center gap-2 cursor-pointer bg-white dark:bg-slate-900 px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 shadow-sm text-sm font-medium text-slate-700 dark:text-slate-300">
-            <input type="checkbox" checked={showVoids} onChange={e => setShowVoids(e.target.checked)} className="rounded text-indigo-500" />
+        <div className="flex flex-col items-center gap-2 ml-4 pl-6 border-l border-slate-300 border-[var(--border-str)]">
+          <label className="flex items-center gap-2 cursor-pointer bg-[var(--bg-sec)] px-3 py-2 rounded-lg border border-[var(--border-sub)] shadow-sm text-sm font-medium text-[var(--text-norm)]">
+            <input type="checkbox" checked={showVoids} onChange={e => setShowVoids(e.target.checked)} className="rounded accent-[var(--accent-primary)]" />
             <BilingualText en="Show Voids" bn="শূন্যস্থান দেখান" />
           </label>
         </div>
@@ -201,7 +201,7 @@ export const Packing2DBuilder: React.FC<Packing2DBuilderProps> = ({ packingType 
         )}
       </div>
 
-      <div className="h-80 bg-slate-900 rounded-xl overflow-hidden relative border-2 border-slate-700 shadow-inner">
+      <div className="relative min-h-[360px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
         <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[10, 10, 10]} intensity={0.8} />
@@ -244,7 +244,7 @@ export const Packing2DBuilder: React.FC<Packing2DBuilderProps> = ({ packingType 
           <OrbitControls enableRotate={false} makeDefault />
         </Canvas>
         
-        <div className="absolute top-4 right-4 bg-slate-800/80 backdrop-blur text-white text-xs px-3 py-1.5 rounded-full border border-slate-600 pointer-events-none">
+        <div className="pointer-events-none absolute right-4 top-4 rounded-full border border-slate-600 bg-[#071923e8] px-3 py-1.5 text-xs text-white backdrop-blur">
           <BilingualText en="Click on a sphere" bn="একটি গোলকে ক্লিক করুন" />
         </div>
       </div>

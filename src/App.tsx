@@ -1,50 +1,55 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import { Home } from './pages/Home';
-import { Learn } from './pages/Learn';
-import { ModuleView } from './pages/ModuleView';
-import { Lab } from './pages/Lab';
-import { Practice } from './pages/Practice';
-import { Revision } from './pages/Revision';
-import { Progress } from './pages/Progress';
-import { Login } from './pages/Login';
+import { AppErrorBoundary, LoadingState } from './components/ui/States';
 import { useStore } from './store/useStore';
+
+const Home = lazy(() => import('./pages/Home').then((module) => ({ default: module.Home })));
+const Learn = lazy(() => import('./pages/Learn').then((module) => ({ default: module.Learn })));
+const ModuleView = lazy(() => import('./pages/ModuleView').then((module) => ({ default: module.ModuleView })));
+const Lab = lazy(() => import('./pages/Lab').then((module) => ({ default: module.Lab })));
+const Practice = lazy(() => import('./pages/Practice').then((module) => ({ default: module.Practice })));
+const Revision = lazy(() => import('./pages/Revision').then((module) => ({ default: module.Revision })));
+const Progress = lazy(() => import('./pages/Progress').then((module) => ({ default: module.Progress })));
+const Login = lazy(() => import('./pages/Login').then((module) => ({ default: module.Login })));
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = useStore((state) => state.isAuthenticated);
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-  return <>{children}</>;
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
 function App() {
   const theme = useStore((state) => state.theme);
+  const reducedMotion = useStore((state) => state.reducedMotion);
 
   useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.dataset.theme = theme;
   }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.dataset.reducedMotion = reducedMotion ? 'true' : 'false';
+  }, [reducedMotion]);
 
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        
-        <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-          <Route index element={<Home />} />
-          <Route path="learn" element={<Learn />} />
-          <Route path="learn/:id" element={<ModuleView />} />
-          <Route path="lab" element={<Lab />} />
-          <Route path="practice" element={<Practice />} />
-          <Route path="revision" element={<Revision />} />
-          <Route path="progress" element={<Progress />} />
-        </Route>
-      </Routes>
+      <AppErrorBoundary>
+        <Suspense fallback={<LoadingState />}>
+          <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+            <Route index element={<Home />} />
+            <Route path="learn" element={<Learn />} />
+            <Route path="learn/:id" element={<ModuleView />} />
+            <Route path="lab" element={<Lab />} />
+            <Route path="practice" element={<Practice />} />
+            <Route path="revision" element={<Revision />} />
+            <Route path="progress" element={<Progress />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
+      </AppErrorBoundary>
     </BrowserRouter>
   );
 }

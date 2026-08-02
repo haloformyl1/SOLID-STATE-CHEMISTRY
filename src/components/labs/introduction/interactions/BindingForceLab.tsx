@@ -3,7 +3,8 @@ import { BilingualText } from '../../../BilingualText';
 import { GuidedLessonEngine } from '../engine/GuidedLessonEngine';
 import type { LessonMode, AnimationStep } from '../engine/GuidedLessonTypes';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Sphere, Line, Cylinder, Torus } from '@react-three/drei';
+import { OrbitControls, Sphere, Line, Torus } from '@react-three/drei';
+import { AnimatedGroup } from '../engine/AnimatedLessonPrimitives';
 
 const steps: AnimationStep[] = [
   {
@@ -65,12 +66,13 @@ export const BindingForceLab: React.FC = () => {
       speed={speed}
     >
       {(mode === 'challenge' || mode === 'explore') && (
-        <div className="absolute top-4 left-4 z-10 flex flex-col gap-2 bg-[var(--bg-sec)]/90 backdrop-blur-md p-3 rounded-xl shadow-lg border border-[var(--acc-sec)]/10">
-          <span className="text-xs font-bold uppercase text-[var(--acc-sec)]"><BilingualText en="Select Solid Type" bn="কঠিনের ধরন নির্বাচন করুন" /></span>
+        <div className="absolute right-3 top-16 z-10 flex w-[min(16rem,calc(100%-1.5rem))] flex-col gap-2 rounded-xl border border-white/10 bg-[color-mix(in_srgb,var(--canvas-surface)_92%,transparent)] p-3 text-sky-100 shadow-xl backdrop-blur-md sm:right-4 sm:top-4">
+          <span className="text-[10px] font-extrabold uppercase tracking-[0.1em] text-[var(--accent-secondary)]"><BilingualText en="Select Solid Type" bn="কঠিনের ধরন নির্বাচন করুন" /></span>
           <select 
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
-            className="bg-[var(--bg-norm)] text-[var(--text-norm)] border border-[var(--acc-sec)]/30 rounded-lg p-1.5 text-sm outline-none focus:border-primary transition-colors"
+            className="rounded-lg border border-white/15 bg-[var(--canvas-background)] p-2 text-sm text-sky-100 outline-none transition-colors focus:border-[var(--accent-primary)]"
+            aria-label="Solid binding type"
           >
             <option value="ionic">Ionic (আয়নিক)</option>
             <option value="metallic">Metallic (ধাতব)</option>
@@ -80,9 +82,9 @@ export const BindingForceLab: React.FC = () => {
         </div>
       )}
 
-      <Canvas camera={{ position: [0, 0, 6], fov: 40 }}>
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[5, 5, 5]} intensity={1} />
+      <Canvas camera={{ position: [0, 0, 8.5], fov: 40 }} dpr={[1, 1.75]}>
+        <ambientLight intensity={0.75} />
+        <directionalLight position={[5, 5, 7]} intensity={1.2} />
         <OrbitControls enablePan={mode === 'explore'} enableZoom={mode === 'explore'} autoRotate={isAnimOn} autoRotateSpeed={speed} />
         
         {displayType === 'ionic' && (
@@ -112,15 +114,23 @@ export const BindingForceLab: React.FC = () => {
               ))
             )}
             {/* Sea of electrons */}
-            {isAnimOn && Array.from({ length: 20 }).map((_, i) => {
-               const time = Date.now() * 0.001 * speed;
-               const ex = Math.sin(time + i) * 2;
-               const ey = Math.cos(time + i * 1.5) * 2;
-               return (
-                <Sphere key={`e-${i}`} args={[0.08, 16, 16]} position={[ex, ey, Math.sin(time*2 + i)*0.5]}>
-                  <meshBasicMaterial color="#3b82f6" />
-                </Sphere>
-               );
+            {Array.from({ length: 20 }).map((_, i) => {
+              const angle = (i / 20) * Math.PI * 2;
+              return (
+                <AnimatedGroup
+                  key={`e-${i}`}
+                  basePosition={[Math.cos(angle) * 1.9, Math.sin(angle) * 1.9, ((i % 5) - 2) * 0.18]}
+                  enabled={isAnimOn}
+                  speed={speed}
+                  phase={angle}
+                  amplitude={0.42}
+                  motion="orbit"
+                >
+                  <Sphere args={[0.08, 16, 16]}>
+                    <meshBasicMaterial color="#38bdf8" />
+                  </Sphere>
+                </AnimatedGroup>
+              );
             })}
           </group>
         )}
@@ -151,11 +161,9 @@ export const BindingForceLab: React.FC = () => {
                   <Sphere args={[0.25, 32, 32]} position={[-0.2, 0, 0]}><meshStandardMaterial color="#8b5cf6" /></Sphere>
                   <Sphere args={[0.25, 32, 32]} position={[0.2, 0, 0]}><meshStandardMaterial color="#8b5cf6" /></Sphere>
                   {/* Fluctuation indicator */}
-                  {isAnimOn && Math.sin(Date.now() * 0.005 * speed + x + y) > 0 && (
-                     <Torus args={[0.6, 0.02, 16, 32]} rotation={[Math.PI/2, 0, 0]}>
-                       <meshBasicMaterial color="#a78bfa" transparent opacity={0.3} />
-                     </Torus>
-                  )}
+                  <Torus args={[0.6, 0.02, 16, 32]} rotation={[Math.PI/2, 0, 0]}>
+                    <meshBasicMaterial color="#a78bfa" transparent opacity={isAnimOn ? 0.42 : 0.22} />
+                  </Torus>
                 </group>
               ))
             )}

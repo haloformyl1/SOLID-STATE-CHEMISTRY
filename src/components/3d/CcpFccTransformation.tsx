@@ -54,29 +54,29 @@ export const CcpFccTransformation: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col sm:flex-row justify-between items-center bg-slate-100 dark:bg-slate-800 p-4 rounded-xl border border-gray-200 dark:border-slate-700">
+    <div className="flex h-full min-h-[520px] flex-col gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4 sm:flex-row sm:items-center">
         <div>
-          <h4 className="font-bold text-slate-800 dark:text-slate-200">
+          <h4 className="font-bold text-[var(--text-primary)]">
             <BilingualText en="CCP to FCC Relationship" bn="CCP থেকে FCC সম্পর্ক" />
           </h4>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">
             <BilingualText en="The A, B, and C close-packed layers are the {111} planes of the FCC unit cell." bn="A, B এবং C ঘন সন্নিবিষ্ট স্তরগুলি হলো FCC একক কোষের {111} তল।" />
           </p>
         </div>
 
-        <label className="flex items-center gap-2 cursor-pointer bg-white dark:bg-slate-900 px-4 py-2 rounded-lg border border-gray-200 dark:border-slate-700 shadow-sm mt-4 sm:mt-0">
-          <input type="checkbox" checked={showBox} onChange={e => setShowBox(e.target.checked)} className="rounded text-indigo-500" />
-          <span className="font-medium text-sm text-slate-700 dark:text-slate-300">
+        <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--border-default)] bg-[var(--surface-primary)] px-4 py-2 shadow-sm">
+          <input type="checkbox" checked={showBox} onChange={e => setShowBox(e.target.checked)} className="rounded accent-[var(--accent-primary)]" />
+          <span className="text-sm font-medium text-[var(--text-primary)]">
             <BilingualText en="Show FCC Unit Cell Box" bn="FCC একক কোষ বাক্স দেখান" />
           </span>
         </label>
       </div>
 
-      <div className="h-80 bg-slate-900 rounded-xl overflow-hidden relative border-2 border-slate-700 shadow-inner">
-        <Canvas camera={{ position: [6, 6, 6], fov: 45 }}>
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[10, 10, 10]} intensity={0.8} />
+      <div className="relative min-h-[360px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
+        <Canvas camera={{ position: [5.1, 4.4, 5.1], fov: 42 }}>
+          <ambientLight intensity={1.1} />
+          <directionalLight position={[8, 10, 7]} intensity={1.25} />
           
           {showBox && (
             <group>
@@ -115,17 +115,17 @@ export const CcpFccTransformation: React.FC = () => {
             </Sphere>
           ))}
 
-          <OrbitControls makeDefault />
+          <OrbitControls makeDefault enableDamping dampingFactor={0.08} minDistance={4} maxDistance={13} />
         </Canvas>
 
         <div className="absolute top-4 right-4 flex flex-col gap-2 pointer-events-none">
-          <div className="flex items-center gap-2 bg-slate-800/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-600 text-xs text-white">
+          <div className="flex items-center gap-2 rounded-lg border border-slate-600 bg-[#071923e8] px-3 py-1.5 text-xs text-white backdrop-blur">
             <div className="w-3 h-3 rounded-full bg-blue-500"></div> A Layer (Corners)
           </div>
-          <div className="flex items-center gap-2 bg-slate-800/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-600 text-xs text-white">
+          <div className="flex items-center gap-2 rounded-lg border border-slate-600 bg-[#071923e8] px-3 py-1.5 text-xs text-white backdrop-blur">
             <div className="w-3 h-3 rounded-full bg-emerald-500"></div> B Layer
           </div>
-          <div className="flex items-center gap-2 bg-slate-800/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-600 text-xs text-white">
+          <div className="flex items-center gap-2 rounded-lg border border-slate-600 bg-[#071923e8] px-3 py-1.5 text-xs text-white backdrop-blur">
             <div className="w-3 h-3 rounded-full bg-amber-500"></div> C Layer
           </div>
         </div>

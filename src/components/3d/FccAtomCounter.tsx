@@ -34,13 +34,13 @@ export const FccAtomCounter: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col sm:flex-row justify-between items-center bg-slate-100 dark:bg-slate-800 p-4 rounded-xl border border-gray-200 dark:border-slate-700 gap-4">
+    <div className="flex h-full min-h-[520px] flex-col gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4 sm:flex-row sm:items-center">
         <div className="flex-1">
-          <h4 className="font-bold text-slate-800 dark:text-slate-200">
+          <h4 className="font-bold text-[var(--text-primary)]">
             <BilingualText en="FCC Effective Atoms Calculation" bn="FCC কার্যকর পরমাণু গণনা" />
           </h4>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">
             {step === 0 && <BilingualText en="Start by highlighting the different positions." bn="ভিন্ন ভিন্ন অবস্থান হাইলাইট করে শুরু করুন।" />}
             {step === 1 && <BilingualText en="8 corners shared by 8 cells each. (8 × 1/8 = 1)" bn="৮টি কোণ প্রত্যেকে ৮টি কোষ দ্বারা ভাগ করা হয়। (৮ × ১/৮ = ১)" />}
             {step === 2 && <BilingualText en="6 face-centres shared by 2 cells each. (6 × 1/2 = 3)" bn="৬টি পৃষ্ঠকেন্দ্র প্রত্যেকে ২টি কোষ দ্বারা ভাগ করা হয়। (৬ × ১/২ = ৩)" />}
@@ -50,7 +50,8 @@ export const FccAtomCounter: React.FC = () => {
 
         <button 
           onClick={() => setStep(s => (s + 1) % 4)}
-          className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition-colors whitespace-nowrap shadow-sm"
+          type="button"
+          className="btn btn-primary whitespace-nowrap px-6 py-2 font-bold"
         >
           {step === 3 ? (
             <BilingualText en="Reset" bn="রিসেট" />
@@ -60,10 +61,10 @@ export const FccAtomCounter: React.FC = () => {
         </button>
       </div>
 
-      <div className="h-80 bg-slate-900 rounded-xl overflow-hidden relative border-2 border-slate-700 shadow-inner">
-        <Canvas camera={{ position: [5, 4, 5], fov: 40 }}>
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[10, 10, 10]} intensity={0.8} />
+      <div className="relative min-h-[360px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
+        <Canvas camera={{ position: [3.2, 2.7, 3.8], fov: 38 }}>
+          <ambientLight intensity={1.1} />
+          <directionalLight position={[8, 10, 7]} intensity={1.25} />
           
           <group>
             <lineSegments>
@@ -77,7 +78,7 @@ export const FccAtomCounter: React.FC = () => {
             <Sphere key={`c-${i}`} position={p} args={[r, 32, 32]}>
               <meshStandardMaterial 
                 color={step === 1 || step === 3 ? "#ef4444" : "#94a3b8"} 
-                transparent opacity={step === 0 || step === 1 || step === 3 ? 0.9 : 0.2} 
+                transparent opacity={step === 0 || step === 1 || step === 3 ? 0.96 : 0.16} 
               />
             </Sphere>
           ))}
@@ -87,12 +88,12 @@ export const FccAtomCounter: React.FC = () => {
             <Sphere key={`f-${i}`} position={p} args={[r, 32, 32]}>
               <meshStandardMaterial 
                 color={step === 2 || step === 3 ? "#3b82f6" : "#94a3b8"} 
-                transparent opacity={step === 0 || step === 2 || step === 3 ? 0.9 : 0.2} 
+                transparent opacity={step === 0 || step === 2 || step === 3 ? 0.96 : 0.16} 
               />
             </Sphere>
           ))}
 
-          <OrbitControls makeDefault />
+          <OrbitControls makeDefault enableDamping dampingFactor={0.08} minDistance={3} maxDistance={12} />
         </Canvas>
       </div>
     </div>

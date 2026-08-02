@@ -46,7 +46,8 @@ export const AnisotropyLab: React.FC = () => {
 
   const probeSpring = useSpring({
     rotation: [0, 0, currentAngle] as [number, number, number],
-    config: { tension: 120, friction: 14 }
+    config: { tension: 120 * speed, friction: 14 },
+    immediate: !isAnimOn,
   });
 
   return (
@@ -62,9 +63,9 @@ export const AnisotropyLab: React.FC = () => {
       speed={speed}
     >
       {mode === 'challenge' && (
-        <div className="absolute top-4 right-4 z-10 flex flex-col gap-2 bg-[var(--bg-sec)]/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-amber-500/20 w-64">
-          <span className="text-sm font-bold text-amber-600 dark:text-amber-500 mb-2"><BilingualText en="Challenge: Measure Anisotropy" bn="অনুশীলন: অসমদিকতা পরিমাপ করুন" /></span>
-          <label className="text-xs text-[var(--text-norm)]"><BilingualText en="Probe Angle" bn="প্রোবের কোণ" /></label>
+        <div className="absolute right-3 top-16 z-10 flex w-[min(16rem,calc(100%-1.5rem))] flex-col gap-2 rounded-xl border border-[color-mix(in_srgb,var(--accent-amber)_38%,transparent)] bg-[color-mix(in_srgb,var(--canvas-surface)_92%,transparent)] p-4 text-sky-100 shadow-xl backdrop-blur-md sm:right-4 sm:top-4">
+          <span className="mb-1 text-sm font-bold text-[var(--accent-amber)]"><BilingualText en="Challenge: Measure Anisotropy" bn="অনুশীলন: অসমদিকতা পরিমাপ করুন" /></span>
+          <label className="text-xs text-sky-100/75"><BilingualText en="Probe Angle" bn="প্রোবের কোণ" /></label>
           <input 
             type="range" 
             min="0" max={Math.PI} step="0.1" 
@@ -72,15 +73,15 @@ export const AnisotropyLab: React.FC = () => {
             onChange={(e) => setProbeAngle(parseFloat(e.target.value))}
             className="w-full accent-amber-500"
           />
-          <div className="mt-2 text-xs font-mono text-[var(--text-norm)] bg-[var(--bg-norm)] p-2 rounded border border-[var(--acc-sec)]/20">
+          <div className="mt-2 rounded border border-white/10 bg-[var(--canvas-background)] p-2 font-mono text-xs text-sky-100">
             Value: {Math.abs(Math.sin(probeAngle * 2)).toFixed(2)} Ω/m
           </div>
         </div>
       )}
 
-      <Canvas camera={{ position: [0, 0, 7], fov: 40 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[0, 0, 10]} intensity={1} />
+      <Canvas camera={{ position: [0, 0, 8.4], fov: 40 }} dpr={[1, 1.75]}>
+        <ambientLight intensity={0.75} />
+        <directionalLight position={[0, 0, 10]} intensity={1.2} />
         <OrbitControls enablePan={mode === 'explore'} enableZoom={mode === 'explore'} enableRotate={mode === 'explore'} />
         
         {/* Ordered Array (Crystalline) */}

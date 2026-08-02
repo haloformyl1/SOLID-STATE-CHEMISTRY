@@ -1,66 +1,80 @@
 import React from 'react';
-import { BilingualText } from '../components/BilingualText';
-import { UnitCellSelector } from '../components/3d/UnitCellSelector';
+import { AlertTriangle, Atom, Box, Calculator, FlaskConical, Layers3 } from 'lucide-react';
 import { AtomSharing } from '../components/3d/AtomSharing';
-import { PackingLab } from '../components/labs/PackingLab';
-import { DensityLab } from '../components/labs/DensityLab';
+import { UnitCellSelector } from '../components/3d/UnitCellSelector';
+import { BilingualText } from '../components/BilingualText';
 import { DefectLab } from '../components/labs/DefectLab';
-import { FlaskConical } from 'lucide-react';
+import { DensityLab } from '../components/labs/DensityLab';
+import { PackingLab } from '../components/labs/PackingLab';
+import { FullscreenInteractiveFrame } from '../components/ui/FullscreenInteractiveFrame';
+import { PageContainer, PageHeader, SectionHeader } from '../components/ui/LayoutPrimitives';
 
-export const Lab: React.FC = () => {
-  return (
-    <div className="container mx-auto px-4 py-8 max-w-5xl">
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 p-6 md:p-10 mb-8">
-        <div className="flex items-center gap-3 mb-6">
-          <FlaskConical className="w-8 h-8 text-primary" />
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">
-            <BilingualText en="Interactive 3D Laboratory" bn="ইন্টারেক্টিভ 3D ল্যাবরেটরি" />
-          </h1>
-        </div>
-        <p className="text-lg text-slate-600 dark:text-slate-400 mb-12">
-          <BilingualText 
-            en="Explore all solid-state chemistry interactive tools in one place. Experiment with unit cells, atom sharing, packing, density, and defects." 
-            bn="একক স্থানে সমস্ত কঠিন অবস্থার রসায়নের ইন্টারেক্টিভ টুলস অন্বেষণ করুন। একক কোষ, পরমাণু ভাগাভাগি, প্যাকিং, ঘনত্ব এবং ত্রুটিগুলি নিয়ে পরীক্ষা করুন।" 
-          />
-        </p>
+const labSections = [
+  {
+    id: 'unit-cell',
+    title: <BilingualText en="Unit Cell Visualizer" bn="একক কোষ ভিজ্যুয়ালাইজার" />,
+    subtitle: <BilingualText en="Compare simple, body-centred, and face-centred cubic structures." bn="সরল, দেহ-কেন্দ্রিক এবং পৃষ্ঠ-কেন্দ্রিক ঘনকাকার গঠন তুলনা করুন।" />,
+    icon: Box,
+    content: <UnitCellSelector />,
+    summary: <BilingualText en="Select SC, BCC, or FCC, then rotate and zoom the model. Exploded and transparent views reveal atomic placement without changing the structure." bn="SC, BCC বা FCC নির্বাচন করুন, তারপর মডেলটি ঘোরান এবং জুম করুন। বিস্ফোরিত ও স্বচ্ছ দৃশ্য গঠন পরিবর্তন না করে পরমাণুর অবস্থান দেখায়।" />,
+  },
+  {
+    id: 'atom-sharing',
+    title: <BilingualText en="Atom Sharing Visualizer" bn="পরমাণু ভাগাভাগি ভিজ্যুয়ালাইজার" />,
+    subtitle: <BilingualText en="Build neighbouring cells step by step and observe atomic volume contribution." bn="ধাপে ধাপে প্রতিবেশী কোষ তৈরি করুন এবং পারমাণবিক আয়তনের অবদান পর্যবেক্ষণ করুন।" />,
+    icon: Atom,
+    content: <AtomSharing />,
+    summary: <BilingualText en="Choose an atom position and add or remove neighbouring cells. The fraction panel reports the enclosed contribution at every step." bn="পরমাণুর অবস্থান নির্বাচন করুন এবং প্রতিবেশী কোষ যোগ বা সরান। ভগ্নাংশ প্যানেল প্রতিটি ধাপে আবদ্ধ অবদান দেখায়।" />,
+  },
+  {
+    id: 'packing',
+    title: <BilingualText en="Packing & Voids" bn="প্যাকিং এবং শূন্যস্থান" />,
+    subtitle: <BilingualText en="Investigate particle packing, coordination, and empty spaces." bn="কণার প্যাকিং, সমন্বয় এবং ফাঁকা স্থান অনুসন্ধান করুন।" />,
+    icon: Layers3,
+    content: <PackingLab />,
+  },
+  {
+    id: 'density',
+    title: <BilingualText en="Density Calculator" bn="ঘনত্ব ক্যালকুলেটর" />,
+    subtitle: <BilingualText en="Connect unit-cell dimensions and molar mass to crystal density." bn="একক কোষের মাত্রা ও মোলার ভরকে স্ফটিক ঘনত্বের সঙ্গে যুক্ত করুন।" />,
+    icon: Calculator,
+    content: <DensityLab />,
+  },
+  {
+    id: 'defects',
+    title: <BilingualText en="Crystal Defects" bn="স্ফটিকের ত্রুটি" />,
+    subtitle: <BilingualText en="Explore point defects and their structural consequences." bn="বিন্দু ত্রুটি এবং তাদের গঠনগত প্রভাব অনুসন্ধান করুন।" />,
+    icon: AlertTriangle,
+    content: <DefectLab />,
+  },
+];
 
-        <div className="space-y-16">
-          <section className="scroll-mt-24">
-            <h2 className="text-2xl font-bold mb-6 text-slate-800 dark:text-slate-200 border-b border-gray-100 dark:border-slate-700 pb-4">
-              <BilingualText en="1. Unit Cell Visualizer" bn="১. একক কোষ ভিজ্যুয়ালাইজার" />
-            </h2>
-            <UnitCellSelector />
-          </section>
+export const Lab: React.FC = () => (
+  <div className="w-full">
+    <PageContainer>
+      <PageHeader
+        eyebrow={<BilingualText en="Scientific workspace" bn="বৈজ্ঞানিক ওয়ার্কস্পেস" />}
+        icon={FlaskConical}
+        title={<BilingualText en="Interactive PIECHEM Laboratory" bn="ইন্টারেক্টিভ PIECHEM ল্যাবরেটরি" />}
+        description={<BilingualText en="Explore all solid-state chemistry interactive tools in one place. Experiment with unit cells, atom sharing, packing, density, and defects." bn="একক স্থানে সমস্ত কঠিন অবস্থার রসায়নের ইন্টারেক্টিভ টুলস অন্বেষণ করুন। একক কোষ, পরমাণু ভাগাভাগি, প্যাকিং, ঘনত্ব এবং ত্রুটিগুলি নিয়ে পরীক্ষা করুন।" />}
+      />
 
-          <section className="scroll-mt-24">
-            <h2 className="text-2xl font-bold mb-6 text-slate-800 dark:text-slate-200 border-b border-gray-100 dark:border-slate-700 pb-4">
-              <BilingualText en="2. Atom Sharing" bn="২. পরমাণু ভাগাভাগি" />
-            </h2>
-            <AtomSharing />
+      <div className="mt-12 space-y-20">
+        {labSections.map((lab, index) => (
+          <section key={lab.id} id={lab.id} className="scroll-mt-32" aria-labelledby={`${lab.id}-title`}>
+            <SectionHeader
+              title={<span id={`${lab.id}-title`}><span className="mr-2 text-[var(--text-muted)]">{String(index + 1).padStart(2, '0')}</span>{lab.title}</span>}
+              subtitle={lab.subtitle}
+              icon={lab.icon}
+              accent={index === 1 ? 'violet' : index === 2 ? 'teal' : index === 4 ? 'amber' : 'blue'}
+              className="mb-6"
+            />
+            <FullscreenInteractiveFrame title={lab.title} accessibleSummary={lab.summary}>
+              {lab.content}
+            </FullscreenInteractiveFrame>
           </section>
-
-          <section className="scroll-mt-24">
-            <h2 className="text-2xl font-bold mb-6 text-slate-800 dark:text-slate-200 border-b border-gray-100 dark:border-slate-700 pb-4">
-              <BilingualText en="3. Packing & Voids" bn="৩. প্যাকিং এবং শূন্যস্থান" />
-            </h2>
-            <PackingLab />
-          </section>
-          
-          <section className="scroll-mt-24">
-            <h2 className="text-2xl font-bold mb-6 text-slate-800 dark:text-slate-200 border-b border-gray-100 dark:border-slate-700 pb-4">
-              <BilingualText en="4. Density Calculator" bn="৪. ঘনত্ব ক্যালকুলেটর" />
-            </h2>
-            <DensityLab />
-          </section>
-          
-          <section className="scroll-mt-24">
-            <h2 className="text-2xl font-bold mb-6 text-slate-800 dark:text-slate-200 border-b border-gray-100 dark:border-slate-700 pb-4">
-              <BilingualText en="5. Crystal Defects" bn="৫. স্ফটিকের ত্রুটি" />
-            </h2>
-            <DefectLab />
-          </section>
-        </div>
+        ))}
       </div>
-    </div>
-  );
-};
+    </PageContainer>
+  </div>
+);

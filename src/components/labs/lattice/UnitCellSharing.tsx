@@ -62,9 +62,9 @@ export const UnitCellSharing: React.FC = () => {
   ];
 
   return (
-    <div className="w-full bg-slate-50 dark:bg-slate-900 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-slate-800">
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="w-full md:w-2/3 h-[400px] bg-white dark:bg-slate-800 rounded-lg relative shadow-inner overflow-hidden">
+    <div className="flex h-full min-h-[520px] w-full flex-col rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4 md:p-6">
+      <div className="flex flex-1 flex-col gap-6 md:flex-row">
+        <div className="relative min-h-[360px] w-full overflow-hidden rounded-lg border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner md:w-2/3">
           <Canvas camera={{ position: [5, 4, 6], fov: 45 }}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 10]} intensity={1} />
@@ -83,7 +83,7 @@ export const UnitCellSharing: React.FC = () => {
           </Canvas>
           
           <div className="absolute bottom-4 left-4 right-4 text-center">
-            <p className="bg-white/80 dark:bg-slate-900/80 backdrop-blur px-4 py-2 rounded-full inline-block text-sm font-medium shadow">
+            <p className="inline-block rounded-full border border-slate-600 bg-[#071923e8] px-4 py-2 text-sm font-medium text-white shadow backdrop-blur">
               <BilingualText en={steps[step].label.en} bn={steps[step].label.bn} />
             </p>
           </div>
@@ -91,10 +91,10 @@ export const UnitCellSharing: React.FC = () => {
 
         <div className="w-full md:w-1/3 flex flex-col justify-center space-y-6">
           <div>
-            <h3 className="text-xl font-bold mb-2 dark:text-white">
+            <h3 className="text-xl font-bold mb-2 text-[var(--text-str)]">
               <BilingualText en="Corner Sharing" bn="কোনা ভাগাভাগি" />
             </h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">
+            <p className="text-[var(--text-mut)] text-sm leading-relaxed mb-4">
               <BilingualText 
                 en="Observe how a single particle located at the corner is shared among neighboring unit cells." 
                 bn="লক্ষ্য করুন কীভাবে কোনায় অবস্থিত একটি কণা পার্শ্ববর্তী একক কোষগুলির মধ্যে ভাগ করা হয়।" 
@@ -108,8 +108,8 @@ export const UnitCellSharing: React.FC = () => {
                   onClick={() => setStep(i)}
                   className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                     step === i 
-                      ? 'bg-primary text-white' 
-                      : 'bg-gray-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-gray-300 dark:hover:bg-slate-600'
+                      ? 'bg-[var(--accent-primary)] text-[var(--text-inverse)]' 
+                      : 'border border-[var(--border-default)] bg-[var(--surface-primary)] text-[var(--text-secondary)] hover:bg-[var(--hover-state)]'
                   }`}
                 >
                   Step {i + 1}
@@ -118,11 +118,11 @@ export const UnitCellSharing: React.FC = () => {
             </div>
           </div>
           
-          <div className={`p-4 rounded-lg transition-opacity duration-500 ${step === 3 ? 'bg-amber-100 dark:bg-amber-900/40 opacity-100' : 'opacity-0 hidden'}`}>
-            <div className="font-bold text-lg text-amber-900 dark:text-amber-200 mb-2">
+          <div className={`rounded-lg border border-[color-mix(in_srgb,var(--warning)_35%,var(--border-default))] bg-[color-mix(in_srgb,var(--warning)_10%,var(--surface-primary))] p-4 transition-opacity duration-500 ${step === 3 ? 'opacity-100' : 'hidden opacity-0'}`}>
+            <div className="mb-2 text-lg font-bold text-[var(--text-primary)]">
               <BilingualText en="Corner contribution = 1/8" bn="কোণস্থিত কণার অবদান = ১/৮" />
             </div>
-            <p className="text-sm text-amber-800 dark:text-amber-300/80">
+            <p className="text-sm text-[var(--text-secondary)]">
               <BilingualText 
                 en="The atom is not physically divided into eight pieces. Its centre lies at a point shared by eight neighbouring unit cells." 
                 bn="পরমাণুটি বাস্তবে আটটি খণ্ডে বিভক্ত নয়। তার কেন্দ্র এমন একটি বিন্দুতে থাকে যা আটটি পার্শ্ববর্তী একক কোষ দ্বারা ভাগ করা হয়।" 

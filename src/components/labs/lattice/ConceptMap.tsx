@@ -55,31 +55,33 @@ export const ConceptMap: React.FC = () => {
   const [activeNode, setActiveNode] = useState<string | null>(null);
 
   return (
-    <div className="w-full bg-slate-50 dark:bg-slate-900 rounded-xl p-6 md:p-10 border border-gray-200 dark:border-slate-800">
+    <div className="w-full rounded-xl border border-[var(--border-default)] bg-[var(--surface-secondary)] p-6 md:p-10">
       <div className="max-w-2xl mx-auto flex flex-col items-center">
         {nodes.map((node, index) => (
           <React.Fragment key={node.id}>
-            <div 
-              className={`w-full max-w-sm text-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+            <button
+              type="button"
+              aria-expanded={activeNode === node.id}
+              className={`w-full max-w-sm cursor-pointer rounded-xl border-2 p-4 text-center transition-all duration-300 ${
                 activeNode === node.id 
-                  ? 'border-primary bg-primary/10 shadow-md scale-105' 
-                  : 'border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-primary/50'
+                  ? 'scale-105 border-[var(--border-interactive)] bg-[var(--selected-state)] shadow-md' 
+                  : 'border-[var(--border-default)] bg-[var(--surface-elevated)] hover:border-[var(--border-interactive)]'
               }`}
               onClick={() => setActiveNode(activeNode === node.id ? null : node.id)}
             >
-              <h3 className="font-bold text-lg text-slate-800 dark:text-slate-100">
+              <h3 className="text-lg font-bold text-[var(--text-primary)]">
                 <BilingualText en={node.title.en} bn={node.title.bn} />
               </h3>
               
               <div className={`overflow-hidden transition-all duration-500 ease-in-out ${activeNode === node.id ? 'max-h-40 opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-[var(--text-mut)]">
                   <BilingualText en={node.desc.en} bn={node.desc.bn} />
                 </p>
               </div>
-            </div>
+            </button>
             
             {index < nodes.length - 1 && (
-              <div className="py-2 text-gray-400 dark:text-slate-600">
+              <div className="py-2 text-[var(--text-muted)]">
                 <ArrowDown className="w-6 h-6 animate-pulse" />
               </div>
             )}

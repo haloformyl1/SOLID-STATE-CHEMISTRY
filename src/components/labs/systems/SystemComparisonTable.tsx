@@ -13,9 +13,9 @@ export const SystemComparisonTable: React.FC = () => {
   ];
 
   return (
-    <div className="overflow-x-auto my-8 border border-gray-200 dark:border-slate-700 rounded-xl">
-      <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
-        <thead className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 uppercase font-semibold">
+    <div className="overflow-x-auto my-8 border border-[var(--border-sub)] rounded-xl">
+      <table className="w-full text-left text-sm text-[var(--text-norm)]">
+        <thead className="bg-[var(--surface-elevated)] font-semibold uppercase text-[var(--text-primary)]">
           <tr>
             <th className="px-4 py-3"><BilingualText en="System" bn="তন্ত্র" /></th>
             <th className="px-4 py-3"><BilingualText en="Edge Lengths" bn="প্রান্তের দৈর্ঘ্য" /></th>
@@ -23,9 +23,9 @@ export const SystemComparisonTable: React.FC = () => {
             <th className="px-4 py-3"><BilingualText en="Bravais Lattices" bn="ব্রাভেই জালক" /></th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 dark:divide-slate-700 bg-white dark:bg-slate-900">
+        <tbody className="divide-y divide-[var(--border-sub)] bg-[var(--bg-sec)]">
           {data.map((row, i) => (
-            <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+            <tr key={i} className="transition-colors hover:bg-[var(--hover-state)]">
               <td className="px-4 py-3 font-medium">
                 <BilingualText en={row.en} bn={row.bn} />
               </td>
