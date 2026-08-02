@@ -99,7 +99,7 @@ export const UnitCell: React.FC<UnitCellProps> = ({
         <Sphere 
           key={i} 
           position={[pos[0] * ef, pos[1] * ef, pos[2] * ef]} 
-          args={[r, 32, 32]}
+          args={[r, 16, 16]}
         >
           <meshStandardMaterial 
             color={color} 

@@ -47,7 +47,7 @@ const VoidModel = ({ type, showLines }: { type: 'tetrahedral' | 'octahedral', sh
     <group>
       {/* Particles forming the void */}
       {points.map((pt, i) => (
-        <Sphere key={i} args={[0.6, 32, 32]} position={pt}>
+        <Sphere key={i} args={[0.6, 16, 16]} position={pt}>
           <meshStandardMaterial color="#3b82f6" roughness={0.3} transparent opacity={0.6} />
         </Sphere>
       ))}
@@ -73,7 +73,7 @@ export const VoidExplorer: React.FC = () => {
     <div className="w-full bg-[var(--bg-sec)] rounded-xl p-4 md:p-6 border border-[var(--border-sub)]">
       <div className="flex flex-col xl:flex-row gap-6">
         <div className="w-full xl:w-2/3 h-[450px] bg-[var(--surf-elev)] rounded-lg relative overflow-hidden border border-[var(--border-sub)]">
-          <Canvas camera={{ position: [4, 3, 5], fov: 45 }}>
+          <Canvas dpr={[1, 1.5]} camera={{ position: [4, 3, 5], fov: 45 }}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 10]} intensity={1} />
             <VoidModel type={type} showLines={showLines} />

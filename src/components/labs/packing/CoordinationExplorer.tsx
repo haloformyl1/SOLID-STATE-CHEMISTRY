@@ -99,7 +99,7 @@ export const CoordinationExplorer: React.FC = () => {
             
             return (
               <React.Fragment key={p.id}>
-                <Sphere position={p.position} args={[0.95, 32, 32]}>
+                <Sphere position={p.position} args={[0.95, 16, 16]}>
                   <meshPhysicalMaterial 
                     color={color} 
                     transparent 

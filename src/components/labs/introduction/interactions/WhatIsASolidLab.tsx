@@ -60,7 +60,7 @@ export const WhatIsASolidLab: React.FC = () => {
         </select>
       </div>
 
-      <Canvas camera={{ position: [4.8, 3.8, 7.4], fov: 40 }} dpr={[1, 1.75]}>
+      <Canvas camera={{ position: [4.8, 3.8, 7.4], fov: 40 }} dpr={[1, 1.5]}>
         <ambientLight intensity={0.75} />
         <directionalLight position={[8, 10, 8]} intensity={1.25} />
         <OrbitControls target={[0, 0, 0]} enablePan={mode === 'explore'} enableZoom={mode === 'explore'} autoRotate={isAnimOn && stepIndex === 1} autoRotateSpeed={speed * 1.4} />
@@ -82,19 +82,19 @@ export const WhatIsASolidLab: React.FC = () => {
                     motion="vibrate"
                   >
                     {particleType === 'atoms' && (
-                      <Sphere args={[0.4, 32, 32]}>
+                      <Sphere args={[0.4, 16, 16]}>
                         <meshStandardMaterial color="#2589dc" roughness={0.28} metalness={0.12} />
                       </Sphere>
                     )}
                     {particleType === 'ions' && (
-                      <Sphere args={[(x+y+z)%2===0 ? 0.4 : 0.3, 32, 32]}>
+                      <Sphere args={[(x+y+z)%2===0 ? 0.4 : 0.3, 16, 16]}>
                         <meshStandardMaterial color={(x+y+z)%2===0 ? "#ef4444" : "#10b981"} />
                       </Sphere>
                     )}
                     {particleType === 'molecules' && (
                       <group>
-                        <Sphere args={[0.25, 32, 32]} position={[-0.15, 0, 0]}><meshStandardMaterial color="#8b5cf6" /></Sphere>
-                        <Sphere args={[0.25, 32, 32]} position={[0.15, 0, 0]}><meshStandardMaterial color="#8b5cf6" /></Sphere>
+                        <Sphere args={[0.25, 16, 16]} position={[-0.15, 0, 0]}><meshStandardMaterial color="#8b5cf6" /></Sphere>
+                        <Sphere args={[0.25, 16, 16]} position={[0.15, 0, 0]}><meshStandardMaterial color="#8b5cf6" /></Sphere>
                       </group>
                     )}
                   </AnimatedGroup>

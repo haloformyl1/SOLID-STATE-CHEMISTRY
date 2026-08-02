@@ -105,7 +105,7 @@ export const MorphingAnimation: React.FC = () => {
     <div className="flex h-full min-h-[520px] w-full flex-col rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4 md:p-6">
       <div className="flex flex-1 flex-col gap-6 md:flex-row">
         <div className="relative min-h-[380px] w-full overflow-hidden rounded-lg border border-[var(--border-strong)] bg-[var(--canvas-background)] md:w-2/3">
-          <Canvas camera={{ position: [5, 4, 6], fov: 45 }}>
+          <Canvas dpr={[1, 1.5]} camera={{ position: [5, 4, 6], fov: 45 }}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 10]} intensity={1} />
             <AnimatedCell targetParams={sequence[step].params} animating={true} />

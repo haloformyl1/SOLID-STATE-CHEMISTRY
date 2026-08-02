@@ -76,7 +76,7 @@ export const SolidBuilderLab: React.FC = () => {
         </div>
       )}
 
-      <Canvas camera={{ position: [5.8, 4.7, 7.5], fov: 40 }} dpr={[1, 1.75]}>
+      <Canvas camera={{ position: [5.8, 4.7, 7.5], fov: 40 }} dpr={[1, 1.5]}>
         <ambientLight intensity={0.75} />
         <directionalLight position={[10, 10, 10]} intensity={1.25} />
         <OrbitControls target={[0, 0.35, 0]} enablePan={mode === 'explore'} enableZoom={mode === 'explore'} enableRotate={mode === 'explore'} />
@@ -111,7 +111,7 @@ export const SolidBuilderLab: React.FC = () => {
                     amplitude={0.04}
                     motion="vibrate"
                   >
-                    <Sphere args={[0.45, 32, 32]}>
+                    <Sphere args={[0.45, 16, 16]}>
                       <meshStandardMaterial color="#2589dc" roughness={0.3} metalness={0.1} />
                     </Sphere>
                   </AnimatedGroup>

@@ -62,11 +62,11 @@ export const GraphiteExceptionLab: React.FC = () => {
     return (
       <group>
         {points.map((p, i) => (
-          <Sphere key={i} args={[0.2, 32, 32]} position={p as any}>
+          <Sphere key={i} args={[0.2, 16, 16]} position={p as any}>
             <meshStandardMaterial color={color} />
           </Sphere>
         ))}
-        <Sphere args={[0.2, 32, 32]} position={[0, yOffset, 0]}>
+        <Sphere args={[0.2, 16, 16]} position={[0, yOffset, 0]}>
           <meshStandardMaterial color={color} />
         </Sphere>
         {/* Radial bonds */}
@@ -111,7 +111,7 @@ export const GraphiteExceptionLab: React.FC = () => {
         </div>
       )}
 
-      <Canvas camera={{ position: [5, 4, 7], fov: 42 }} dpr={[1, 1.75]}>
+      <Canvas camera={{ position: [5, 4, 7], fov: 42 }} dpr={[1, 1.5]}>
         <ambientLight intensity={0.75} />
         <directionalLight position={[5, 10, 7]} intensity={1.2} />
         <OrbitControls enablePan={mode === 'explore'} enableZoom={mode === 'explore'} />

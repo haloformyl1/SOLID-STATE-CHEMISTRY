@@ -34,7 +34,7 @@ export const CrystalCanvas: React.FC<CrystalCanvasProps> = ({
 
   return (
     <div className="relative h-full min-h-[380px] w-full overflow-hidden bg-[var(--canvas-background)]" role="img" aria-label={ariaLabel}>
-      <Canvas dpr={[1, 1.75]} shadows gl={{ antialias: true, powerPreference: 'high-performance' }}>
+      <Canvas dpr={[1, 1.5]} shadows gl={{ antialias: true, powerPreference: 'high-performance' }}>
         <color attach="background" args={['#06131d']} />
         <PerspectiveCamera key={`camera-${resetKey}`} makeDefault position={cameraPosition} fov={46} near={0.1} far={100} />
         <OrbitControls

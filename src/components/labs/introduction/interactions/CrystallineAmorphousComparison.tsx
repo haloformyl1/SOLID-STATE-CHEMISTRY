@@ -23,7 +23,7 @@ const RevealedSphere: React.FC<RevealedSphereProps> = ({ position, color, visibl
 
   return (
     <a.group position={position} scale={spring.scale}>
-      <Sphere args={[0.3, 32, 32]}>
+      <Sphere args={[0.3, 16, 16]}>
         <meshStandardMaterial color={color} roughness={0.3} metalness={0.08} />
       </Sphere>
     </a.group>
@@ -130,7 +130,7 @@ export const CrystallineAmorphousComparison: React.FC = () => {
         </div>
       </div>
 
-      <Canvas camera={{ position: [0, 0, 11.5], fov: 42 }} dpr={[1, 1.75]}>
+      <Canvas camera={{ position: [0, 0, 11.5], fov: 42 }} dpr={[1, 1.5]}>
         <ambientLight intensity={0.75} />
         <directionalLight position={[0, 2, 10]} intensity={1.2} />
         <OrbitControls enablePan={mode === 'explore'} enableZoom={mode === 'explore'} enableRotate={mode === 'explore'} />

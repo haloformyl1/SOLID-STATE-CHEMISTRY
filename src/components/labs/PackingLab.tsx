@@ -37,7 +37,7 @@ const AnimatedAtom: React.FC<any> = ({ targetPosition, isVisible, isHighlighted,
     <Sphere 
       ref={meshRef} 
       position={[targetPosition.x, targetPosition.y, targetPosition.z + 5]} 
-      args={[0.5, 32, 32]} 
+      args={[0.5, 16, 16]} 
       scale={[0,0,0]}
     >
       <meshStandardMaterial 

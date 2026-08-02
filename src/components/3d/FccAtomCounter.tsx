@@ -62,7 +62,7 @@ export const FccAtomCounter: React.FC = () => {
       </div>
 
       <div className="relative min-h-[360px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
-        <Canvas camera={{ position: [3.2, 2.7, 3.8], fov: 38 }}>
+        <Canvas dpr={[1, 1.5]} camera={{ position: [3.2, 2.7, 3.8], fov: 38 }}>
           <ambientLight intensity={1.1} />
           <directionalLight position={[8, 10, 7]} intensity={1.25} />
           
@@ -75,7 +75,7 @@ export const FccAtomCounter: React.FC = () => {
 
           {/* Corners */}
           {corners.map((p, i) => (
-            <Sphere key={`c-${i}`} position={p} args={[r, 32, 32]}>
+            <Sphere key={`c-${i}`} position={p} args={[r, 16, 16]}>
               <meshStandardMaterial 
                 color={step === 1 || step === 3 ? "#ef4444" : "#94a3b8"} 
                 transparent opacity={step === 0 || step === 1 || step === 3 ? 0.96 : 0.16} 
@@ -85,7 +85,7 @@ export const FccAtomCounter: React.FC = () => {
 
           {/* Faces */}
           {faces.map((p, i) => (
-            <Sphere key={`f-${i}`} position={p} args={[r, 32, 32]}>
+            <Sphere key={`f-${i}`} position={p} args={[r, 16, 16]}>
               <meshStandardMaterial 
                 color={step === 2 || step === 3 ? "#3b82f6" : "#94a3b8"} 
                 transparent opacity={step === 0 || step === 2 || step === 3 ? 0.96 : 0.16} 

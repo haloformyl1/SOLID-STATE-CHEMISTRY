@@ -123,7 +123,7 @@ export const CrystalSystemExplorer: React.FC = () => {
     <div className="flex h-full min-h-[560px] w-full flex-col rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4 md:p-6">
       <div className="flex flex-1 flex-col gap-6 xl:flex-row">
         <div className="relative min-h-[420px] w-full overflow-hidden rounded-lg border border-[var(--border-strong)] bg-[var(--canvas-background)] xl:w-2/3">
-          <Canvas camera={{ position: [5, 4, 6], fov: 45 }}>
+          <Canvas dpr={[1, 1.5]} camera={{ position: [5, 4, 6], fov: 45 }}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 10]} intensity={1} />
             

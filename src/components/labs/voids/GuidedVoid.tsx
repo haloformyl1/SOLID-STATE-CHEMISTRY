@@ -24,7 +24,7 @@ const TriangleLayer = ({
   return (
     <group position={position} rotation={[0, 0, rotation]}>
       {points.map((pt, i) => (
-        <Sphere key={i} args={[0.5, 32, 32]} position={pt as any}>
+        <Sphere key={i} args={[0.5, 16, 16]} position={pt as any}>
           <meshStandardMaterial color={color} roughness={0.3} transparent opacity={0.7} />
         </Sphere>
       ))}
@@ -89,7 +89,7 @@ export const GuidedVoid: React.FC = () => {
     <div className="w-full bg-[var(--surf-elev)] rounded-xl p-4 md:p-6 border border-[var(--border-sub)] mt-8">
       <div className="flex flex-col md:flex-row gap-6">
         <div className="w-full md:w-2/3 h-[400px] bg-[var(--bg-sec)] rounded-lg relative border border-[var(--border-sub)] overflow-hidden">
-          <Canvas camera={{ position: [5, -4, 4], fov: 45 }}>
+          <Canvas dpr={[1, 1.5]} camera={{ position: [5, -4, 4], fov: 45 }}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 10]} intensity={1} />
             <AnimatedGroup step={step} />

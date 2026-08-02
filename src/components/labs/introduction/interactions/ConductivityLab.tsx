@@ -81,7 +81,7 @@ export const ConductivityLab: React.FC = () => {
         <div className="h-6 w-6 rounded-b-md bg-slate-600" />
       </div>
 
-      <Canvas camera={{ position: [0, 2, 10], fov: 42 }} dpr={[1, 1.75]}>
+      <Canvas camera={{ position: [0, 2, 10], fov: 42 }} dpr={[1, 1.5]}>
         <ambientLight intensity={0.75} />
         <directionalLight position={[0, 5, 7]} intensity={1.2} />
         <OrbitControls enablePan={mode === 'explore'} enableZoom={mode === 'explore'} />
@@ -116,7 +116,7 @@ export const ConductivityLab: React.FC = () => {
                     direction={isPositive ? -1 : 1}
                     motion="flow"
                   >
-                    <Sphere args={[0.3, 32, 32]}>
+                    <Sphere args={[0.3, 16, 16]}>
                       <meshStandardMaterial color={isPositive ? '#ef4444' : '#10b981'} roughness={0.3} metalness={0.08} />
                     </Sphere>
                   </AnimatedGroup>

@@ -154,7 +154,7 @@ export const DefectLab: React.FC = () => {
           <div className="min-h-[380px] flex-1">
             <CrystalCanvas ariaLabel={`${defectOptions.find((option) => option.id === defect)?.en} crystal defect model`}>
               {particles.map(p => (
-                <Sphere key={p.id} position={p.pos} args={[p.type === 'B' ? 0.45 : p.type === 'impurity' ? 0.5 : 0.3, 32, 32]}>
+                <Sphere key={p.id} position={p.pos} args={[p.type === 'B' ? 0.45 : p.type === 'impurity' ? 0.5 : 0.3, 16, 16]}>
                   <meshStandardMaterial
                     color={
                       p.type === 'A' ? '#3b82f6' :

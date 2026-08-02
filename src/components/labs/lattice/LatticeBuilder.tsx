@@ -19,7 +19,7 @@ const ParticleOrPoint = ({
         </Sphere>
       )}
       {(mode === 'particles' || mode === 'both') && (
-        <Sphere args={[0.4, 32, 32]}>
+        <Sphere args={[0.4, 16, 16]}>
           <meshStandardMaterial 
             color="#3b82f6" 
             roughness={0.4} 
@@ -92,7 +92,7 @@ export const LatticeBuilder: React.FC = () => {
       <div className="flex flex-1 flex-col gap-6 lg:flex-row">
         <div className="flex min-h-[380px] w-full flex-col gap-4 lg:w-2/3">
           <div className="relative min-h-[320px] flex-1 overflow-hidden rounded-lg border border-[var(--border-strong)] bg-[var(--canvas-background)]">
-            <Canvas camera={{ position: [3, 2, 4], fov: 45 }}>
+            <Canvas dpr={[1, 1.5]} camera={{ position: [3, 2, 4], fov: 45 }}>
               <ambientLight intensity={0.6} />
               <directionalLight position={[10, 10, 5]} intensity={1} />
               

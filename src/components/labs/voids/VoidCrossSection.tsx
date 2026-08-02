@@ -73,26 +73,26 @@ export const VoidCrossSection: React.FC = () => {
 
       <div className="flex gap-4">
         <div className="flex-1 bg-[var(--bg-canvas,transparent)] h-80 rounded-xl overflow-hidden relative border-2 border-[var(--border-sub)] shadow-inner">
-          <Canvas camera={{ position: [0, -5, 5], fov: 45 }}>
+          <Canvas dpr={[1, 1.5]} camera={{ position: [0, -5, 5], fov: 45 }}>
             <ambientLight intensity={0.6} />
             <directionalLight position={[10, 10, 10]} intensity={0.8} />
             
             {/* A Layer */}
             {layerA.map((p, i) => (
-              <Sphere key={`a-${i}`} position={p} args={[0.95, 32, 32]}>
+              <Sphere key={`a-${i}`} position={p} args={[0.95, 16, 16]}>
                 <meshStandardMaterial color="#3b82f6" transparent opacity={0.6} roughness={0.2} metalness={0.1} />
               </Sphere>
             ))}
 
             {/* B Layer */}
             {layerB.map((p, i) => (
-              <Sphere key={`b-${i}`} position={p} args={[0.95, 32, 32]}>
+              <Sphere key={`b-${i}`} position={p} args={[0.95, 16, 16]}>
                 <meshStandardMaterial color="#10b981" transparent opacity={0.6} roughness={0.2} metalness={0.1} />
               </Sphere>
             ))}
 
             {/* Void Marker */}
-            <Sphere position={voidCenter} args={[voidType === 'tetrahedral' ? 0.3 : 0.4, 32, 32]}>
+            <Sphere position={voidCenter} args={[voidType === 'tetrahedral' ? 0.3 : 0.4, 16, 16]}>
               <meshStandardMaterial color="#ef4444" transparent opacity={0.9} emissive="#ef4444" emissiveIntensity={0.5} />
             </Sphere>
             

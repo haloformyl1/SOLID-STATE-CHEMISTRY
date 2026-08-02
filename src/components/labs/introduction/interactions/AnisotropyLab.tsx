@@ -79,7 +79,7 @@ export const AnisotropyLab: React.FC = () => {
         </div>
       )}
 
-      <Canvas camera={{ position: [0, 0, 8.4], fov: 40 }} dpr={[1, 1.75]}>
+      <Canvas camera={{ position: [0, 0, 8.4], fov: 40 }} dpr={[1, 1.5]}>
         <ambientLight intensity={0.75} />
         <directionalLight position={[0, 0, 10]} intensity={1.2} />
         <OrbitControls enablePan={mode === 'explore'} enableZoom={mode === 'explore'} enableRotate={mode === 'explore'} />
@@ -90,7 +90,7 @@ export const AnisotropyLab: React.FC = () => {
             [-2, -1, 0, 1, 2].map(y => {
               const isAlternate = (Math.abs(x) + Math.abs(y)) % 2 === 0;
               return (
-                <Sphere key={`${x}-${y}`} args={[0.3, 32, 32]} position={[x, y, 0]}>
+                <Sphere key={`${x}-${y}`} args={[0.3, 16, 16]} position={[x, y, 0]}>
                   <meshStandardMaterial color={isAlternate ? "#3b82f6" : "#8b5cf6"} />
                 </Sphere>
               )

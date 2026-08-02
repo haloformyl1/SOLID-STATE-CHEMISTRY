@@ -19,7 +19,7 @@ const AnimatedSphere: React.FC<any> = ({ targetPosition, color, onClick, onPoint
     <Sphere 
       ref={meshRef}
       position={[targetPosition.x, targetPosition.y, targetPosition.z - 5]}
-      args={[0.95, 32, 32]}
+      args={[0.95, 16, 16]}
       scale={[0, 0, 0]}
       onClick={onClick}
       onPointerOver={onPointerOver}
@@ -84,7 +84,7 @@ export const Packing1DBuilder: React.FC = () => {
       )}
 
       <div className="relative min-h-[360px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
-        <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
+        <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 10], fov: 45 }}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[10, 10, 10]} intensity={0.8} />
           

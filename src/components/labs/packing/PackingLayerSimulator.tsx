@@ -175,7 +175,7 @@ export const PackingLayerSimulator: React.FC = () => {
 
       <div className="flex gap-4">
         <div className="relative min-h-[420px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
-          <Canvas camera={{ position: [12, 10, 12], fov: 45 }}>
+          <Canvas dpr={[1, 1.5]} camera={{ position: [12, 10, 12], fov: 45 }}>
             <ambientLight intensity={0.6} />
             <directionalLight position={[10, 10, 10]} intensity={0.8} />
             <directionalLight position={[-10, -10, -10]} intensity={0.3} color="#4338ca" />
@@ -184,7 +184,7 @@ export const PackingLayerSimulator: React.FC = () => {
               const color = p.layerType === 0 ? '#3b82f6' : p.layerType === 1 ? '#10b981' : '#f59e0b';
               return (
                 <React.Fragment key={p.id}>
-                  <Sphere position={p.position} args={[0.95, 32, 32]}>
+                  <Sphere position={p.position} args={[0.95, 16, 16]}>
                     <meshStandardMaterial color={color} roughness={0.2} metalness={0.1} />
                   </Sphere>
                 </React.Fragment>

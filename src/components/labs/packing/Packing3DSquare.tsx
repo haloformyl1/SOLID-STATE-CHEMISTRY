@@ -74,7 +74,7 @@ export const Packing3DSquare: React.FC = () => {
 
       <div className="flex gap-4">
         <div className="relative min-h-[380px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
-          <Canvas camera={{ position: [10, 10, 10], fov: 45 }}>
+          <Canvas dpr={[1, 1.5]} camera={{ position: [10, 10, 10], fov: 45 }}>
             <ambientLight intensity={0.6} />
             <directionalLight position={[10, 10, 10]} intensity={0.8} />
             
@@ -94,7 +94,7 @@ export const Packing3DSquare: React.FC = () => {
               
               return (
                 <React.Fragment key={p.id}>
-                  <Sphere position={p.position} args={[0.95, 32, 32]}>
+                  <Sphere position={p.position} args={[0.95, 16, 16]}>
                     <meshStandardMaterial color={color} transparent opacity={opacity} roughness={0.2} metalness={0.1} />
                   </Sphere>
                   {layers === 3 && p.position.lengthSq() < 4.1 && !p.isCenter && (

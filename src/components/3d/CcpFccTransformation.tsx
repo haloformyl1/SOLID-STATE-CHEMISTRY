@@ -74,7 +74,7 @@ export const CcpFccTransformation: React.FC = () => {
       </div>
 
       <div className="relative min-h-[360px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
-        <Canvas camera={{ position: [5.1, 4.4, 5.1], fov: 42 }}>
+        <Canvas dpr={[1, 1.5]} camera={{ position: [5.1, 4.4, 5.1], fov: 42 }}>
           <ambientLight intensity={1.1} />
           <directionalLight position={[8, 10, 7]} intensity={1.25} />
           
@@ -89,28 +89,28 @@ export const CcpFccTransformation: React.FC = () => {
 
           {/* Layer A (Corner) */}
           {layerA.map((p, i) => (
-            <Sphere key={`a-${i}`} position={p} args={[r, 32, 32]}>
+            <Sphere key={`a-${i}`} position={p} args={[r, 16, 16]}>
               <meshStandardMaterial color="#3b82f6" roughness={0.2} metalness={0.1} />
             </Sphere>
           ))}
 
           {/* Layer B */}
           {layerB.map((p, i) => (
-            <Sphere key={`b-${i}`} position={p} args={[r, 32, 32]}>
+            <Sphere key={`b-${i}`} position={p} args={[r, 16, 16]}>
               <meshStandardMaterial color="#10b981" roughness={0.2} metalness={0.1} />
             </Sphere>
           ))}
 
           {/* Layer C */}
           {layerC.map((p, i) => (
-            <Sphere key={`c-${i}`} position={p} args={[r, 32, 32]}>
+            <Sphere key={`c-${i}`} position={p} args={[r, 16, 16]}>
               <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.1} />
             </Sphere>
           ))}
           
           {/* Layer D (Top Corner - actually Layer A repeating) */}
           {layerD.map((p, i) => (
-            <Sphere key={`d-${i}`} position={p} args={[r, 32, 32]}>
+            <Sphere key={`d-${i}`} position={p} args={[r, 16, 16]}>
               <meshStandardMaterial color="#3b82f6" roughness={0.2} metalness={0.1} />
             </Sphere>
           ))}

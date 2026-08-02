@@ -82,7 +82,7 @@ export const BindingForceLab: React.FC = () => {
         </div>
       )}
 
-      <Canvas camera={{ position: [0, 0, 8.5], fov: 40 }} dpr={[1, 1.75]}>
+      <Canvas camera={{ position: [0, 0, 8.5], fov: 40 }} dpr={[1, 1.5]}>
         <ambientLight intensity={0.75} />
         <directionalLight position={[5, 5, 7]} intensity={1.2} />
         <OrbitControls enablePan={mode === 'explore'} enableZoom={mode === 'explore'} autoRotate={isAnimOn} autoRotateSpeed={speed} />
@@ -94,7 +94,7 @@ export const BindingForceLab: React.FC = () => {
                 [-1, 1].map(z => {
                   const isPositive = (x+y+z) % 2 !== 0;
                   return (
-                    <Sphere key={`i-${x}${y}${z}`} args={[isPositive ? 0.3 : 0.4, 32, 32]} position={[x, y, z]}>
+                    <Sphere key={`i-${x}${y}${z}`} args={[isPositive ? 0.3 : 0.4, 16, 16]} position={[x, y, z]}>
                       <meshStandardMaterial color={isPositive ? "#ef4444" : "#10b981"} />
                     </Sphere>
                   );
@@ -108,7 +108,7 @@ export const BindingForceLab: React.FC = () => {
           <group>
             {[-1.5, 0, 1.5].map(x => 
               [-1.5, 0, 1.5].map(y => (
-                <Sphere key={`m-${x}${y}`} args={[0.4, 32, 32]} position={[x, y, 0]}>
+                <Sphere key={`m-${x}${y}`} args={[0.4, 16, 16]} position={[x, y, 0]}>
                   <meshStandardMaterial color="#f59e0b" />
                 </Sphere>
               ))
@@ -138,11 +138,11 @@ export const BindingForceLab: React.FC = () => {
         {displayType === 'covalent' && (
           <group>
              {/* Simple diamond-like tetrahedron cluster */}
-             <Sphere args={[0.3, 32, 32]} position={[0,0,0]}><meshStandardMaterial color="#334155" /></Sphere>
-             <Sphere args={[0.3, 32, 32]} position={[1.5, 1.5, -1.5]}><meshStandardMaterial color="#334155" /></Sphere>
-             <Sphere args={[0.3, 32, 32]} position={[-1.5, -1.5, -1.5]}><meshStandardMaterial color="#334155" /></Sphere>
-             <Sphere args={[0.3, 32, 32]} position={[-1.5, 1.5, 1.5]}><meshStandardMaterial color="#334155" /></Sphere>
-             <Sphere args={[0.3, 32, 32]} position={[1.5, -1.5, 1.5]}><meshStandardMaterial color="#334155" /></Sphere>
+             <Sphere args={[0.3, 16, 16]} position={[0,0,0]}><meshStandardMaterial color="#334155" /></Sphere>
+             <Sphere args={[0.3, 16, 16]} position={[1.5, 1.5, -1.5]}><meshStandardMaterial color="#334155" /></Sphere>
+             <Sphere args={[0.3, 16, 16]} position={[-1.5, -1.5, -1.5]}><meshStandardMaterial color="#334155" /></Sphere>
+             <Sphere args={[0.3, 16, 16]} position={[-1.5, 1.5, 1.5]}><meshStandardMaterial color="#334155" /></Sphere>
+             <Sphere args={[0.3, 16, 16]} position={[1.5, -1.5, 1.5]}><meshStandardMaterial color="#334155" /></Sphere>
              
              {/* Bonds */}
              <Line points={[[0,0,0], [1.5, 1.5, -1.5]]} color="#94a3b8" lineWidth={8} />
@@ -158,8 +158,8 @@ export const BindingForceLab: React.FC = () => {
             {[-1.5, 1.5].map(x => 
               [-1.5, 1.5].map(y => (
                 <group key={`mol-${x}${y}`} position={[x, y, 0]}>
-                  <Sphere args={[0.25, 32, 32]} position={[-0.2, 0, 0]}><meshStandardMaterial color="#8b5cf6" /></Sphere>
-                  <Sphere args={[0.25, 32, 32]} position={[0.2, 0, 0]}><meshStandardMaterial color="#8b5cf6" /></Sphere>
+                  <Sphere args={[0.25, 16, 16]} position={[-0.2, 0, 0]}><meshStandardMaterial color="#8b5cf6" /></Sphere>
+                  <Sphere args={[0.25, 16, 16]} position={[0.2, 0, 0]}><meshStandardMaterial color="#8b5cf6" /></Sphere>
                   {/* Fluctuation indicator */}
                   <Torus args={[0.6, 0.02, 16, 32]} rotation={[Math.PI/2, 0, 0]}>
                     <meshBasicMaterial color="#a78bfa" transparent opacity={isAnimOn ? 0.42 : 0.22} />

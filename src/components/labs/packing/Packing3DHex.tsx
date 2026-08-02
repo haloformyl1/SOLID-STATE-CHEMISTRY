@@ -18,7 +18,7 @@ const AnimatedLayerSphere: React.FC<any> = ({ targetPosition, color, opacity, is
     <Sphere 
       ref={meshRef}
       position={[targetPosition.x, targetPosition.y, targetPosition.z + 5]} // Start above and drop down
-      args={[0.95, 32, 32]}
+      args={[0.95, 16, 16]}
     >
       <meshStandardMaterial color={isCenter && !exploded ? '#ef4444' : color} transparent opacity={opacity} roughness={0.2} metalness={0.1} />
     </Sphere>
@@ -228,7 +228,7 @@ export const Packing3DHex: React.FC<Packing3DHexProps> = ({ packingType }) => {
 
       <div className="flex gap-4">
         <div className="relative min-h-[420px] flex-1 overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--canvas-background)] shadow-inner">
-          <Canvas camera={{ position: [12, 12, 12], fov: 45 }}>
+          <Canvas dpr={[1, 1.5]} camera={{ position: [12, 12, 12], fov: 45 }}>
             <ambientLight intensity={0.6} />
             <directionalLight position={[10, 10, 10]} intensity={0.8} />
             <directionalLight position={[-10, -10, -10]} intensity={0.3} color="#4338ca" />
