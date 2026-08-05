@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Canvas } from '@react-three/fiber';
+
 import { OrbitControls, Box, Sphere } from '@react-three/drei';
 import { BilingualText } from '../../BilingualText';
 import { SkipForward, SkipBack, Layers, Box as BoxIcon, Minimize } from 'lucide-react';
+import { AppCanvas as Canvas } from '../../ui/AppCanvas';
 
 const ParticleOrPoint = ({ 
   position, 

@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { Canvas } from '@react-three/fiber';
+
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
 import { BilingualText } from '../../BilingualText';
 import * as THREE from 'three';
 import { Layers } from 'lucide-react';
+import { AppCanvas as Canvas } from '../../ui/AppCanvas';
 
 export const Packing3DSquare: React.FC = () => {
   const [layers, setLayers] = useState(1);

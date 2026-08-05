@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { AppErrorBoundary, LoadingState } from './components/ui/States';
 import { useStore } from './store/useStore';
+import { Capacitor } from '@capacitor/core';
 
 const Home = lazy(() => import('./pages/Home').then((module) => ({ default: module.Home })));
 const Learn = lazy(() => import('./pages/Learn').then((module) => ({ default: module.Learn })));
@@ -31,8 +32,10 @@ function App() {
     document.documentElement.dataset.reducedMotion = reducedMotion ? 'true' : 'false';
   }, [reducedMotion]);
 
+  const routerBasename = Capacitor.isNativePlatform() ? '' : import.meta.env.DEV ? '' : '/SOLID-STATE-CHEMISTRY/';
+
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <BrowserRouter basename={routerBasename}>
       <AppErrorBoundary>
         <Suspense fallback={<LoadingState />}>
           <Routes>

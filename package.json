@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/core": "^8.5.0",
     "@emailjs/browser": "^4.4.1",
     "@react-spring/three": "^10.1.2",
     "@react-spring/web": "^10.1.2",
@@ -33,6 +34,8 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/cli": "^8.5.0",
     "@playwright/test": "^1.61.1",
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^7.0.0",

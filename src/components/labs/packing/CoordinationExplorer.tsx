@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { Canvas } from '@react-three/fiber';
+
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
 import { BilingualText } from '../../BilingualText';
 import * as THREE from 'three';
 import { ScientificPanel } from '../../ui/ScientificPanel';
+import { AppCanvas as Canvas } from '../../ui/AppCanvas';
 
 type StructureType = '1d' | '2d-square' | '2d-hex' | '3d-sc' | '3d-bcc' | '3d-hcp' | '3d-ccp';
 

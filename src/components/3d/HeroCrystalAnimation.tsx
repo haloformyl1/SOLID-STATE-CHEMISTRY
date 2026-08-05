@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
+import { AppCanvas as Canvas } from '../ui/AppCanvas';
 import { Sphere, Line, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { useStore } from '../../store/useStore';

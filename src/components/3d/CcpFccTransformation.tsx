@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Canvas } from '@react-three/fiber';
+
 import { OrbitControls, Sphere } from '@react-three/drei';
 import { BilingualText } from '../BilingualText';
 import * as THREE from 'three';
+import { AppCanvas as Canvas } from '../ui/AppCanvas';
 
 export const CcpFccTransformation: React.FC = () => {
   const [showBox, setShowBox] = useState(false);

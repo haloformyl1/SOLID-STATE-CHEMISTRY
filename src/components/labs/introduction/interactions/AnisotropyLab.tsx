@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { BilingualText } from '../../../BilingualText';
 import { GuidedLessonEngine } from '../engine/GuidedLessonEngine';
 import type { LessonMode, AnimationStep } from '../engine/GuidedLessonTypes';
-import { Canvas } from '@react-three/fiber';
+
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
 import { useSpring, a } from '@react-spring/three';
+import { AppCanvas as Canvas } from '../../../ui/AppCanvas';
 
 const steps: AnimationStep[] = [
   {

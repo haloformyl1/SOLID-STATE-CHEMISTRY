@@ -1,7 +1,8 @@
 import React, { Suspense, useMemo } from 'react';
-import { Canvas } from '@react-three/fiber';
+
 import { Environment, Grid, OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { ErrorState } from '../ui/States';
+import { AppCanvas as Canvas } from '../ui/AppCanvas';
 
 interface CrystalCanvasProps {
   children: React.ReactNode;

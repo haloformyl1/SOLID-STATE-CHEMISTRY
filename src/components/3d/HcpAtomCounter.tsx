@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Canvas } from '@react-three/fiber';
+
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
 import { BilingualText } from '../BilingualText';
 import * as THREE from 'three';
+import { AppCanvas as Canvas } from '../ui/AppCanvas';
 
 export const HcpAtomCounter: React.FC = () => {
   const [step, setStep] = useState(0);

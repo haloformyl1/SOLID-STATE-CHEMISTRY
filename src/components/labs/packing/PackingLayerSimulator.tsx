@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { Canvas } from '@react-three/fiber';
+
 import { OrbitControls, Sphere } from '@react-three/drei';
 import { BilingualText } from '../../BilingualText';
 import * as THREE from 'three';
 import { Undo, Trash2 } from 'lucide-react';
+import { AppCanvas as Canvas } from '../../ui/AppCanvas';
 
 type LayerLabel = 'A' | 'B' | 'C';
 

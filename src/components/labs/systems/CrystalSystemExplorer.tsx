@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { Canvas } from '@react-three/fiber';
+
 import { OrbitControls, Line, Sphere, Text } from '@react-three/drei';
 import { BilingualText } from '../../BilingualText';
+import { AppCanvas as Canvas } from '../../ui/AppCanvas';
 
 type CrystalSystem = 'Cubic' | 'Tetragonal' | 'Orthorhombic' | 'Monoclinic' | 'Triclinic' | 'Hexagonal' | 'Rhombohedral';
 

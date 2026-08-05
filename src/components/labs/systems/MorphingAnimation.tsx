@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
+import { AppCanvas as Canvas } from '../../ui/AppCanvas';
 import { OrbitControls, Line, Sphere } from '@react-three/drei';
 import { BilingualText } from '../../BilingualText';
 import { Play, Pause, RotateCcw } from 'lucide-react';
