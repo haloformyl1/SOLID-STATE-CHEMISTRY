@@ -10,6 +10,7 @@ import {
   Settings2,
   SkipBack,
   SkipForward,
+  Target,
   X,
 } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
@@ -29,6 +30,7 @@ export const GuidedLessonEngine: React.FC<GuidedLessonEngineProps> = ({
   isAnimationOn,
   speed,
   children,
+  bottomControlsOverlay,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -122,6 +124,102 @@ export const GuidedLessonEngine: React.FC<GuidedLessonEngineProps> = ({
     ? { duration: 0 }
     : { duration: Math.max(0.16, 0.28 / speed) };
 
+  const timelineControls = mode === 'guided' ? (
+    <div className="flex items-center gap-1 rounded-xl border border-white/10 bg-[color-mix(in_srgb,var(--canvas-surface)_94%,transparent)] p-1.5 text-sky-100 shadow-xl backdrop-blur-md sm:gap-1.5 sm:p-2">
+      <button
+        type="button"
+        onClick={() => moveToStep(currentStepIndex - 1)}
+        disabled={currentStepIndex === 0}
+        className="grid h-10 w-10 place-items-center rounded-lg transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
+        aria-label="Previous step"
+      >
+        <SkipBack className="h-5 w-5" aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        onClick={() => setIsPlaying((playing) => !playing)}
+        disabled={!isAnimationOn}
+        className="grid h-12 w-12 place-items-center rounded-full bg-[var(--accent-primary)] text-[var(--button-primary-text)] shadow-lg transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:scale-100"
+        aria-label={isPlaying ? 'Pause guided animation' : 'Play guided animation'}
+        aria-pressed={isPlaying}
+        title={isAnimationOn ? undefined : 'Turn animation on in settings to use autoplay'}
+      >
+        {isPlaying ? <Pause className="h-6 w-6" aria-hidden="true" /> : <Play className="ml-0.5 h-6 w-6" aria-hidden="true" />}
+      </button>
+      <button
+        type="button"
+        onClick={() => moveToStep(currentStepIndex + 1)}
+        disabled={currentStepIndex === steps.length - 1}
+        className="grid h-10 w-10 place-items-center rounded-lg transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
+        aria-label="Next step"
+      >
+        <SkipForward className="h-5 w-5" aria-hidden="true" />
+      </button>
+      <div className="mx-1 h-6 w-px bg-white/15" aria-hidden="true" />
+      <button type="button" onClick={handleRestart} className="grid h-10 w-10 place-items-center rounded-lg transition-colors hover:bg-white/10" aria-label="Restart lesson">
+        <RotateCcw className="h-5 w-5" aria-hidden="true" />
+      </button>
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => setShowSettings((open) => !open)}
+          className="grid h-10 w-10 place-items-center rounded-lg transition-colors hover:bg-white/10"
+          aria-label="Animation settings"
+          aria-expanded={showSettings}
+        >
+          <Settings2 className="h-5 w-5" aria-hidden="true" />
+        </button>
+        <AnimatePresence>
+          {showSettings && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={transition}
+              className="absolute bottom-full right-0 mb-2 w-52 rounded-xl border border-[var(--border-default)] bg-[var(--surface-primary)] p-3 text-[var(--text-secondary)] shadow-[var(--shadow-modal)]"
+            >
+              <button type="button" onClick={() => setShowSettings(false)} className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-md text-[var(--text-muted)] hover:bg-[var(--hover-state)] hover:text-[var(--text-primary)]" aria-label="Close animation settings">
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+              <div>
+                <span className="mb-2 block pr-8 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[var(--text-muted)]">Animation</span>
+                <div className="grid grid-cols-2 gap-1 rounded-lg bg-[var(--surface-elevated)] p-1">
+                  {[true, false].map((enabled) => (
+                    <button
+                      type="button"
+                      key={String(enabled)}
+                      onClick={() => handleAnimationChange(enabled)}
+                      className={`rounded-md py-1.5 text-xs font-bold ${isAnimationOn === enabled ? 'bg-[var(--accent-primary)] text-[var(--button-primary-text)] shadow-sm' : 'text-[var(--text-secondary)] hover:bg-[var(--hover-state)]'}`}
+                      aria-pressed={isAnimationOn === enabled}
+                    >
+                      {enabled ? 'On' : 'Off'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-3">
+                <span className="mb-2 block text-[10px] font-extrabold uppercase tracking-[0.12em] text-[var(--text-muted)]">Speed</span>
+                <div className="grid grid-cols-4 gap-1 rounded-lg bg-[var(--surface-elevated)] p-1">
+                  {SPEED_OPTIONS.map((option) => (
+                    <button
+                      type="button"
+                      key={option}
+                      onClick={() => onSpeedChange(option)}
+                      className={`rounded-md py-1.5 text-[11px] font-bold ${speed === option ? 'bg-[var(--accent-primary)] text-[var(--button-primary-text)] shadow-sm' : 'text-[var(--text-secondary)] hover:bg-[var(--hover-state)]'}`}
+                      aria-pressed={speed === option}
+                    >
+                      {option}x
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  ) : null;
+
   return (
     <div className="guided-lesson-engine grid min-h-[620px] w-full flex-1 grid-cols-1 gap-4 overflow-y-auto bg-[var(--surface-secondary)] p-3 sm:p-4 lg:grid-cols-[minmax(0,1fr)_minmax(300px,360px)] lg:overflow-hidden">
       <div className="guided-model-stage relative flex min-h-[430px] min-w-0 flex-col overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--border-strong)_55%,transparent)] bg-[var(--canvas-background)]">
@@ -141,7 +239,7 @@ export const GuidedLessonEngine: React.FC<GuidedLessonEngineProps> = ({
             className={`flex min-h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm font-bold transition-colors sm:px-3 ${mode === 'challenge' ? 'bg-[var(--accent-amber)] text-[#071923] shadow-sm' : 'text-sky-100/80 hover:bg-white/10 hover:text-white'}`}
             aria-pressed={mode === 'challenge'}
           >
-            <MousePointerClick className="h-4 w-4" aria-hidden="true" />
+            <Target className="h-4 w-4" aria-hidden="true" />
             <span className="hidden sm:inline">Challenge</span>
           </button>
           <button
@@ -155,100 +253,14 @@ export const GuidedLessonEngine: React.FC<GuidedLessonEngineProps> = ({
           </button>
         </div>
 
-        {mode === 'guided' && (
-          <div className="absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1 rounded-xl border border-white/10 bg-[color-mix(in_srgb,var(--canvas-surface)_94%,transparent)] p-1.5 text-sky-100 shadow-xl backdrop-blur-md sm:bottom-4 sm:gap-1.5 sm:p-2">
-            <button
-              type="button"
-              onClick={() => moveToStep(currentStepIndex - 1)}
-              disabled={currentStepIndex === 0}
-              className="grid h-10 w-10 place-items-center rounded-lg transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
-              aria-label="Previous step"
-            >
-              <SkipBack className="h-5 w-5" aria-hidden="true" />
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsPlaying((playing) => !playing)}
-              disabled={!isAnimationOn}
-              className="grid h-12 w-12 place-items-center rounded-full bg-[var(--accent-primary)] text-[var(--button-primary-text)] shadow-lg transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:scale-100"
-              aria-label={isPlaying ? 'Pause guided animation' : 'Play guided animation'}
-              aria-pressed={isPlaying}
-              title={isAnimationOn ? undefined : 'Turn animation on in settings to use autoplay'}
-            >
-              {isPlaying ? <Pause className="h-6 w-6" aria-hidden="true" /> : <Play className="ml-0.5 h-6 w-6" aria-hidden="true" />}
-            </button>
-            <button
-              type="button"
-              onClick={() => moveToStep(currentStepIndex + 1)}
-              disabled={currentStepIndex === steps.length - 1}
-              className="grid h-10 w-10 place-items-center rounded-lg transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
-              aria-label="Next step"
-            >
-              <SkipForward className="h-5 w-5" aria-hidden="true" />
-            </button>
-            <div className="mx-1 h-6 w-px bg-white/15" aria-hidden="true" />
-            <button type="button" onClick={handleRestart} className="grid h-10 w-10 place-items-center rounded-lg transition-colors hover:bg-white/10" aria-label="Restart lesson">
-              <RotateCcw className="h-5 w-5" aria-hidden="true" />
-            </button>
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setShowSettings((open) => !open)}
-                className="grid h-10 w-10 place-items-center rounded-lg transition-colors hover:bg-white/10"
-                aria-label="Animation settings"
-                aria-expanded={showSettings}
-              >
-                <Settings2 className="h-5 w-5" aria-hidden="true" />
-              </button>
-              <AnimatePresence>
-                {showSettings && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={transition}
-                    className="absolute bottom-full right-0 mb-2 w-52 rounded-xl border border-[var(--border-default)] bg-[var(--surface-primary)] p-3 text-[var(--text-secondary)] shadow-[var(--shadow-modal)]"
-                  >
-                    <button type="button" onClick={() => setShowSettings(false)} className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-md text-[var(--text-muted)] hover:bg-[var(--hover-state)] hover:text-[var(--text-primary)]" aria-label="Close animation settings">
-                      <X className="h-4 w-4" aria-hidden="true" />
-                    </button>
-                    <div>
-                      <span className="mb-2 block pr-8 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[var(--text-muted)]">Animation</span>
-                      <div className="grid grid-cols-2 gap-1 rounded-lg bg-[var(--surface-elevated)] p-1">
-                        {[true, false].map((enabled) => (
-                          <button
-                            type="button"
-                            key={String(enabled)}
-                            onClick={() => handleAnimationChange(enabled)}
-                            className={`rounded-md py-1.5 text-xs font-bold ${isAnimationOn === enabled ? 'bg-[var(--accent-primary)] text-[var(--button-primary-text)] shadow-sm' : 'text-[var(--text-secondary)] hover:bg-[var(--hover-state)]'}`}
-                            aria-pressed={isAnimationOn === enabled}
-                          >
-                            {enabled ? 'On' : 'Off'}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <span className="mb-2 block text-[10px] font-extrabold uppercase tracking-[0.12em] text-[var(--text-muted)]">Speed</span>
-                      <div className="grid grid-cols-4 gap-1 rounded-lg bg-[var(--surface-elevated)] p-1">
-                        {SPEED_OPTIONS.map((option) => (
-                          <button
-                            type="button"
-                            key={option}
-                            onClick={() => onSpeedChange(option)}
-                            className={`rounded-md py-1.5 text-[11px] font-bold ${speed === option ? 'bg-[var(--accent-primary)] text-[var(--button-primary-text)] shadow-sm' : 'text-[var(--text-secondary)] hover:bg-[var(--hover-state)]'}`}
-                            aria-pressed={speed === option}
-                          >
-                            {option}x
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+        {bottomControlsOverlay ? (
+           bottomControlsOverlay(timelineControls)
+        ) : (
+          timelineControls && (
+            <div className="absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 sm:bottom-4">
+              {timelineControls}
             </div>
-          </div>
+          )
         )}
 
         <div className="relative flex min-h-[430px] flex-1 items-center justify-center">

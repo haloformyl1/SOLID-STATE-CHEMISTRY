@@ -172,8 +172,9 @@ export const ModuleView: React.FC = () => {
               </div>
 
               {/* Interactive Laboratories - Full Width visually but contained safely */}
-              <div className="mb-6 mt-10 w-full">
-                <div className="laboratory-container">
+              {(section.modelConfig || section.type === 'concept_map') && (
+                <div className="mb-6 mt-10 w-full">
+                  <div className="laboratory-container">
                   <React.Suspense fallback={<InteractiveLoadingState />}>
                   {section.modelConfig?.type === 'what-is-solid-lab' && (
                     <FullscreenInteractiveFrame title={<BilingualText en="What Is a Solid?" bn="কঠিন পদার্থ কী?" />}>
@@ -346,9 +347,10 @@ export const ModuleView: React.FC = () => {
                       <PackingLayerSimulator />
                     </FullscreenInteractiveFrame>
                   )}
-                  </React.Suspense>
+                    </React.Suspense>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {section.type === 'next_module_link' && section.modelConfig?.targetModuleId && (
                 <div className="reading-column mt-12">

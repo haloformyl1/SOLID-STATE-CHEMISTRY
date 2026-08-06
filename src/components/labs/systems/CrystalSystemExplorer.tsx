@@ -144,11 +144,11 @@ export const CrystalSystemExplorer: React.FC = () => {
               ))}
 
               {showLabels && (
-                <>
+                <React.Suspense fallback={null}>
                   <Text position={[va[0]/2, -0.2, 0]} color="#ef4444" fontSize={0.3}>a</Text>
                   <Text position={[vb[0]/2, vb[1]/2, vb[2]/2 + 0.2]} color="#22c55e" fontSize={0.3}>b</Text>
                   <Text position={[vc[0]/2 - 0.2, vc[1]/2, vc[2]/2]} color="#3b82f6" fontSize={0.3}>c</Text>
-                </>
+                </React.Suspense>
               )}
             </group>
 

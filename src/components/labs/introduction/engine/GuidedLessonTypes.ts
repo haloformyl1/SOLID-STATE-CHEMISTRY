@@ -31,4 +31,5 @@ export interface GuidedLessonEngineProps {
   speed: number;
   children: React.ReactNode;
   onUserAction?: (actionId: string, payload: any) => boolean; // returns true if successful
+  bottomControlsOverlay?: (timelineControls: React.ReactNode | null) => React.ReactNode;
 }
