@@ -39,8 +39,7 @@ function App() {
       <AppErrorBoundary>
         <Suspense fallback={<LoadingState />}>
           <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+          <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="learn" element={<Learn />} />
             <Route path="learn/:id" element={<ModuleView />} />
