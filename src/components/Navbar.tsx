@@ -55,11 +55,32 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="glass-panel sticky top-0 z-50 flex h-[var(--header-height-mobile)] items-center border-x-0 border-t-0 md:h-[var(--header-height-desktop)]">
+      <header className="glass-panel sticky top-0 z-50 flex min-h-[var(--header-height-mobile)] md:min-h-[var(--header-height-desktop)] h-auto py-1.5 items-center border-x-0 border-t-0">
         <div className="mx-auto flex w-full max-w-[var(--page-max)] items-center justify-between gap-3 px-3 sm:px-5 lg:px-8">
-          <Link to="/" className="rounded-xl focus-visible:outline-none" aria-label="PIECHEM home">
-            <BrandMark compact className="sm:[&>span:first-child]:h-9 sm:[&>span:first-child]:w-9" />
-          </Link>
+          <div className="flex flex-col items-start gap-1 shrink-0">
+            <Link to="/" className="rounded-xl focus-visible:outline-none" aria-label="PIECHEM home">
+              <BrandMark compact />
+            </Link>
+
+            {/* Designed by Arghyadeep Roy badge matching Image 1 */}
+            <div className="hidden sm:flex px-2.5 py-0.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.2)] text-[11px] text-slate-300 font-semibold tracking-wide items-center space-x-1.5 mt-0.5">
+              <span className="text-slate-400">Designed by</span>
+              <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-400">
+                Arghyadeep Roy
+              </span>
+              <span className="text-cyan-500/60">•</span>
+              <a
+                href="tel:9830507435"
+                className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 hover:text-white hover:bg-cyan-600/80 border border-cyan-500/50 transition-all font-mono shadow-[0_0_10px_rgba(6,182,212,0.2)]"
+                title="Call Arghyadeep Roy"
+              >
+                <svg className="w-2.5 h-2.5 mr-0.5 text-cyan-400 fill-current" viewBox="0 0 24 24">
+                  <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+                </svg>
+                <span>9830507435</span>
+              </a>
+            </div>
+          </div>
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
             {navLinks.map((link) => {
