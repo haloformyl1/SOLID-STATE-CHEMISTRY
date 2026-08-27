@@ -3,12 +3,9 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Box, MousePointer2, Sparkles } from 'lucide-react';
 import { HeroCrystalAnimation } from '../components/3d/HeroCrystalAnimation';
 import { BilingualText } from '../components/BilingualText';
-import { CreatorCreditBar } from '../components/CreatorCreditBar';
 
 export const Home: React.FC = () => (
   <div className="flex min-h-[calc(100dvh-var(--header-height-mobile))] w-full flex-col md:min-h-[calc(100dvh-var(--header-height-desktop))]">
-    <CreatorCreditBar />
-
     <section className="page-shell grid flex-1 items-center gap-10 py-9 md:grid-cols-[minmax(0,0.88fr)_minmax(480px,1.12fr)] md:gap-12 md:py-12 xl:gap-20" aria-labelledby="home-title">
       <div className="relative z-10 max-w-[720px] animate-fade-in-up">
         <div className="eyebrow mb-5">
