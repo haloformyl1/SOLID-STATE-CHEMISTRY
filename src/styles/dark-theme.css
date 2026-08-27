@@ -1,5 +1,7 @@
 @layer base {
-  .dark {
+  :root,
+  .dark,
+  [data-theme="dark"] {
     color-scheme: dark;
 
     --page-background: #06131d;

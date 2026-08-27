@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export type LanguageMode = 'en' | 'bn' | 'bilingual';
-export type ThemeMode = 'light' | 'dark';
+export type ThemeMode = 'dark';
 
 interface AppState {
   language: LanguageMode;
@@ -12,7 +12,7 @@ interface AppState {
   isAuthenticated: boolean;
   isAdmin: boolean;
   setLanguage: (lang: LanguageMode) => void;
-  setTheme: (theme: ThemeMode) => void;
+  setTheme: (theme?: ThemeMode) => void;
   setReducedMotion: (reduced: boolean) => void;
   markModuleCompleted: (moduleId: string) => void;
   login: () => void;
@@ -24,19 +24,16 @@ export const useStore = create<AppState>()(
   persist(
     (set) => ({
       language: 'en',
-      theme: 'light',
+      theme: 'dark',
       reducedMotion: false,
       completedModules: [],
       isAuthenticated: false,
       isAdmin: false,
       setLanguage: (lang) => set({ language: lang }),
-      setTheme: (theme) => {
-        set({ theme });
-        if (theme === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
+      setTheme: () => {
+        set({ theme: 'dark' });
+        document.documentElement.classList.add('dark');
+        document.documentElement.dataset.theme = 'dark';
       },
       setReducedMotion: (reduced) => set({ reducedMotion: reduced }),
       markModuleCompleted: (moduleId) =>
@@ -51,6 +48,11 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'solid-state-chem-storage',
+      merge: (persistedState: unknown, currentState: AppState) => ({
+        ...currentState,
+        ...(typeof persistedState === 'object' && persistedState !== null ? persistedState : {}),
+        theme: 'dark',
+      }),
     }
   )
 );

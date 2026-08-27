@@ -1,14 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
-    <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
-    <link rel="manifest" href="%BASE_URL%site.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="PIECHEM Crystal Learning Studio — an interactive bilingual solid-state chemistry learning platform." />
-    <meta name="theme-color" content="#F4F9FC" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#06131D" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#06131D" />
     <title>Solid-State Chemistry | PIECHEM</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,13 +15,18 @@
     <script>
       try {
         const redirect = new URLSearchParams(window.location.search).get('route');
-        if (redirect) window.history.replaceState(null, '', '%BASE_URL%' + redirect);
+        if (redirect) window.history.replaceState(null, '', './' + redirect);
+        document.documentElement.classList.add('dark');
+        document.documentElement.dataset.theme = 'dark';
         const stored = JSON.parse(localStorage.getItem('solid-state-chem-storage') || '{}');
-        if (stored?.state?.theme === 'dark') document.documentElement.classList.add('dark');
+        if (stored?.state) {
+          stored.state.theme = 'dark';
+          localStorage.setItem('solid-state-chem-storage', JSON.stringify(stored));
+        }
       } catch {}
     </script>
   </head>
-  <body>
+  <body class="bg-[#06131d] text-[#f1f7fa]">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

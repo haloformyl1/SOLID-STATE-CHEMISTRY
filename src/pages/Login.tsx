@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
-import { Lock, Mail, AlertCircle, KeyRound, Loader2, ArrowLeft, Moon, Sun } from 'lucide-react';
+import { Lock, Mail, AlertCircle, KeyRound, Loader2, ArrowLeft } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import { BrandMark } from '../components/BrandMark';
 
@@ -18,8 +18,6 @@ export const Login = () => {
   
   const login = useStore((state) => state.login);
   const adminLogin = useStore((state) => state.adminLogin);
-  const theme = useStore((state) => state.theme);
-  const setTheme = useStore((state) => state.setTheme);
   const navigate = useNavigate();
 
   // Generate a random 6-digit OTP
@@ -93,9 +91,6 @@ export const Login = () => {
       <div className="crystal-grid absolute inset-y-0 right-0 hidden w-[48%] opacity-95 lg:block" aria-hidden="true"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,color-mix(in_srgb,var(--accent-primary)_10%,transparent),transparent_32rem)]" aria-hidden="true"></div>
 
-      <button type="button" onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} className="icon-button absolute right-4 top-4 z-20" aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}>
-        {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5 text-[var(--accent-amber)]" />}
-      </button>
       
       <div className="glass-panel relative z-10 w-full max-w-lg rounded-[var(--radius-lg)] p-6 shadow-[var(--shadow-modal)] animate-fade-in-up sm:p-8">
         <div className="mb-7 flex justify-center border-b border-[var(--border-default)] pb-6">

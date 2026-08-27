@@ -12,21 +12,14 @@ const Lab = lazy(() => import('./pages/Lab').then((module) => ({ default: module
 const Practice = lazy(() => import('./pages/Practice').then((module) => ({ default: module.Practice })));
 const Revision = lazy(() => import('./pages/Revision').then((module) => ({ default: module.Revision })));
 const Progress = lazy(() => import('./pages/Progress').then((module) => ({ default: module.Progress })));
-const Login = lazy(() => import('./pages/Login').then((module) => ({ default: module.Login })));
-
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = useStore((state) => state.isAuthenticated);
-  return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
-};
 
 function App() {
-  const theme = useStore((state) => state.theme);
   const reducedMotion = useStore((state) => state.reducedMotion);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    document.documentElement.dataset.theme = theme;
-  }, [theme]);
+    document.documentElement.classList.add('dark');
+    document.documentElement.dataset.theme = 'dark';
+  }, []);
 
   useEffect(() => {
     document.documentElement.dataset.reducedMotion = reducedMotion ? 'true' : 'false';
@@ -39,16 +32,16 @@ function App() {
       <AppErrorBoundary>
         <Suspense fallback={<LoadingState />}>
           <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="learn" element={<Learn />} />
-            <Route path="learn/:id" element={<ModuleView />} />
-            <Route path="lab" element={<Lab />} />
-            <Route path="practice" element={<Practice />} />
-            <Route path="revision" element={<Revision />} />
-            <Route path="progress" element={<Progress />} />
-          </Route>
-          <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="learn" element={<Learn />} />
+              <Route path="learn/:id" element={<ModuleView />} />
+              <Route path="lab" element={<Lab />} />
+              <Route path="practice" element={<Practice />} />
+              <Route path="revision" element={<Revision />} />
+              <Route path="progress" element={<Progress />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
       </AppErrorBoundary>

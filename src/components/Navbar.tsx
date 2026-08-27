@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Accessibility, Check, LogOut, Maximize2, Menu, Minimize2, Moon, Sun, X } from 'lucide-react';
+import { Accessibility, Check, LogOut, Maximize2, Menu, Minimize2, X } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { BrandMark } from './BrandMark';
 import { LanguageSelector } from './LanguageSelector';
@@ -13,7 +13,7 @@ const navLinks = [
 ];
 
 export const Navbar: React.FC = () => {
-  const { theme, setTheme, reducedMotion, setReducedMotion, logout } = useStore();
+  const { reducedMotion, setReducedMotion, logout } = useStore();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [appFullscreen, setAppFullscreen] = useState(false);
@@ -55,7 +55,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="glass-panel sticky top-0 z-50 flex min-h-[var(--header-height-mobile)] md:min-h-[var(--header-height-desktop)] h-auto py-1.5 items-center border-x-0 border-t-0">
+      <header className="glass-panel sticky top-0 z-50 flex min-h-[var(--header-height-mobile)] md:min-h-[var(--header-height-desktop)] h-auto py-1.5 items-center border-x-0 border-t-0 bg-[var(--header-background)] backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-[var(--page-max)] items-center justify-between gap-3 px-3 sm:px-5 lg:px-8">
           <div className="flex flex-col items-start gap-1 shrink-0">
             <Link to="/" className="rounded-xl focus-visible:outline-none" aria-label="PIECHEM home">
@@ -101,17 +101,6 @@ export const Navbar: React.FC = () => {
 
           <div className="relative flex items-center gap-1.5 sm:gap-2">
             <LanguageSelector compact />
-
-            <button
-              type="button"
-              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-              className="icon-button border-transparent bg-transparent shadow-none"
-              aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
-              aria-pressed={theme === 'dark'}
-              title={theme === 'light' ? 'Dark theme' : 'Light theme'}
-            >
-              {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5 text-[var(--accent-amber)]" />}
-            </button>
 
             <button
               type="button"
