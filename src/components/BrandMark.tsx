@@ -1,11 +1,12 @@
 import React from 'react';
+import { useStore } from '../store/useStore';
 
 interface BrandMarkProps {
   compact?: boolean;
   inverse?: boolean;
   className?: string;
   showSubtitle?: boolean;
-  subtitle?: string;
+  subtitle?: React.ReactNode;
   showText?: boolean;
 }
 
@@ -115,10 +116,18 @@ export const BrandMark: React.FC<BrandMarkProps> = ({
   inverse = false,
   className = '',
   showSubtitle = true,
-  subtitle = 'EXAM PLATFORM',
+  subtitle,
   showText = true,
 }) => {
   const iconSize = compact ? 34 : 44;
+  const { language } = useStore();
+
+  const defaultSubtitle =
+    language === 'bn'
+      ? 'কঠিন অবস্থা • ইন্টারঅ্যাক্টিভ কেমিস্ট্রি'
+      : 'SOLID STATE • INTERACTIVE CHEMISTRY';
+
+  const displaySubtitle = subtitle ?? defaultSubtitle;
 
   return (
     <span className={`inline-flex min-w-0 items-center gap-2.5 sm:gap-3 select-none ${className}`} aria-label="PIECHEM">
@@ -135,8 +144,8 @@ export const BrandMark: React.FC<BrandMarkProps> = ({
             </span>
           </span>
           {showSubtitle && (
-            <span className={`tracking-[0.24em] text-cyan-300/80 font-bold uppercase ${compact ? 'text-[8px] sm:text-[9.5px] mt-0.5' : 'text-[11px] sm:text-[12px] mt-1'}`}>
-              {subtitle}
+            <span className={`tracking-[0.18em] sm:tracking-[0.22em] text-cyan-300/80 font-bold uppercase whitespace-nowrap ${compact ? 'text-[7.5px] sm:text-[9px] mt-0.5' : 'text-[10.5px] sm:text-[12px] mt-1'}`}>
+              {displaySubtitle}
             </span>
           )}
         </span>
