@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDlBrYFMr4kRWVK0wMOY6KAAoICt_puOvU",
@@ -15,8 +15,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
 
-// Simple helper to save text content to DB
-export const saveContentToDB = async (contentKey: string, lang: 'en' | 'bn', text: string) => {
-  const contentRef = ref(db, `content/${contentKey}/${lang}`);
-  await set(contentRef, text);
+// Read-only: Disabled content mutation to prevent tampering
+export const saveContentToDB = async () => {
+  // Mutation disabled in production
 };

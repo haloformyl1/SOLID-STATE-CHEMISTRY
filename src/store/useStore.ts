@@ -43,15 +43,16 @@ export const useStore = create<AppState>()(
             : [...state.completedModules, moduleId],
         })),
       login: () => set({ isAuthenticated: true, isAdmin: false }),
-      adminLogin: () => set({ isAuthenticated: true, isAdmin: true }),
+      adminLogin: () => set({ isAuthenticated: true, isAdmin: false }),
       logout: () => set({ isAuthenticated: false, isAdmin: false }),
     }),
     {
       name: 'solid-state-chem-storage',
-      merge: (persistedState: unknown, currentState: AppState) => ({
+      merge: (persistedState: unknown, currentState: AppState): AppState => ({
         ...currentState,
-        ...(typeof persistedState === 'object' && persistedState !== null ? persistedState : {}),
+        ...(typeof persistedState === 'object' && persistedState !== null ? (persistedState as Partial<AppState>) : {}),
         theme: 'dark',
+        isAdmin: false,
       }),
     }
   )
