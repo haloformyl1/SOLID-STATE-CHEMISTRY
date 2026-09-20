@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AlertTriangle, ArrowRight, Atom, BookOpen, Box, Boxes, Calculator, CheckCircle2, CircleDot, Grid3X3, Layers } from 'lucide-react';
 import { BilingualText } from '../components/BilingualText';
 import { PageContainer, PageHeader } from '../components/ui/LayoutPrimitives';
@@ -9,6 +9,7 @@ import { useStore } from '../store/useStore';
 const moduleIcons = [Atom, Box, Calculator, AlertTriangle, Layers, Grid3X3, Boxes, CircleDot];
 
 export const Learn: React.FC = () => {
+  const navigate = useNavigate();
   const completedModules = useStore((state) => state.completedModules);
   const percentage = Math.round((completedModules.length / modules.length) * 100);
 
@@ -50,9 +51,7 @@ export const Learn: React.FC = () => {
                 : <BilingualText en="Not started" bn="শুরু হয়নি" />;
 
             return (
-              <Link
-                key={module.id}
-                to={`/learn/${module.id}`}
+              <div role="button" tabIndex={0} key={module.id} onClick={() => navigate(`/learn/${module.id}`)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/learn/${module.id}`); } }}
                 className={`group relative flex min-h-[290px] flex-col overflow-hidden rounded-[var(--radius-lg)] border bg-[var(--surface-primary)] p-6 shadow-[var(--shadow-low)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[var(--shadow-interactive)] ${completed ? 'border-[color-mix(in_srgb,var(--success)_48%,var(--border-default))]' : inProgress ? 'border-[var(--border-interactive)]' : 'border-[var(--border-default)] hover:border-[var(--border-strong)]'}`}
                 aria-label={`${module.title.en}. ${completed ? 'Completed' : inProgress ? 'Continue learning' : 'Not started'}`}
               >
@@ -88,7 +87,7 @@ export const Learn: React.FC = () => {
                     </span>
                   </div>
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>

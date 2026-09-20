@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Accessibility, Check, Maximize2, Menu, Minimize2, X } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { BrandMark } from './BrandMark';
@@ -15,6 +15,7 @@ const navLinks = [
 export const Navbar: React.FC = () => {
   const { reducedMotion, setReducedMotion } = useStore();
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [appFullscreen, setAppFullscreen] = useState(false);
   const [accessibilityOpen, setAccessibilityOpen] = useState(false);
@@ -58,9 +59,9 @@ export const Navbar: React.FC = () => {
       <header className="sticky top-0 z-50 flex h-auto min-h-[var(--header-height-mobile)] items-center border-b border-[rgba(70,227,255,0.18)] bg-[rgba(8,19,30,0.92)] py-1.5 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] md:min-h-[var(--header-height-desktop)]">
         <div className="mx-auto flex w-full max-w-[var(--page-max)] items-center justify-between gap-2 px-3 sm:gap-3 sm:px-5 lg:px-8">
           <div className="flex shrink-0 flex-col items-start gap-1">
-            <Link to="/" className="rounded-xl focus-visible:outline-none" aria-label="PIECHEM home">
+            <button type="button" onClick={() => navigate('/')} className="rounded-xl focus-visible:outline-none text-left bg-transparent border-0 p-0 cursor-pointer" aria-label="PIECHEM home">
               <BrandMark compact />
-            </Link>
+            </button>
 
             {/* Designed by Arghyadeep Roy badge matching Image 1 */}
             <div className="hidden sm:flex px-2.5 py-0.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.2)] text-[11px] text-slate-300 font-semibold tracking-wide items-center space-x-1.5 mt-0.5">
@@ -69,16 +70,12 @@ export const Navbar: React.FC = () => {
                 Arghyadeep Roy
               </span>
               <span className="text-cyan-500/60">•</span>
-              <a
-                href="tel:9830507435"
-                className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 hover:text-white hover:bg-cyan-600/80 border border-cyan-500/50 transition-all font-mono shadow-[0_0_10px_rgba(6,182,212,0.2)]"
-                title="Call Arghyadeep Roy"
-              >
+              <button type="button" onClick={() => window.open('tel:9830507435', '_self')} className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 hover:text-white hover:bg-cyan-600/80 border border-cyan-500/50 transition-all font-mono shadow-[0_0_10px_rgba(6,182,212,0.2)] cursor-pointer" title="Call Arghyadeep Roy">
                 <svg className="w-2.5 h-2.5 mr-0.5 text-cyan-400 fill-current" viewBox="0 0 24 24">
                   <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                 </svg>
                 <span>9830507435</span>
-              </a>
+              </button>
             </div>
           </div>
 
@@ -86,15 +83,13 @@ export const Navbar: React.FC = () => {
             {navLinks.map((link) => {
               const active = location.pathname.startsWith(link.path);
               return (
-                <Link
-                  key={link.path}
-                  to={link.path}
+                <button type="button" key={link.path} onClick={() => { navigate(link.path); setMobileMenuOpen(false); }}
                   aria-current={active ? 'page' : undefined}
                   className={`relative rounded-xl px-4 py-2 text-sm font-bold transition-all ${active ? 'bg-cyan-500/15 border border-cyan-400/35 text-[#46e3ff] shadow-[0_0_15px_rgba(70,227,255,0.22)]' : 'text-[#a9bfd2] hover:bg-white/5 hover:text-[#edf8ff]'}`}
                 >
                   {link.label}
                   {active && <span className="absolute inset-x-4 -bottom-[9px] h-0.5 rounded-full bg-[var(--accent-primary)]" aria-hidden="true" />}
-                </Link>
+                </button>
               );
             })}
           </nav>
@@ -163,15 +158,10 @@ export const Navbar: React.FC = () => {
               {navLinks.map((link) => {
                 const active = location.pathname.startsWith(link.path);
                 return (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    aria-current={active ? 'page' : undefined}
-                    className={`flex min-h-12 items-center justify-between rounded-xl border px-4 py-3 font-bold ${active ? 'border-[var(--border-interactive)] bg-[var(--selected-state)] text-[var(--accent-primary)]' : 'border-transparent text-[var(--text-secondary)] hover:border-[var(--border-default)] hover:bg-[var(--hover-state)] hover:text-[var(--text-primary)]'}`}
-                  >
+                  <button type="button" key={link.path} onClick={() => { navigate(link.path); setMobileMenuOpen(false); }} aria-current={active ? 'page' : undefined} className={`flex min-h-12 items-center justify-between rounded-xl border px-4 py-3 font-bold ${active ? 'border-[var(--border-interactive)] bg-[var(--selected-state)] text-[var(--accent-primary)]' : 'border-transparent text-[var(--text-secondary)] hover:border-[var(--border-default)] hover:bg-[var(--hover-state)] hover:text-[var(--text-primary)]'} text-left cursor-pointer`}>
                     {link.label}
                     <span aria-hidden="true">→</span>
-                  </Link>
+                  </button>
                 );
               })}
             </nav>

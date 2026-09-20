@@ -1,10 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Box, MousePointer2, Sparkles } from 'lucide-react';
 import { HeroCrystalAnimation } from '../components/3d/HeroCrystalAnimation';
 import { BilingualText } from '../components/BilingualText';
 
-export const Home: React.FC = () => (
+export const Home: React.FC = () => {
+  const navigate = useNavigate();
+  return (
   <div className="flex min-h-[calc(100dvh-var(--header-height-mobile))] w-full flex-col md:min-h-[calc(100dvh-var(--header-height-desktop))]">
     <section className="page-shell grid flex-1 items-center gap-8 py-8 sm:gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-12 md:py-12 xl:gap-20" aria-labelledby="home-title">
       <div className="relative z-10 w-full max-w-[720px] animate-fade-in-up">
@@ -25,14 +27,14 @@ export const Home: React.FC = () => (
         </div>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Link to="/learn" className="btn btn-primary w-full px-7 py-3.5 sm:w-auto shadow-[0_10px_30px_rgba(70,227,255,0.35)]">
+          <button type="button" onClick={() => navigate('/learn')} className="btn btn-primary w-full px-7 py-3.5 sm:w-auto shadow-[0_10px_30px_rgba(70,227,255,0.35)] cursor-pointer">
             <BilingualText en="Start Learning" bn="শেখা শুরু করুন" />
             <ArrowRight className="h-5 w-5" aria-hidden="true" />
-          </Link>
-          <Link to="/lab" className="btn btn-secondary w-full px-7 py-3.5 sm:w-auto">
+          </button>
+          <button type="button" onClick={() => navigate('/lab')} className="btn btn-secondary w-full px-7 py-3.5 sm:w-auto cursor-pointer">
             <Box className="h-5 w-5 text-[#aa7bff]" aria-hidden="true" />
             <BilingualText en="Explore 3D Lab" bn="3D ল্যাব অন্বেষণ করুন" />
-          </Link>
+          </button>
         </div>
 
         <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 border-t border-[rgba(165,214,255,0.16)] pt-6 text-sm font-semibold text-[#a9bfd2]">
@@ -64,3 +66,4 @@ export const Home: React.FC = () => (
     </section>
   </div>
 );
+};

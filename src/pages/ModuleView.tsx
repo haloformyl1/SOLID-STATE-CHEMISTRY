@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Navigate, Link } from 'react-router-dom';
+import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import { getModuleById } from '../content';
 import { BilingualText } from '../components/BilingualText';
 import { useStore } from '../store/useStore';
@@ -75,6 +75,7 @@ const DensityFormula = () => (
 
 export const ModuleView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const moduleData = getModuleById(id || '');
   const { markModuleCompleted, completedModules } = useStore();
 
@@ -94,10 +95,10 @@ export const ModuleView: React.FC = () => {
       <div className="sticky top-[var(--header-height-mobile)] z-40 border-b border-[var(--border-default)] bg-[var(--header-background)] shadow-[var(--shadow-low)] backdrop-blur-xl md:top-[var(--header-height-desktop)]">
         <div className="mx-auto flex w-full max-w-[var(--page-max)] flex-col justify-between gap-4 px-4 py-4 sm:px-6 md:flex-row md:items-center lg:px-10">
           <div>
-            <Link to="/learn" className="mb-2 inline-flex min-h-9 items-center gap-2 rounded-md px-1 text-sm font-bold text-[var(--accent-primary)] hover:underline">
+            <button type="button" onClick={() => navigate('/learn')} className="mb-2 inline-flex min-h-9 items-center gap-2 rounded-md px-1 text-sm font-bold text-[var(--accent-primary)] hover:underline bg-transparent border-0 cursor-pointer p-0">
               <ArrowLeft className="w-4 h-4" />
               <BilingualText en="Back to Modules" bn="অধ্যায়সমূহে ফিরে যান" />
-            </Link>
+            </button>
             <h1 className="text-2xl font-black text-[var(--text-primary)] md:text-3xl">
               <BilingualText en={moduleData.title.en} bn={moduleData.title.bn} />
             </h1>
