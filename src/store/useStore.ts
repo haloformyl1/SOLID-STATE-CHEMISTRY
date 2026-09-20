@@ -17,7 +17,6 @@ interface AppState {
   markModuleCompleted: (moduleId: string) => void;
   login: () => void;
   adminLogin: () => void;
-  logout: () => void;
 }
 
 export const useStore = create<AppState>()(
@@ -44,7 +43,6 @@ export const useStore = create<AppState>()(
         })),
       login: () => set({ isAuthenticated: true, isAdmin: false }),
       adminLogin: () => set({ isAuthenticated: true, isAdmin: false }),
-      logout: () => set({ isAuthenticated: false, isAdmin: false }),
     }),
     {
       name: 'solid-state-chem-storage',

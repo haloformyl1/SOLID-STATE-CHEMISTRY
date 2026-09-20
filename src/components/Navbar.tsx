@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Accessibility, Check, LogOut, Maximize2, Menu, Minimize2, X } from 'lucide-react';
+import { Accessibility, Check, Maximize2, Menu, Minimize2, X } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { BrandMark } from './BrandMark';
 import { LanguageSelector } from './LanguageSelector';
@@ -13,7 +13,7 @@ const navLinks = [
 ];
 
 export const Navbar: React.FC = () => {
-  const { reducedMotion, setReducedMotion, logout } = useStore();
+  const { reducedMotion, setReducedMotion } = useStore();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [appFullscreen, setAppFullscreen] = useState(false);
@@ -135,16 +135,6 @@ export const Navbar: React.FC = () => {
 
             <button
               type="button"
-              onClick={logout}
-              className="icon-button hidden border-transparent bg-transparent text-[var(--text-muted)] shadow-none hover:!border-[var(--error)] hover:!bg-[color-mix(in_srgb,var(--error)_10%,transparent)] hover:!text-[var(--error)] xl:inline-flex"
-              aria-label="Sign out"
-              title="Sign out"
-            >
-              <LogOut className="h-5 w-5" />
-            </button>
-
-            <button
-              type="button"
               className="icon-button border-transparent bg-transparent shadow-none lg:hidden"
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Open navigation menu"
@@ -192,16 +182,10 @@ export const Navbar: React.FC = () => {
                 <span className="flex items-center gap-2"><Accessibility className="h-4 w-4" />Reduce motion</span>
                 <span className={`grid h-5 w-5 place-items-center rounded border ${reducedMotion ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)] text-[var(--button-primary-text)]' : 'border-[var(--border-strong)]'}`}>{reducedMotion && <Check className="h-3.5 w-3.5" />}</span>
               </button>
-              <div className="grid grid-cols-2 gap-2">
-                <button type="button" className="btn btn-secondary px-3" onClick={toggleAppFullscreen}>
-                  {appFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                  Fullscreen
-                </button>
-                <button type="button" className="btn btn-ghost px-3 text-[var(--error)]" onClick={logout}>
-                  <LogOut className="h-4 w-4" />
-                  Sign out
-                </button>
-              </div>
+              <button type="button" className="btn btn-secondary w-full justify-center px-3" onClick={toggleAppFullscreen}>
+                {appFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                Fullscreen
+              </button>
             </div>
           </aside>
         </div>
