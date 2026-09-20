@@ -208,7 +208,7 @@
   .section-heading[data-accent="success"] { --section-accent: var(--success); }
 
   .btn {
-    min-height: var(--control-size);
+    min-height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -292,7 +292,7 @@
   .lab-frame {
     position: relative;
     display: flex;
-    min-height: clamp(520px, 68vh, 760px);
+    min-height: clamp(420px, 62vh, 760px);
     flex-direction: column;
     overflow: hidden;
     border: 1px solid var(--border-strong);
@@ -300,6 +300,16 @@
     background: var(--canvas-background);
     box-shadow: var(--shadow-interactive);
     isolation: isolate;
+  }
+
+  .lab-frame::before {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary), var(--accent-violet));
+    content: "";
+    opacity: 0.9;
+    z-index: 30;
   }
 
   .lab-frame[data-fullscreen="true"] {
@@ -340,7 +350,7 @@
     gap: 12px;
     padding: 9px 10px 9px 16px;
     border-bottom: 1px solid color-mix(in srgb, var(--border-strong) 70%, transparent);
-    background: color-mix(in srgb, var(--canvas-surface) 92%, transparent);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--canvas-surface) 98%, transparent), color-mix(in srgb, var(--canvas-surface) 88%, transparent));
     color: #d8ecf6;
     z-index: 20;
   }
@@ -355,6 +365,21 @@
   .lab-frame-toolbar .icon-button:hover { border-color: #67cafa; background: rgba(56, 189, 248, 0.13); color: #ffffff; }
 
   .lab-frame-content { position: relative; display: flex; min-height: 0; flex: 1; flex-direction: column; z-index: 1; }
+
+  .lab-section {
+    position: relative;
+  }
+
+  .lab-section::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -18px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent-primary), transparent 82%);
+    content: "";
+    opacity: 0.32;
+  }
 
   .status-dot {
     width: 8px;
@@ -420,9 +445,20 @@
     .page-shell, .page-shell-compact { padding-inline: 16px; }
     .bilingual-layout { grid-template-columns: minmax(0, 1fr); }
     .bilingual-pane + .bilingual-pane { border-top: 1px solid var(--border-default); border-left: 0; padding-top: 12px; padding-left: 0; }
-    .lab-frame { min-height: 560px; border-radius: var(--radius-lg); }
+    .lab-frame { min-height: 420px; border-radius: var(--radius-lg); }
+    .lab-section::after { left: -8px; opacity: 0.2; }
     .lab-frame-toolbar { align-items: flex-start; }
     .lab-frame-toolbar-title { max-width: 58vw; }
+    .btn { padding-inline: 14px; }
+  }
+
+  @media (max-width: 480px) {
+    .page-shell, .page-shell-compact { padding-inline: 12px; }
+    .lab-frame { min-height: 360px; }
+    .lab-frame-toolbar { min-height: 52px; padding: 10px 8px 10px 12px; }
+    .lab-frame-toolbar-title { max-width: 62vw; }
+    .btn { min-height: 42px; padding: 9px 12px; font-size: 0.94rem; }
+    .page-shell { padding-top: 22px; padding-bottom: 22px; }
   }
 
   @media (min-width: 1024px) {

@@ -115,10 +115,10 @@ export const ModuleView: React.FC = () => {
         </div>
       </div>
 
-      <div className="page-shell animate-fade-in-up pt-8">
+      <div className="page-shell animate-fade-in-up pt-6 sm:pt-8">
 
         {/* Learning Objectives Panel */}
-        <div className="reading-column mb-14">
+        <div className="reading-column mb-10 sm:mb-14">
           <div className="surface-panel border-l-4 border-l-[var(--accent-secondary)] bg-[var(--surface-secondary)] p-6 md:p-8">
             <h2 className="mb-5 flex items-center gap-3 text-xl font-bold text-[var(--accent-secondary)]">
               <Target className="w-6 h-6" />
@@ -140,9 +140,9 @@ export const ModuleView: React.FC = () => {
         </div>
 
         {/* Main Lesson Sections */}
-        <div className="space-y-14 lg:space-y-20">
+        <div className="space-y-10 sm:space-y-14 lg:space-y-20">
           {moduleData.sections.map((section) => (
-            <section key={section.id} className="relative w-full border-b border-[var(--border-default)] pb-14 last:border-0 last:pb-0">
+            <section key={section.id} className="relative w-full border-b border-[var(--border-default)] pb-10 sm:pb-14 last:border-0 last:pb-0">
               
               <div className="reading-column">
                 {section.title && (

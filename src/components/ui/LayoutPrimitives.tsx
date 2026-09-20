@@ -26,13 +26,13 @@ interface PageHeaderProps {
 }
 
 export const PageHeader: React.FC<PageHeaderProps> = ({ eyebrow, title, description, aside, icon: Icon, className = '' }) => (
-  <header className={`flex flex-col gap-6 border-b border-[var(--border-default)] pb-8 lg:flex-row lg:items-end lg:justify-between ${className}`}>
+  <header className={`flex flex-col gap-4 border-b border-[var(--border-default)] pb-6 sm:gap-5 sm:pb-8 lg:flex-row lg:items-end lg:justify-between ${className}`}>
     <div className="reading-column">
-      {eyebrow && <div className="eyebrow mb-3">{Icon && <Icon className="h-4 w-4" aria-hidden="true" />}{eyebrow}</div>}
-      <h1 className="type-page-title font-black text-[var(--text-primary)]">{title}</h1>
-      {description && <div className="mt-4 max-w-[72ch] text-lg leading-relaxed text-[var(--text-secondary)]">{description}</div>}
+      {eyebrow && <div className="eyebrow mb-2 sm:mb-3">{Icon && <Icon className="h-4 w-4" aria-hidden="true" />}{eyebrow}</div>}
+      <h1 className="type-page-title text-[clamp(2rem,5vw,3.25rem)] font-black leading-[1.08] text-[var(--text-primary)]">{title}</h1>
+      {description && <div className="mt-3 max-w-[72ch] text-base leading-relaxed text-[var(--text-secondary)] sm:mt-4 sm:text-lg">{description}</div>}
     </div>
-    {aside && <div className="shrink-0">{aside}</div>}
+    {aside && <div className="w-full shrink-0 sm:max-w-xs lg:w-auto">{aside}</div>}
   </header>
 );
 

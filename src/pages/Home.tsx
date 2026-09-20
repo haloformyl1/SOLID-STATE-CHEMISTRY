@@ -6,8 +6,8 @@ import { BilingualText } from '../components/BilingualText';
 
 export const Home: React.FC = () => (
   <div className="flex min-h-[calc(100dvh-var(--header-height-mobile))] w-full flex-col md:min-h-[calc(100dvh-var(--header-height-desktop))]">
-    <section className="page-shell grid flex-1 items-center gap-10 py-9 md:grid-cols-[minmax(0,0.88fr)_minmax(480px,1.12fr)] md:gap-12 md:py-12 xl:gap-20" aria-labelledby="home-title">
-      <div className="relative z-10 max-w-[720px] animate-fade-in-up">
+    <section className="page-shell grid flex-1 items-center gap-8 py-8 sm:gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-12 md:py-12 xl:gap-20" aria-labelledby="home-title">
+      <div className="relative z-10 w-full max-w-[720px] animate-fade-in-up">
         <div className="eyebrow mb-5">
           <Sparkles className="h-4 w-4" aria-hidden="true" />
           Crystal Learning Studio

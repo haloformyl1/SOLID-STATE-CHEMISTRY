@@ -13,11 +13,11 @@ export const Learn: React.FC = () => {
   const percentage = Math.round((completedModules.length / modules.length) * 100);
 
   const progressSummary = (
-    <div className="surface-panel flex min-w-[250px] items-center gap-4 p-4">
+    <div className="surface-panel flex w-full min-w-0 max-w-sm items-center gap-4 p-4 sm:min-w-[220px]">
       <div className="relative grid h-14 w-14 shrink-0 place-items-center rounded-full" style={{ background: `conic-gradient(var(--accent-primary) ${percentage * 3.6}deg, var(--surface-elevated) 0deg)` }}>
         <div className="grid h-11 w-11 place-items-center rounded-full bg-[var(--surface-primary)] text-sm font-black text-[var(--text-primary)]">{percentage}%</div>
       </div>
-      <div>
+      <div className="min-w-0">
         <p className="eyebrow text-[10px]"><BilingualText en="Course progress" bn="কোর্সের অগ্রগতি" /></p>
         <p className="mt-1 font-bold text-[var(--text-primary)]">
           <BilingualText en={`${completedModules.length} of ${modules.length} completed`} bn={`${modules.length}টির মধ্যে ${completedModules.length}টি সম্পূর্ণ`} />

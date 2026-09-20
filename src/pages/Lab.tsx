@@ -59,9 +59,9 @@ export const Lab: React.FC = () => (
         description={<BilingualText en="Explore all solid-state chemistry interactive tools in one place. Experiment with unit cells, atom sharing, packing, density, and defects." bn="একক স্থানে সমস্ত কঠিন অবস্থার রসায়নের ইন্টারেক্টিভ টুলস অন্বেষণ করুন। একক কোষ, পরমাণু ভাগাভাগি, প্যাকিং, ঘনত্ব এবং ত্রুটিগুলি নিয়ে পরীক্ষা করুন।" />}
       />
 
-      <div className="mt-12 space-y-20">
+      <div className="mt-10 space-y-16 sm:mt-12 sm:space-y-20">
         {labSections.map((lab, index) => (
-          <section key={lab.id} id={lab.id} className="scroll-mt-32" aria-labelledby={`${lab.id}-title`}>
+          <section key={lab.id} id={lab.id} className="lab-section scroll-mt-32" aria-labelledby={`${lab.id}-title`}>
             <SectionHeader
               title={<span id={`${lab.id}-title`}><span className="mr-2 text-[var(--text-muted)]">{String(index + 1).padStart(2, '0')}</span>{lab.title}</span>}
               subtitle={lab.subtitle}
