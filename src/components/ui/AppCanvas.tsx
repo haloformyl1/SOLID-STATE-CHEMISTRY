@@ -3,7 +3,11 @@ import { Canvas, type CanvasProps } from '@react-three/fiber';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import * as THREE from 'three';
 
-export const AppCanvas = forwardRef<HTMLCanvasElement, CanvasProps>(({ children, onCreated, ...props }, ref) => {
+interface AppCanvasProps extends CanvasProps {
+  showCameraControls?: boolean;
+}
+
+export const AppCanvas = forwardRef<HTMLCanvasElement, AppCanvasProps>(({ children, onCreated, showCameraControls = true, ...props }, ref) => {
   const [camera, setCamera] = useState<THREE.Camera | null>(null);
   const [initialPos, setInitialPos] = useState<THREE.Vector3 | null>(null);
   const [initialZoom, setInitialZoom] = useState<number>(1);
@@ -49,7 +53,7 @@ export const AppCanvas = forwardRef<HTMLCanvasElement, CanvasProps>(({ children,
       <Canvas ref={ref} onCreated={handleCreated} {...props}>
         {children}
       </Canvas>
-      <div className="absolute right-3 bottom-3 sm:right-4 sm:bottom-4 flex flex-col gap-2 z-10">
+      {showCameraControls && <div className="absolute right-3 bottom-3 sm:right-4 sm:bottom-4 flex flex-col gap-2 z-10">
         <button
           type="button"
           onClick={() => handleZoom(1.2)}
@@ -77,7 +81,7 @@ export const AppCanvas = forwardRef<HTMLCanvasElement, CanvasProps>(({ children,
         >
           <RotateCcw className="h-5 w-5" aria-hidden="true" />
         </button>
-      </div>
+      </div>}
     </div>
   );
 });
