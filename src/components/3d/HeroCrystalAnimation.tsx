@@ -94,7 +94,7 @@ const ResponsiveHeroCamera: React.FC = () => {
 
   useEffect(() => {
     const compact = size.width < 480 || size.width / Math.max(size.height, 1) < 0.95;
-    const position: [number, number, number] = compact ? [5.8, 4.8, 6.8] : [11.6, 9.5, 13.5];
+    const position: [number, number, number] = compact ? [4.1, 3.4, 4.8] : [7.6, 6.2, 8.8];
 
     camera.position.set(...position);
     camera.zoom = 1;
@@ -125,7 +125,7 @@ export const HeroCrystalAnimation: React.FC = () => {
 
   return (
     <div ref={containerRef} className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(14,165,233,0.12),transparent_48%)]" role="img" aria-label="Animated face-centred crystal lattice">
-      <Canvas showCameraControls={false} camera={{ position: [11.6, 9.5, 13.5], fov: 38 }} dpr={[1, typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : 1.6]} frameloop={animated ? 'always' : 'demand'}>
+      <Canvas showCameraControls={false} camera={{ position: [7.6, 6.2, 8.8], fov: 38 }} dpr={[1, typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : 1.6]} frameloop={animated ? 'always' : 'demand'}>
         <ResponsiveHeroCamera />
         <ambientLight intensity={0.78} />
         <pointLight position={[10, 10, 10]} intensity={1.35} color="#e0f2fe" />
