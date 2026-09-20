@@ -47,7 +47,7 @@ const CrystalLattice = ({ animated }: { animated: boolean }) => {
   }, []);
 
   return (
-    <group ref={group} position={[0, compact ? 0.18 : 0.35, 0]} scale={compact ? 1.55 : 1}>
+    <group ref={group} position={[0, compact ? 0.18 : 0.35, 0]} scale={compact ? 2.05 : 2.35}>
       <group position={[-0.5, -0.5, -0.5]}>
         {atoms.map((pos, i) => (
           <Sphere key={`atom-${i}`} args={compact ? [0.3, 16, 16] : [0.3, 32, 32]} position={pos}>
