@@ -55,7 +55,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="glass-panel sticky top-0 z-50 flex h-auto min-h-[var(--header-height-mobile)] items-center border-x-0 border-t-0 bg-[var(--header-background)] py-1.5 backdrop-blur-xl md:min-h-[var(--header-height-desktop)]">
+      <header className="sticky top-0 z-50 flex h-auto min-h-[var(--header-height-mobile)] items-center border-b border-[rgba(70,227,255,0.18)] bg-[rgba(8,19,30,0.92)] py-1.5 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] md:min-h-[var(--header-height-desktop)]">
         <div className="mx-auto flex w-full max-w-[var(--page-max)] items-center justify-between gap-2 px-3 sm:gap-3 sm:px-5 lg:px-8">
           <div className="flex shrink-0 flex-col items-start gap-1">
             <Link to="/" className="rounded-xl focus-visible:outline-none" aria-label="PIECHEM home">
@@ -90,7 +90,7 @@ export const Navbar: React.FC = () => {
                   key={link.path}
                   to={link.path}
                   aria-current={active ? 'page' : undefined}
-                  className={`relative rounded-lg px-4 py-2 text-sm font-bold transition-colors ${active ? 'bg-[var(--selected-state)] text-[var(--accent-primary)]' : 'text-[var(--text-secondary)] hover:bg-[var(--hover-state)] hover:text-[var(--text-primary)]'}`}
+                  className={`relative rounded-xl px-4 py-2 text-sm font-bold transition-all ${active ? 'bg-cyan-500/15 border border-cyan-400/35 text-[#46e3ff] shadow-[0_0_15px_rgba(70,227,255,0.22)]' : 'text-[#a9bfd2] hover:bg-white/5 hover:text-[#edf8ff]'}`}
                 >
                   {link.label}
                   {active && <span className="absolute inset-x-4 -bottom-[9px] h-0.5 rounded-full bg-[var(--accent-primary)]" aria-hidden="true" />}
