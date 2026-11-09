@@ -433,7 +433,7 @@ export const PackingLab: React.FC = () => {
           </div>
 
           <div className="min-h-[440px] flex-1">
-            <CrystalCanvas ariaLabel={`${packingModes.find((mode) => mode.id === packing)?.en} packing animation, step ${currentStepIndex + 1} of ${sequence.steps.length}`}>
+            <CrystalCanvas ariaLabel={`${packingModes.find((mode) => mode.id === packing)?.en} packing animation, step ${currentStepIndex + 1} of ${sequence.steps.length}`} frameloop="always">
               <ambientLight intensity={0.6} />
               <directionalLight position={[10, 10, 10]} intensity={0.8} />
               <directionalLight position={[-10, -10, -10]} intensity={0.3} color="#4338ca" />

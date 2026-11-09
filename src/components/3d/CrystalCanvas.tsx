@@ -10,6 +10,7 @@ interface CrystalCanvasProps {
   cameraTarget?: [number, number, number];
   resetKey?: number;
   ariaLabel?: string;
+  frameloop?: 'always' | 'demand' | 'never';
 }
 
 export const CrystalCanvas: React.FC<CrystalCanvasProps> = ({
@@ -18,6 +19,7 @@ export const CrystalCanvas: React.FC<CrystalCanvasProps> = ({
   cameraTarget = [0, 0, 0],
   resetKey = 0,
   ariaLabel = 'Interactive three-dimensional crystal model',
+  frameloop = 'demand',
 }) => {
   const webGLAvailable = useMemo(() => {
     if (typeof document === 'undefined') return true;
@@ -35,7 +37,7 @@ export const CrystalCanvas: React.FC<CrystalCanvasProps> = ({
 
   return (
     <div className="relative h-full min-h-[380px] w-full overflow-hidden bg-[var(--canvas-background)]" role="img" aria-label={ariaLabel}>
-      <Canvas dpr={[1, 1.5]} shadows gl={{ antialias: true, powerPreference: 'high-performance' }}>
+      <Canvas dpr={[1, 1.5]} frameloop={frameloop} gl={{ antialias: false, powerPreference: 'high-performance' }}>
         <color attach="background" args={['#06131d']} />
         <PerspectiveCamera key={`camera-${resetKey}`} makeDefault position={cameraPosition} fov={46} near={0.1} far={100} />
         <OrbitControls
@@ -52,7 +54,7 @@ export const CrystalCanvas: React.FC<CrystalCanvasProps> = ({
         />
 
         <ambientLight intensity={0.65} />
-        <directionalLight position={[9, 10, 7]} intensity={1.55} castShadow />
+        <directionalLight position={[9, 10, 7]} intensity={1.55} />
         <directionalLight position={[-8, -5, -6]} intensity={0.45} color="#7dd3fc" />
 
         <Suspense fallback={null}>

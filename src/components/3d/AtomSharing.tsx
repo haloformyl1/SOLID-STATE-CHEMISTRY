@@ -251,7 +251,7 @@ export const AtomSharing: React.FC = () => {
       </aside>
 
       <div className="relative min-h-[440px] flex-1 bg-[var(--canvas-background)] lg:min-h-[650px]">
-        <CrystalCanvas resetKey={resetKey} cameraPosition={[6.4, 5.4, 6.4]} ariaLabel={`${type} atom sharing model at step ${step} of ${maxSteps}`}>
+        <CrystalCanvas resetKey={resetKey} cameraPosition={[6.4, 5.4, 6.4]} ariaLabel={`${type} atom sharing model at step ${step} of ${maxSteps}`} frameloop="always">
           {defs.map((definition, index) => {
             const visible = index < step;
             return (

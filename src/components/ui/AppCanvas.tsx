@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useEffect, useRef, useState, forwardRef } from 'react';
 import { Canvas, type CanvasProps } from '@react-three/fiber';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import * as THREE from 'three';
@@ -7,11 +7,43 @@ interface AppCanvasProps extends CanvasProps {
   showCameraControls?: boolean;
 }
 
-export const AppCanvas = forwardRef<HTMLCanvasElement, AppCanvasProps>(({ children, onCreated, showCameraControls = true, ...props }, ref) => {
+export const AppCanvas = forwardRef<HTMLCanvasElement, AppCanvasProps>(({ children, onCreated, showCameraControls = true, frameloop = 'always', ...props }, ref) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [camera, setCamera] = useState<THREE.Camera | null>(null);
   const [initialPos, setInitialPos] = useState<THREE.Vector3 | null>(null);
   const [initialZoom, setInitialZoom] = useState<number>(1);
   const [controls, setControls] = useState<any>(null);
+  const [isNearViewport, setIsNearViewport] = useState(false);
+  const [hasBeenVisible, setHasBeenVisible] = useState(false);
+  const [isDocumentVisible, setIsDocumentVisible] = useState(true);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    if (typeof IntersectionObserver === 'undefined') {
+      setIsNearViewport(true);
+      setHasBeenVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsNearViewport(entry.isIntersecting);
+      if (entry.isIntersecting) setHasBeenVisible(true);
+    }, { rootMargin: '120px 0px' });
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsDocumentVisible(document.visibilityState === 'visible');
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
 
   const handleCreated = (state: any) => {
     setCamera(state.camera);
@@ -49,10 +81,17 @@ export const AppCanvas = forwardRef<HTMLCanvasElement, AppCanvasProps>(({ childr
   };
 
   return (
-    <div className="relative w-full h-full flex-1 min-h-0">
-      <Canvas ref={ref} onCreated={handleCreated} {...props}>
-        {children}
-      </Canvas>
+    <div ref={containerRef} className="relative w-full h-full flex-1 min-h-0">
+      {hasBeenVisible && (
+        <Canvas
+          ref={ref}
+          onCreated={handleCreated}
+          frameloop={isNearViewport && isDocumentVisible ? frameloop : 'never'}
+          {...props}
+        >
+          {children}
+        </Canvas>
+      )}
       {showCameraControls && <div className="absolute right-3 bottom-3 sm:right-4 sm:bottom-4 flex flex-col gap-2 z-10">
         <button
           type="button"
